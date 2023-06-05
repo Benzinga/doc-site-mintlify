@@ -1,0 +1,253 @@
+{
+  "$schema": "https://mintlify.com/schema.json",
+  "name": "Benzinga",
+  "logo": {
+    "dark": "/logo/dark.svg",
+    "light": "/logo/light.svg"
+  },
+  "favicon": "/favicon.png",
+  "colors": {
+    "primary": "#093451",
+    "light": "#5489C4",
+    "dark": "#093451"
+  },
+  "modeToggle": {
+    "default": "light"
+  },
+  "topbarLinks": [
+    {
+      "name": "Learn More",
+      "url": "https://www.benzinga.com/apis"
+    }
+  ],
+  "topbarCtaButton": {
+    "name": "Get Started",
+    "url": "https://www.benzinga.com/apis/data"
+  },
+  "api": {
+    "baseUrl": [
+      "https://api.benzinga.com/api/v1",
+      "https://api.benzinga.com/api/v1/sec",
+      "https://api.benzinga.com/api/v1/gov/usa/congress",
+      "https://api.benzinga.com/api/v1/market",
+      "wss://api.benzinga.com/api/v1/news", 
+      "https://api.benzinga.com/api/v1.1", 
+      "https://api.benzinga.com/api/v2",
+      "https://jwtapi.benzinga.com/api/v2/logos",
+      "https://api.benzinga.com/api/v2/logos",
+      "https://jwtapi.benzinga.com/api/v2",
+      "https://api.benzinga.com/api/v2.1",
+      "https://api.benzinga.io/v4.1/fxstreet"
+    ]
+  },
+  "anchors": [
+    {
+      "name": "API Suite", 
+      "icon": "list",
+      "url": "https://www.benzinga.com/apis/data"
+    },
+    {
+      "name": "New Features", 
+      "icon": "sparkles",
+      "url": "https://www.benzinga.com/apis/new-features"
+    },
+    {
+      "name": "Advertising", 
+      "icon": "megaphone",
+      "url": "https://www.benzinga.com/apis/advertising/"
+    },
+    {
+      "name": "Blog", 
+      "icon": "newspaper",
+      "url": "https://www.benzinga.com/apis/blog/"
+    },
+    {
+      "name": "Contact Us", 
+      "icon": "envelope",
+      "url": "mailto:licensing@benzinga.com"
+    }
+  ],
+  "navigation": [
+    {
+      "group": "Introduction",
+      "pages": [
+        "home",
+        "python-client"
+      ]
+    },
+    {
+      "group": "Benzinga APIs", 
+      "pages": [
+        "benzinga-apis/introduction",
+        {
+          "group": "Historical Bar Data",
+          "pages": [
+            "benzinga-apis/bars/bars-v2",
+            "benzinga-apis/bars/get-bars"
+          ]
+        },
+        {
+          "group": "Calendar",
+          "pages": [
+            "benzinga-apis/calendar/calendar-v2",
+            "benzinga-apis/calendar/get-conferenceCalls",
+            "benzinga-apis/calendar/get-dividends",
+            "benzinga-apis/calendar/get-earnings",
+            "benzinga-apis/calendar/get-economics",
+            "benzinga-apis/calendar/get-fda", 
+            "benzinga-apis/calendar/get-guidance", 
+            "benzinga-apis/calendar/get-ipos", 
+            "benzinga-apis/calendar/get-offerings", 
+            "benzinga-apis/calendar/get-ratings", 
+            "benzinga-apis/calendar/get-ma",
+            "benzinga-apis/calendar/get-splits",
+            "benzinga-apis/calendar/get-removed",
+            "benzinga-apis/calendar/get-analysts",
+            "benzinga-apis/calendar/get-firms"
+          ]
+        },
+        {
+          "group": "Delayed Quote", 
+          "pages": [
+            "benzinga-apis/delayed-quote/delayed-quote-v1",
+            "benzinga-apis/delayed-quote/get-quoteDelayed"
+          ]
+        },
+        {
+          "group":"Fundamentals v2.1",
+          "pages": [
+            "benzinga-apis/fundamentals/fundamentals-v2.1",
+            "benzinga-apis/fundamentals/get-fundamentals",
+            "benzinga-apis/fundamentals/get-valuationRatios",
+            "benzinga-apis/fundamentals/get-earningRatios", 
+            "benzinga-apis/fundamentals/get-operationRatios", 
+            "benzinga-apis/fundamentals/get-financials", 
+            "benzinga-apis/fundamentals/get-shareClass", 
+            "benzinga-apis/fundamentals/get-earningsReports", 
+            "benzinga-apis/fundamentals/get-alphaBeta",
+            "benzinga-apis/fundamentals/get-company", 
+            "benzinga-apis/fundamentals/get-companyProfile",
+            "benzinga-apis/fundamentals/get-shareClassProfile", 
+            "benzinga-apis/fundamentals/get-assetClassification"
+          ]
+        },
+        {
+          "group": "Fundamentals v2 (Deprecated)",
+          "pages":[
+            "benzinga-apis/fundamentals-deprecated/fundamentals-v2",
+            "benzinga-apis/fundamentals-deprecated/get-fundamentals",
+            "benzinga-apis/fundamentals-deprecated/get-valuationRatios", 
+            "benzinga-apis/fundamentals-deprecated/get-earningRatios", 
+            "benzinga-apis/fundamentals-deprecated/get-operationRatios", 
+            "benzinga-apis/fundamentals-deprecated/get-financials"
+          ]
+        },
+        {
+          "group": "Fxstreet Economic Calendar", 
+          "pages": [
+            "benzinga-apis/fxstreet-econ/fxstreet-econ-ref",
+            "benzinga-apis/fxstreet-econ/get-econ"
+          ]
+        },
+        {
+          "group": "Government Trades",
+          "pages": [
+            "benzinga-apis/government-trades/gov-trades-ref",
+            "benzinga-apis/government-trades/get-trades"
+          ]
+        },
+        {
+          "group": "Corporate Logos v1.1",
+          "pages": [
+            "benzinga-apis/corporate-logos-v1/corporate-logos-ref",
+            "benzinga-apis/corporate-logos-v1/get-logos"
+          ]
+        },
+        {
+          "group": "Corporate Logos v2.0 JWT",
+          "pages": [
+            "benzinga-apis/corporate-logos-v2.0JWT/corporate-logos-ref",
+            "benzinga-apis/corporate-logos-v2.0JWT/get-search", 
+            "benzinga-apis/corporate-logos-v2.0JWT/get-sync"
+          ]
+        },
+        {
+          "group": "Corporate Logos v2.0", 
+          "pages": [
+            "benzinga-apis/corporate-logos-v2/corporate-logos-ref",
+            "benzinga-apis/corporate-logos-v2/get-search",
+            "benzinga-apis/corporate-logos-v2/get-sync"
+          ]
+        },
+        {
+          "group": "Movers",
+          "pages": [
+            "benzinga-apis/movers/movers-v1",
+            "benzinga-apis/movers/get-movers"
+          ]
+        },
+        {
+          "group": "Newsfeed (Streaming) v1",
+          "pages": [
+            "benzinga-apis/newsfeed-stream-v1/newsfeed-stream-v1",
+            "benzinga-apis/newsfeed-stream-v1/get-stream"
+          ]
+        },
+        "benzinga-apis/newsfeed-tcp-v1-1",
+        {
+          "group": "Newsfeed & Why is it Moving v2 JWT",
+          "pages": [
+            "benzinga-apis/newsfeed-v2-jwt/newsfeed-v2-ref",
+            "benzinga-apis/newsfeed-v2-jwt/get-news",
+            "benzinga-apis/newsfeed-v2-jwt/get-news-removed"
+          ]
+        },
+        {
+          "group": "Newsfeed & Why is it Moving v2",
+          "pages": [
+            "benzinga-apis/newsfeed-v2/newsfeed-v2",
+            "benzinga-apis/newsfeed-v2/newsService-get",
+            "benzinga-apis/newsfeed-v2/newsServiceRemoved-get"
+          ]
+        },
+        {
+          "group": "SEC Filings", 
+          "pages": [
+            "benzinga-apis/sec-filings/sec-filings-ref",
+            "benzinga-apis/sec-filings/get-insider-filings"
+          ]
+        },
+        {
+          "group": "Signals",
+          "pages": [
+            "benzinga-apis/signals/signals-ref",
+            "benzinga-apis/signals/get-options-activity"
+          ]
+        },
+        "benzinga-apis/squawk-v3",
+        "benzinga-apis/squawk-v4",
+        {
+          "group": "Webhook v1 Test Trigger",
+          "pages": [
+            "benzinga-apis/test-trigger-webhook/webhook-v1-ref",
+            "benzinga-apis/test-trigger-webhook/get-webhook-test"
+          ]
+        },
+        "benzinga-apis/webhook-v1",
+        {
+          "group": "WIIMs",
+          "pages": [
+            "benzinga-apis/wiims/wiims-ref",
+            "benzinga-apis/wiims/get-wiims"
+          ]
+        }
+      ]
+    }
+  ],
+  "footerSocials": {
+    "twitter": "https://www.benzinga.com/apis/#",
+    "facebook": "https://www.benzinga.com/apis/#",
+    "website": "https://www.benzinga.com/apis/",
+    "github": "https://github.com/benzinga"
+  }
+}

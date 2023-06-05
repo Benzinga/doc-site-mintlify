@@ -1,0 +1,274 @@
+---
+openapi: 3.0.1
+info:
+  title: Government Trades
+  description: "This REST API returns structured data for Government Trades - House\
+    \ & Senate. \n \n### Best Practices\nFor optimal performance, we have a few recommendations.\n\
+    \ \n#### Limit query, improve performance\n \nLimiting the scope of the query\
+    \ will directly improve the latency of the API.  This can be accomplished by using\
+    \ parameters such as `symbols`, or (preferably) by using `updated` for deltas.\n\
+    \ \n#### Using Deltas\n \nA common pattern is to use a delta to query for the\
+    \ latest change in a dataset.  By reducing the amount of data available in the\
+    \ query, it will produce results with the least amount of latency and limited\
+    \ data an application will have to traverse.\n \nIn our case, we recommend tracking\
+    \ and querying by the latest updated timestamp.\n \nOne caveat to allow for some\
+    \ latency and second-only timestamps: when querying, set `updated` to a value\
+    \ 5 seconds earlier than you actually want.  A query may look like:\n \n`/government_trades?updated=LAGGED_TIMESTAMP`\n\
+    Where `LAGGED_TIMESTAMP` is set to be five seconds less than the maximum value\
+    \ of the `updated` field in rows already pulled from our API."
+  version: 1.0.0
+servers:
+- url: https://api.benzinga.com/api/v1/gov/usa/congress
+paths:
+  /trades:
+    get:
+      summary: Returns government trades data
+      parameters:
+      - name: chamber
+        in: query
+        description: Specific chamber of congress, either House or Senate. Defaults
+          to all of congress.
+        schema:
+          type: string
+      - name: date
+        in: query
+        description: Date to query for data. Shorthand for date_from and date_to if
+          they are the same. Defaults for latest.
+        schema:
+          type: string
+          format: YYYY-MM-DD
+      - name: date_from
+        in: query
+        description: Date to query from point in time.
+        schema:
+          type: string
+          format: YYYY-MM-DD
+      - name: date_to
+        in: query
+        description: Date to query to point in time.
+        schema:
+          type: string
+          format: YYYY-MM-DD
+      - name: fields
+        in: query
+        description: |
+          A comma (,) separated list of returned fields.
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            format: array
+      - name: pagesize
+        in: query
+        description: Number of results returned. Limit 1000
+        schema:
+          type: integer
+          default: 50
+      - name: page
+        in: query
+        description: Page offset.
+        schema:
+          type: integer
+          default: 0
+      - name: search_keys
+        in: query
+        description: One or more security symbols separated by a comma. Maximum 50
+          securities. Security identifiers must be in the format of ticker symbols,
+          only for US-listed equities.
+        schema:
+          type: string
+          format: csv
+      - name: updated_since
+        in: query
+        description: |
+          Records last Updated Unix timestamp (UTC). This will force the sort order
+          to be Greater Than or Equal to the timestamp indicated.
+
+          Timestamp may also be in python format to include millisecond updates.
+        schema:
+          type: number
+          format: double
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/congress_trades'
+      security:
+      - token: []
+components:
+  schemas:
+    congress_trades:
+      required:
+      - created
+      - id
+      - security
+      - updated
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique ID of this signal shared across all signal types
+        created:
+          type: string
+          description: Created timestamp, UTC.
+          format: double
+        updated:
+          type: string
+          description: Last updated timestamp, UTC.
+          format: double
+        ownership:
+          type: string
+          description: The members ownership status of the asset traded (SP, JT, DC,  Self,  None).
+        security:
+          type: object
+          properties:
+            name:
+              type: string
+              description: name of security
+            ticker:
+              type: string
+              description: ticker symbol of security
+            type:
+              type: string
+              description: type of security being traded (STOCK, ETF, MUTUAL, MUNICIPAL,
+                STOCK OPTION, CORPORATE BOND, OTHER)
+          description: name, ticker symbol, and type of asset traded
+        transaction_type:
+          type: string
+          description: Represents whether the transaction was a sale (S), partial
+            sale (S (Partial)) or purchase (P).
+        transaction_date:
+          type: string
+          description: The date the transaction occurred in YYYY-MM-DD format.
+        notification_date:
+          type: string
+          description: The date the Representative claims they received notification
+            of the transaction occurrence. This is only available for the House.
+        report_date:
+          type: string
+          description: The date the transaction was filed in YYYY-MM-DD format.
+        amount:
+          type: string
+          description: Represents dollar range of transaction or exact dollar amount.
+            (e.g. $1,001 - $15,000 | $721.63).
+        chamber:
+          type: string
+          description: Either House or Senate.
+        filer_info:
+          type: object
+          properties:
+            member_name:
+              type: string
+              description: Name of Filer.
+            status:
+              type: string
+              description: Whether filer is a Member or Former Member, it is either
+                one or other.
+            state:
+              type: string
+              description: State that filer oversees (e.g. NY) - (For House Only).
+            district:
+              type: string
+              description: District that filer oversees. (e.g.  06) - (For House Only).
+          description: Information on filer, this has different keys for House and
+            Senate.
+  parameters:
+    chamber:
+      name: chamber
+      in: query
+      description: Specific chamber of congress, either House or Senate. Defaults
+        to all of congress.
+      schema:
+        type: string
+    page:
+      name: page
+      in: query
+      description: Page offset.
+      schema:
+        type: integer
+        default: 0
+    pagesize:
+      name: pagesize
+      in: query
+      description: Number of results returned. Limit 1000
+      schema:
+        type: integer
+        default: 50
+    date:
+      name: date
+      in: query
+      description: Date to query for data. Shorthand for date_from and date_to if
+        they are the same. Defaults for latest.
+      schema:
+        type: string
+        format: YYYY-MM-DD
+    date_from:
+      name: date_from
+      in: query
+      description: Date to query from point in time.
+      schema:
+        type: string
+        format: YYYY-MM-DD
+    date_to:
+      name: date_to
+      in: query
+      description: Date to query to point in time.
+      schema:
+        type: string
+        format: YYYY-MM-DD
+    search_keys:
+      name: search_keys
+      in: query
+      description: One or more security symbols separated by a comma. Maximum 50 securities.
+        Security identifiers must be in the format of ticker symbols, only for US-listed
+        equities.
+      schema:
+        type: string
+        format: csv
+    search_keys_type:
+      name: search_keys_type
+      in: query
+      description: The type of identifier being searched.  Supported types are currently
+        a security symbol.
+      schema:
+        type: string
+        default: symbol
+        enum:
+        - symbol
+    updated_since:
+      name: updated_since
+      in: query
+      description: |
+        Records last Updated Unix timestamp (UTC). This will force the sort order
+        to be Greater Than or Equal to the timestamp indicated.
+
+        Timestamp may also be in python format to include millisecond updates.
+      schema:
+        type: number
+        format: double
+    fields:
+      name: fields
+      in: query
+      description: |
+        A comma (,) separated list of returned fields.
+      style: form
+      explode: false
+      schema:
+        type: array
+        items:
+          type: string
+          format: array
+  securitySchemes:
+    token:
+      type: apiKey
+      name: token
+      in: query

@@ -1,0 +1,372 @@
+---
+openapi: 3.0.1
+info:
+  title: Corporate Logos v2.0 JWT
+  description: The Benzinga Corporate Logo API is designed to be flexible with client
+    sizing requirements. It supports JWT based authentication.
+  version: 2.0.0
+servers:
+- url: https://jwtapi.benzinga.com/api/v2/logos
+paths:
+  /search:
+    get:
+      summary: Search logos for market securities/companies
+      parameters:
+      - name: accept
+        in: header
+        description: Specifies return format
+        schema:
+          type: string
+          default: application/json
+          enum:
+          - application/json
+      - name: search_keys
+        in: query
+        description: |
+          A comma (,) separated list of search identifiers.  Identifiers are based on the `search_type` field.  Limit 100 per request.
+
+          Example: F,AAPL
+        required: true
+        style: form
+        explode: false
+        schema:
+          maxItems: 100
+          type: array
+          items:
+            type: string
+            format: array
+      - name: search_keys_type
+        in: query
+        description: The type of identifier being searched.  Supported types are currently
+          a security symbol and CIK.
+        schema:
+          type: string
+          default: symbol
+          enum:
+          - symbol
+          - cik
+          - cusip
+      - name: fields
+        in: query
+        description: |
+          A comma (,) separated list of returned fields.
+
+          Example: mark_light,background_light
+
+          Would return ONLY the mark_light, background_light values from the API.
+        required: true
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            format: array
+            enum:
+            - logo_light
+            - logo_dark
+            - logo_vector_light
+            - logo_vector_dark
+            - mark_light
+            - mark_dark
+            - mark_vector_light
+            - mark_vector_dark
+            - mark_composite_light
+            - mark_composite_dark
+      - name: composite_auto
+        in: query
+        description: If no image exists, generate a fill image based on the company
+          name and background color.
+        schema:
+          type: boolean
+          default: false
+      - name: composite_radius
+        in: query
+        description: |
+          Apply a radius to the composite image.
+
+          Default value is 0.  Maximum value is 50 (50%) which will result in a circle.
+        schema:
+          type: integer
+          default: 0
+      - name: scale
+        in: query
+        description: |
+          Specified as the WIDTHxHEIGHT to scale the image down in pixels.  Images will only be scaled down, never up, and fit within the bounds set.  In CSS terms, the object-fit property is set to `contain`.
+
+          Scale will be applied to: logo_light, logo_dark, mark_light, mark_dark, mark_composite_light, mark_composite_dark
+
+          Example: 300x600
+        schema:
+          type: string
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/data'
+      security:
+      - Bearer: []
+  /sync:
+    get:
+      summary: Bulk sync logos.
+      parameters:
+      - name: accept
+        in: header
+        description: Specifies return format
+        schema:
+          type: string
+          default: application/json
+          enum:
+          - application/json
+      - name: updated_since
+        in: query
+        description: Last updated unix timestamp, UTC
+        schema:
+          type: integer
+          format: int64
+      - name: fields
+        in: query
+        description: |
+          A comma (,) separated list of returned fields.
+
+          Example: mark_light,background_light
+
+          Would return ONLY the mark_light, background_light values from the API.
+        required: true
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            format: array
+            enum:
+            - logo_light
+            - logo_dark
+            - logo_vector_light
+            - logo_vector_dark
+            - mark_light
+            - mark_dark
+            - mark_vector_light
+            - mark_vector_dark
+            - mark_composite_light
+            - mark_composite_dark
+      - name: composite_auto
+        in: query
+        description: If no image exists, generate a fill image based on the company
+          name and background color.
+        schema:
+          type: boolean
+          default: false
+      - name: composite_radius
+        in: query
+        description: |
+          Apply a radius to the composite image.
+
+          Default value is 0.  Maximum value is 50 (50%) which will result in a circle.
+        schema:
+          type: integer
+          default: 0
+      - name: scale
+        in: query
+        description: |
+          Specified as the WIDTHxHEIGHT to scale the image down in pixels.  Images will only be scaled down, never up, and fit within the bounds set.  In CSS terms, the object-fit property is set to `contain`.
+
+          Scale will be applied to: logo_light, logo_dark, mark_light, mark_dark, mark_composite_light, mark_composite_dark
+
+          Example: 300x600
+        schema:
+          type: string
+      - name: page
+        in: query
+        description: Page offset.
+        schema:
+          type: integer
+      - name: pagesize
+        in: query
+        description: Number of results returned. Default 100
+        schema:
+          type: integer
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/data'
+      security:
+      - Bearer: []
+components:
+  schemas:
+    ok:
+      type: boolean
+      description: Return status indicating the status of the result (OK if true,
+        ERROR if false)
+    errors:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Reference request error ID. (You can use this for reporting
+            to Benzinga team.)
+        code:
+          type: string
+          description: The error status
+        value:
+          type: string
+          description: Details for the error state
+      description: Error result if status is NOT ok.
+    data:
+      required:
+      - files
+      - search_key
+      type: object
+      properties:
+        id:
+          type: string
+          description: Record identifier
+        search_key:
+          type: string
+          description: |
+            The identifying search term, ex. cik or symbol value(s).
+            If search was not used, not value will be returned.
+        created_at:
+          type: string
+          description: Created timestamp, UTC
+          format: RFC3339/ISO8601
+        updated_at:
+          type: string
+          description: Last updated timestamp, UTC
+          format: RFC3339/ISO8601
+        colors:
+          $ref: '#/components/schemas/colors'
+        files:
+          $ref: '#/components/schemas/files'
+        securities:
+          $ref: '#/components/schemas/securities'
+    colors:
+      type: object
+      properties:
+        background_light:
+          type: string
+          description: Background color in HEX format to use in a white/light theme.
+          format: '#000/#abc000'
+        background_dark:
+          type: string
+          description: Background color in HEX format to use in a dark theme.
+          format: '#000/#abc000'
+    files:
+      type: object
+      properties:
+        logo_light:
+          type: string
+          description: URI of company logo for use in a white/light theme. Image file
+            type of PNG.
+        logo_dark:
+          type: string
+          description: URI of company logo for use in a dark theme. Image file type
+            of PNG.
+        logo_vector_light:
+          type: string
+          description: URI of company logo for use in a white/light theme. Vector
+            file type of SVG.
+        logo_vector_dark:
+          type: string
+          description: URI of company logo for use in a dark theme. Vector file type
+            of SVG.
+        mark_light:
+          type: string
+          description: URI of company mark for use in a white/light theme. Image file
+            type of PNG.
+        mark_dark:
+          type: string
+          description: URI of company mark for use in a dark theme. Image file type
+            of PNG.
+        mark_composite_light:
+          type: string
+          description: URI of composite image with the company mark for use in a light/white
+            theme.
+        mark_composite_dark:
+          type: string
+          description: URI of composite image with the company mark for use in a dark
+            theme.
+        mark_vector_light:
+          type: string
+          description: URI of company mark for use in a white/light theme. Vector
+            file type of SVG.
+        mark_vector_dark:
+          type: string
+          description: URI of company mark for use in a dark theme. Vector file type
+            of SVG.
+    securities:
+      type: array
+      items:
+        type: object
+        properties:
+          exchange:
+            type: string
+            description: Exchange on which the security is listed
+          symbol:
+            type: string
+            description: Ticker symbol for the security
+          name:
+            type: string
+            description: Name of security or company
+          cik:
+            type: string
+            description: CIK
+          cusip:
+            type: string
+            description: CUSIP
+          isin:
+            type: string
+            description: ISIN
+        description: |
+          A security object.  Only included with sync operations.
+  parameters:
+    fields:
+      name: fields
+      in: query
+      description: |
+        A comma (,) separated list of returned fields.
+
+        Example: mark_light,background_light
+
+        Would return ONLY the mark_light, background_light values from the API.
+      required: true
+      style: form
+      explode: false
+      schema:
+        type: array
+        items:
+          type: string
+          format: array
+          enum:
+          - logo_light
+          - logo_dark
+          - logo_vector_light
+          - logo_vector_dark
+          - mark_light
+          - mark_dark
+          - mark_vector_light
+          - mark_vector_dark
+          - mark_composite_light
+          - mark_composite_dark
+  securitySchemes:
+    Bearer:
+      type: apiKey
+      description: JWT, Refer <a href='https://github.com/Benzinga/jwt' target='_blank'>Benzinga
+        JWT</a> for more information. For JWT, we recommend using RS256. You may generate
+        sample JWT using https://jwt.io/. You need to send us public/private key depending
+        upon which algorithm you are using. We will add that public/private key on
+        our side, so it will verify signature generated. Also, you need to send us
+        the value of <b>iss</b> (issuer) value of payload. <br/> <b>Note:</b> Prepend
+        <b>Bearer</b> to your actual jwt when you authorize here to test.
+      name: Authorization
+      in: header

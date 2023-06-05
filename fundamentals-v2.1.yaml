@@ -1,0 +1,1608 @@
+openapi: 3.0.1
+info:
+  title: Fundamentals v2.1
+  description: Get financial statements, financial ratios, earning reports,  asset
+    classification, and share class profile history.
+  version: "2.1"
+servers:
+- url: https://api.benzinga.com/api/v2.1
+- url: http://api.benzinga.com/api/v2.1
+security:
+- token: []
+paths:
+  /fundamentals:
+    get:
+      summary: Get all of fundamentals data such as valuation ratios, earning ratios,
+        operation ratios, balance sheet, share class, alpha beta and asset classification.
+      parameters:
+      - name: accept
+        in: header
+        description: Specifies return format
+        schema:
+          type: string
+          enum:
+          - application/json
+          - application/xml (deprecated)
+      - name: symbols
+        in: query
+        description: One or more stock ticker symbol in comma separated list specifies
+          company data to return
+        schema:
+          type: string
+          format: csv
+      - name: asOf
+        in: query
+        description: Return results for dates greater than or equal date specified
+          in this parameter
+        schema:
+          type: string
+          format: YYYY-MM-DD
+      - name: cik
+        in: query
+        description: One or more cik identifier in comma separated list specifies
+          company data to return
+        schema:
+          type: string
+          format: csv
+      responses:
+        200:
+          description: An object including a response array containing an array of
+            objects containing company data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FundamentalsResponse'
+            application/xml (deprecated):
+              schema:
+                $ref: '#/components/schemas/FundamentalsResponse'
+  /fundamentals/valuationRatios:
+    get:
+      summary: Returns the valuation ratios.
+      parameters:
+      - name: accept
+        in: header
+        description: Specifies return format
+        schema:
+          type: string
+          enum:
+          - application/json
+          - application/xml (deprecated)
+      - name: symbols
+        in: query
+        description: One or more stock ticker symbol in comma separated list specifies
+          company data to return
+        schema:
+          type: string
+          format: csv
+      - name: asOf
+        in: query
+        description: Return results for dates greater than or equal date specified
+          in this parameter
+        schema:
+          type: string
+          format: YYYY-MM-DD
+      - name: cik
+        in: query
+        description: One or more cik identifier in comma separated list specifies
+          company data to return
+        schema:
+          type: string
+          format: csv
+      responses:
+        200:
+          description: An object including a response that includes valuationRatio
+            data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/valuationRatiosResponse'
+            application/xml (deprecated):
+              schema:
+                $ref: '#/components/schemas/valuationRatiosResponse'
+  /fundamentals/earningRatios:
+    get:
+      summary: Returns the earning ratios.
+      parameters:
+      - name: accept
+        in: header
+        description: Specifies return format
+        schema:
+          type: string
+          enum:
+          - application/json
+          - application/xml (deprecated)
+      - name: symbols
+        in: query
+        description: One or more stock ticker symbol in comma separated list specifies
+          company data to return
+        schema:
+          type: string
+          format: csv
+      - name: asOf
+        in: query
+        description: Return results for dates greater than or equal date specified
+          in this parameter
+        schema:
+          type: string
+          format: YYYY-MM-DD
+      - name: cik
+        in: query
+        description: One or more cik identifier in comma separated list specifies
+          company data to return
+        schema:
+          type: string
+          format: csv
+      responses:
+        200:
+          description: An object including a response that includes valuationRatio
+            data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/earningRatiosResponse'
+            application/xml (deprecated):
+              schema:
+                $ref: '#/components/schemas/earningRatiosResponse'
+  /fundamentals/operationRatios:
+    get:
+      summary: Returns the operation ratios.
+      parameters:
+      - name: accept
+        in: header
+        description: Specifies return format
+        schema:
+          type: string
+          enum:
+          - application/json
+          - application/xml (deprecated)
+      - name: symbols
+        in: query
+        description: One or more stock ticker symbol in comma separated list specifies
+          company data to return
+        schema:
+          type: string
+          format: csv
+      - name: asOf
+        in: query
+        description: Return results for dates greater than or equal date specified
+          in this parameter
+        schema:
+          type: string
+          format: YYYY-MM-DD
+      - name: cik
+        in: query
+        description: One or more cik identifier in comma separated list specifies
+          company data to return
+        schema:
+          type: string
+          format: csv
+      responses:
+        200:
+          description: An object including a response that includes operationRatio
+            data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/operationRatiosResponse'
+            application/xml (deprecated):
+              schema:
+                $ref: '#/components/schemas/operationRatiosResponse'
+  /fundamentals/financials:
+    get:
+      summary: Get the balance sheet and cash-flow statement for a company.
+      parameters:
+      - name: accept
+        in: header
+        description: Specifies return format
+        schema:
+          type: string
+          enum:
+          - application/json
+          - application/xml (deprecated)
+      - name: symbols
+        in: query
+        description: One or more stock ticker symbol in comma separated list specifies
+          company data to return
+        schema:
+          type: string
+          format: csv
+      - name: asOf
+        in: query
+        description: Return results for dates greater than or equal date specified
+          in this parameter
+        schema:
+          type: string
+          format: YYYY-MM-DD
+      - name: period
+        in: query
+        description: Specifies the time period of the returned results
+        schema:
+          type: string
+          default: ALL
+          enum:
+          - 3M
+          - 6M
+          - 9M
+          - 12M
+          - 1Y
+          - ALL
+          - TTM
+      - name: reportType
+        in: query
+        description: TTM, A (as originally reported), R (restated). P (Preliminary
+          anouncements)
+        schema:
+          type: string
+          default: A
+          enum:
+          - TTM
+          - A
+          - R
+          - P
+      - name: cik
+        in: query
+        description: One or more cik identifier in comma separated list specifies
+          company data to return
+        schema:
+          type: string
+          format: csv
+      responses:
+        200:
+          description: An object including a response array containing an array of
+            objects containing company data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/financialsResponse'
+            application/xml (deprecated):
+              schema:
+                $ref: '#/components/schemas/financialsResponse'
+  /fundamentals/shareClass:
+    get:
+      summary: Get share class meta data for company.
+      parameters:
+      - name: accept
+        in: header
+        description: Specifies return format
+        schema:
+          type: string
+          enum:
+          - application/json
+          - application/xml (deprecated)
+      - name: symbols
+        in: query
+        description: One or more stock ticker symbol in comma separated list specifies
+          company data to return
+        schema:
+          type: string
+          format: csv
+      - name: asOf
+        in: query
+        description: Return results for dates greater than or equal date specified
+          in this parameter
+        schema:
+          type: string
+          format: YYYY-MM-DD
+      - name: cik
+        in: query
+        description: One or more cik identifier in comma separated list specifies
+          company data to return
+        schema:
+          type: string
+          format: csv
+      responses:
+        200:
+          description: An object including a response array containing an array of
+            objects containing company data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/shareClass'
+            application/xml (deprecated):
+              schema:
+                $ref: '#/components/schemas/shareClass'
+  /fundamentals/earningReports:
+    get:
+      summary: Get detailed earning reports for company.
+      parameters:
+      - name: accept
+        in: header
+        description: Specifies return format
+        schema:
+          type: string
+          enum:
+          - application/json
+          - application/xml (deprecated)
+      - name: symbols
+        in: query
+        description: One or more stock ticker symbol in comma separated list specifies
+          company data to return
+        schema:
+          type: string
+          format: csv
+      - name: asOf
+        in: query
+        description: Return results for dates greater than or equal date specified
+          in this parameter
+        schema:
+          type: string
+          format: YYYY-MM-DD
+      - name: cik
+        in: query
+        description: One or more cik identifier in comma separated list specifies
+          company data to return
+        schema:
+          type: string
+          format: csv
+      responses:
+        200:
+          description: An object including a response array containing an array of
+            objects containing company data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/earningReports'
+            application/xml (deprecated):
+              schema:
+                $ref: '#/components/schemas/earningReports'
+  /fundamentals/alphaBeta:
+    get:
+      summary: Get an alpha-beta result for the company.
+      parameters:
+      - name: accept
+        in: header
+        description: Specifies return format
+        schema:
+          type: string
+          enum:
+          - application/json
+          - application/xml (deprecated)
+      - name: symbols
+        in: query
+        description: One or more stock ticker symbol in comma separated list specifies
+          company data to return
+        schema:
+          type: string
+          format: csv
+      - name: asOf
+        in: query
+        description: Return results for dates greater than or equal date specified
+          in this parameter
+        schema:
+          type: string
+          format: YYYY-MM-DD
+      - name: cik
+        in: query
+        description: One or more cik identifier in comma separated list specifies
+          company data to return
+        schema:
+          type: string
+          format: csv
+      responses:
+        200:
+          description: An object including a response array containing an array of
+            objects containing company data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/alphaBeta'
+            application/xml (deprecated):
+              schema:
+                $ref: '#/components/schemas/alphaBeta'
+  /fundamentals/company:
+    get:
+      summary: Get basic company information.
+      parameters:
+      - name: accept
+        in: header
+        description: Specifies return format
+        schema:
+          type: string
+          enum:
+          - application/json
+          - application/xml (deprecated)
+      - name: symbols
+        in: query
+        description: One or more stock ticker symbol in comma separated list specifies
+          company data to return
+        schema:
+          type: string
+          format: csv
+      - name: asOf
+        in: query
+        description: Return results for dates greater than or equal date specified
+          in this parameter
+        schema:
+          type: string
+          format: YYYY-MM-DD
+      - name: cik
+        in: query
+        description: One or more cik identifier in comma separated list specifies
+          company data to return
+        schema:
+          type: string
+          format: csv
+      responses:
+        200:
+          description: An object including a response array containing an array of
+            objects containing company data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/company'
+            application/xml (deprecated):
+              schema:
+                $ref: '#/components/schemas/company'
+  /fundamentals/companyProfile:
+    get:
+      summary: Get company meta-data.
+      parameters:
+      - name: accept
+        in: header
+        description: Specifies return format
+        schema:
+          type: string
+          enum:
+          - application/json
+          - application/xml (deprecated)
+      - name: symbols
+        in: query
+        description: One or more stock ticker symbol in comma separated list specifies
+          company data to return
+        schema:
+          type: string
+          format: csv
+      - name: asOf
+        in: query
+        description: Return results for dates greater than or equal date specified
+          in this parameter
+        schema:
+          type: string
+          format: YYYY-MM-DD
+      - name: cik
+        in: query
+        description: One or more cik identifier in comma separated list specifies
+          company data to return
+        schema:
+          type: string
+          format: csv
+      responses:
+        200:
+          description: An object including a response array containing an array of
+            objects containing company data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/companyProfile'
+            application/xml (deprecated):
+              schema:
+                $ref: '#/components/schemas/companyProfile'
+  /fundamentals/shareClassProfile:
+    get:
+      summary: Get share class profile history with market cap and enterprise value.
+      parameters:
+      - name: accept
+        in: header
+        description: Specifies return format
+        schema:
+          type: string
+          enum:
+          - application/json
+          - application/xml (deprecated)
+      - name: symbols
+        in: query
+        description: One or more stock ticker symbol in comma separated list specifies
+          company data to return
+        schema:
+          type: string
+          format: csv
+      - name: asOf
+        in: query
+        description: Return results for dates greater than or equal date specified
+          in this parameter
+        schema:
+          type: string
+          format: YYYY-MM-DD
+      - name: cik
+        in: query
+        description: One or more cik identifier in comma separated list specifies
+          company data to return
+        schema:
+          type: string
+          format: csv
+      responses:
+        200:
+          description: An object including a response array containing an array of
+            objects containing company data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/shareClassProfile'
+            application/xml (deprecated):
+              schema:
+                $ref: '#/components/schemas/shareClassProfile'
+  /fundamentals/assetClassification:
+    get:
+      summary: Get share class profile history with market cap and enterprise value.
+      parameters:
+      - name: accept
+        in: header
+        description: Specifies return format
+        schema:
+          type: string
+          enum:
+          - application/json
+          - application/xml (deprecated)
+      - name: symbols
+        in: query
+        description: One or more stock ticker symbol in comma separated list specifies
+          company data to return
+        schema:
+          type: string
+          format: csv
+      - name: cik
+        in: query
+        description: One or more cik identifier in comma separated list specifies
+          company data to return
+        schema:
+          type: string
+          format: csv
+      responses:
+        200:
+          description: An object including a response array containing an array of
+            objects containing company data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/assetClassification'
+            application/xml (deprecated):
+              schema:
+                $ref: '#/components/schemas/assetClassification'
+components:
+  schemas:
+    FundamentalsResponse:
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            type: object
+            properties:
+              company:
+                $ref: '#/components/schemas/company'
+              companyProfile:
+                $ref: '#/components/schemas/companyProfile'
+              shareClass:
+                $ref: '#/components/schemas/shareClass'
+              earningReports:
+                $ref: '#/components/schemas/earningReports'
+              valuationRatios:
+                $ref: '#/components/schemas/valuationRatiosResponse'
+              operationRatios:
+                $ref: '#/components/schemas/operationRatiosResponse'
+              alphaBeta:
+                $ref: '#/components/schemas/alphaBeta'
+              earningRatios:
+                $ref: '#/components/schemas/earningRatiosResponse'
+              assetClassification:
+                $ref: '#/components/schemas/assetClassification'
+              shareClassProfileHistory:
+                $ref: '#/components/schemas/shareClassProfile'
+              processingTimeMillis:
+                type: integer
+    earningRatiosResponse:
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/EarningRatiosObj'
+        processingTimeMillis:
+          type: integer
+    EarningRatiosObj:
+      type: object
+      properties:
+        company:
+          $ref: '#/components/schemas/company'
+        earningRatios:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: object
+                properties:
+                  shareClassId:
+                    type: string
+                  asOf:
+                    type: string
+                    format: YYY-MM-DD
+                  reportType:
+                    type: string
+                  period:
+                    type: string
+                  aorOrRestate:
+                    type: string
+              fiscalYearEnd:
+                type: integer
+              dilutedEpsGrowth:
+                type: number
+                description: The growth in the company’s diluted earnings per share
+                  (EPS) on a percentage basis. Morningstar calculates the annualized
+                  growth percentage based on the underlying diluted EPS reported in
+                  the Income Statement within the company filings or reports.
+                format: float
+              dilutedConstEpsGrowth:
+                type: number
+                description: The growth in the company’s diluted EPS from continuing
+                  operations on a percentage basis. Morningstar calculates the annualized
+                  growth percentage based on the underlying diluted EPS from continuing
+                  operations reported in the Income Statement within the company filings
+                  or reports.
+                format: float
+              dpsGrowth:
+                type: number
+                description: The growth in the company’s dividends per share (DPS)
+                  on a percentage basis. Morningstar calculates the annualized growth
+                  percentage based on the underlying DPS from its dividend database.
+                  Morningstar collects its DPS from company filings and reports, as
+                  well as from third party sources.
+                format: float
+              equityPerShareGrowth:
+                type: number
+                description: The growth in the company’s book value per share on a
+                  percentage basis. Morningstar calculates the annualized growth percentage
+                  based on the underlying equity and end of period shares outstanding
+                  reported in the company filings or reports.
+                format: float
+        symbol:
+          type: string
+        idType:
+          type: string
+        id:
+          type: string
+    valuationRatiosResponse:
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValuationRatiosObj'
+    ValuationRatiosObj:
+      type: object
+      properties:
+        valuationRatios:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValuationRatio'
+    ValuationRatio:
+      type: object
+      properties:
+        id:
+          type: object
+          properties:
+            shareClassId:
+              type: string
+            date:
+              type: string
+              format: YYYY-MM-DD
+        payoutRatio:
+          type: number
+          description: Dividend per share / Diluted earning per share
+          format: float
+        sustainableGrowthRate:
+          type: number
+          description: ROE * (1 – Payout Ratio)
+          format: float
+        cashReturn:
+          type: number
+          description: Refers to the ratio of free cash flow to enterprise value.
+            Morningstar calculates the ratio by using the underlying data reported
+            in the company filings or reports- FCF /Enterprise Value.
+          format: float
+        salesPerShare:
+          type: number
+          description: Sales / Average Diluted Shares Outstanding
+          format: float
+        bookValuePerShare:
+          type: number
+          description: Common Shareholder’s Equity / Diluted Shares Outstanding
+          format: float
+        cfoPerShare:
+          type: number
+          description: Cash Flow from Operations / Average Diluted Shares Outstanding
+          format: float
+        fcfPerShare:
+          type: number
+          description: Free Cash Flow / Average Diluted Shares Outstanding
+          format: float
+        earningYield:
+          type: number
+          description: Diluted EPS / Price
+          format: float
+        peRatio:
+          type: number
+          description: 1 / Earnings Yield. If result is negative, then null
+          format: float
+        salesYield:
+          type: number
+          description: SalesPerShare / Price
+          format: float
+        psRatio:
+          type: number
+          description: 1 / SalesYield. If result is negative, then null
+          format: float
+        bookValueYield:
+          type: number
+          description: BookValuePerShare / Price
+          format: float
+        pbRatio:
+          type: number
+          description: 1 / BookValueYield. If result is negative, then null
+          format: float
+        cfYield:
+          type: number
+          description: CFOPerShare / Price
+          format: float
+        pcfRatio:
+          type: number
+          description: 1 / CFYield If result is negative, then null
+          format: float
+        fcfYield:
+          type: number
+          description: FCFPerShare / Price
+          format: float
+        fcfRatio:
+          type: number
+          description: 1 / FCFYield If result is negative, then null
+          format: float
+        trailingDividendYield:
+          type: number
+          description: The opposite of forward divident yield
+          format: float
+        forwardDividendYield:
+          type: number
+          description: (Current Dividend Per Share * Payout Frequency) / Price
+          format: float
+        forwardEarningYield:
+          type: number
+          description: Estimated Earnings Per Share / Price. Note-  The “Next” Year’s
+            EPS Estimate is used; For instance, if today’s actual date is March 1,
+            2009, the “Current” EPS Estimate for MSFT is June 2009, and the “Next”
+            EPS Estimate for MSFT is June 2010; the latter is used. The eps estimated
+            data is sourced from a third party.
+          format: float
+        forwardPeRatio:
+          type: number
+          description: 1 / ForwardEarningYield If result is negative, then null
+          format: float
+        pegRatio:
+          type: number
+          description: ForwardPERatio / Long-term Average Earning Growth Rate
+          format: float
+        pegPayback:
+          type: number
+          description: The number of years it would take for a company's cumulative
+            earnings to equal the stock's current trading price, assuming that the
+            company continues to increase its annual earnings at the growth rate used
+            to calculate the PEG ratio.
+          format: float
+        tangibleBookValuePerShare:
+          type: number
+          description: The company’s total book value less the value of any intangible
+            assets dividend by number of shares.
+          format: float
+        tangibleBvPerShare3YrAvg:
+          type: number
+          description: The three year average for tangible book value per share.
+          format: float
+        tangibleBvPerShare5YrAvg:
+          type: number
+          description: The five year average for tangible book value per share.
+          format: float
+        forwardDividend:
+          type: number
+          description: Estimation of a year's dividend expressed as a percentage of
+            current stock price.
+          format: float
+        workingCapitalPerShare:
+          type: number
+          description: (Current Assets – Current Liabilities)/number of shares
+          format: float
+        workingCapitalPerShare3YrAvg:
+          type: number
+          description: The three year average for working capital per share.
+          format: float
+        workingCapitalPerShare5YrAvg:
+          type: number
+          description: The five year average for working capital per share.
+          format: float
+        evToEbitda:
+          type: number
+          description: A financial ratio that measures a company's return on investment
+            (ROI).
+          format: float
+        buyBackYield:
+          type: number
+          description: Ratio of outstanding shares that reduces the number of its
+            shares on the open market.
+          format: float
+        totalYield:
+          type: number
+          description: Ratio of dividend yield plus the net share buyback percentage.
+          format: float
+        ratioPe5YearAverage:
+          type: number
+          description: Average ratio of price to earnings yield over five years.
+          format: float
+        priceChange1M:
+          type: number
+          description: Change in price
+          format: float
+        normalizedPeRatio:
+          type: number
+          description: Smoothed ratio of price to earnings using a formula that normalizes
+            the volatility.
+          format: float
+        pricetoEbitda:
+          type: number
+          description: Ratio of stock price to per share Earnings Before Interest,
+            Taxes, Depreciation and Amortization.
+          format: float
+    operationRatiosResponse:
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/OperationRatiosObj'
+    OperationRatiosObj:
+      type: object
+      properties:
+        company:
+          $ref: '#/components/schemas/company'
+        operationRatios:
+          type: object
+          properties:
+            3M:
+              $ref: '#/components/schemas/operationRatio'
+            6M:
+              $ref: '#/components/schemas/operationRatio'
+            9M:
+              $ref: '#/components/schemas/operationRatio'
+            1Y:
+              $ref: '#/components/schemas/operationRatio'
+    financialsResponse:
+      type: object
+      properties:
+        result:
+          type: array
+          items:
+            type: object
+            properties:
+              company:
+                $ref: '#/components/schemas/company'
+              financials:
+                $ref: '#/components/schemas/financials'
+    company:
+      type: object
+      properties:
+        primarySymbol:
+          type: string
+        primaryExchange:
+          type: string
+        cik:
+          type: string
+        valoren:
+          type: string
+        sedol:
+          type: string
+        standardName:
+          type: string
+    companyProfile:
+      type: object
+      properties:
+        companyStatus:
+          type: string
+          description: Status of company
+        countryId:
+          type: string
+          description: Identifier of country the company HQ is based.
+        fiscalYearEnd:
+          type: string
+          description: The Month of the company’s latest fiscal year.
+        shortName:
+          type: string
+          description: Abbreviated name of company
+        standardName:
+          type: string
+          description: Standard name of company
+        address1:
+          type: string
+          description: Address of company HQ
+        city:
+          type: string
+          description: City of company HQ
+        country:
+          type: string
+          description: Country of company HQ.
+        fax:
+          type: string
+          description: Fax number of company
+        homepage:
+          type: string
+          description: Url of company website
+        phone:
+          type: string
+          description: Phone number of company
+        postalCode:
+          type: string
+          description: Postal code of company HQ
+        province:
+          type: string
+          description: Province of company HQ
+        legalName:
+          type: string
+          description: Legal name of company
+        shortDescription:
+          type: string
+          description: Short description of company
+        longDescription:
+          type: string
+          description: Long description of company
+    shareClass:
+      type: object
+      properties:
+        currency:
+          type: string
+        ipoDate:
+          type: string
+          format: Unix timestamp
+        isDepositaryRecipt:
+          type: boolean
+        isPrimary:
+          type: boolean
+        securityType:
+          type: string
+        enterpriseValue:
+          type: integer
+        marketCap:
+          type: integer
+    shareClassProfile:
+      type: object
+      properties:
+        asOf:
+          type: string
+        marketCap:
+          type: integer
+    earningReports:
+      type: object
+      properties:
+        6M:
+          $ref: '#/components/schemas/earningReportsObj'
+        3M:
+          $ref: '#/components/schemas/earningReportsObj'
+        12M:
+          $ref: '#/components/schemas/earningReportsObj'
+    earningReportsObj:
+      type: object
+      properties:
+        period:
+          type: string
+        asOf:
+          type: string
+        reportType:
+          type: string
+        currency:
+          type: string
+        fiscalYearEnd:
+          type: string
+        basicContinuousOperations:
+          type: number
+          description: Basic EPS from Continuing Operations is the earnings from continuing
+            operations reported by the company divided by the weighted average number
+            of common shares outstanding.
+          format: float
+        continuingAndDiscontinuedBasicEPS:
+          type: number
+          description: Basic EPS from Continuing Operations plus Basic EPS from Discontinued
+            Operations.
+          format: float
+        continuingAndDiscontinuedDilutedEPS:
+          type: number
+          description: Diluted EPS from Continuing Operations plus Diluted EPS from
+            Discontinued Operations.
+          format: double
+        dilutedAverageShares:
+          type: integer
+          description: The shares outstanding used to calculate the diluted EPS, assuming
+            the conversion of all convertible securities and the exercise of warrants
+            or stock options. It is the weighted average diluted share outstanding
+            through the whole accounting period. Note- If Diluted Average Shares are
+            not presented by the firm in the Income Statement and Basic Average Shares
+            are presented, Diluted Average Shares will equal Basic Average Shares.
+            However, if neither value is presented by the firm, Diluted Average Shares
+            will be null.
+          format: int64
+        dilutedContinuousOperations:
+          type: integer
+          description: Diluted EPS from Continuing Operations is the earnings from
+            continuing operations divided by the common shares outstanding adjusted
+            for the assumed conversion of all potentially dilutive securities. Securities
+            having a dilutive effect may include convertible debentures, warrants,
+            options, and convertible preferred stock.
+          format: int64
+        dilutedEPS:
+          type: number
+          description: Diluted EPS is the bottom line net income divided by the common
+            shares outstanding adjusted for the assumed conversion of all potentially
+            dilutive securities. Securities having a dilutive effect may include convertible
+            debentures, warrants, options, and convertible preferred stock. This value
+            will be derived when not reported for the fourth quarter and will be less
+            than or equal to Basic EPS.
+          format: float
+        dividendPerShare:
+          type: number
+          description: The amount of dividend that a stockholder will receive for
+            each share of stock held. It can be calculated by taking the total amount
+            of dividends paid and dividing it by the total shares outstanding. Dividend
+            per share = total dividend payment/total number of outstanding shares
+          format: float
+        basicAverageShares:
+          type: integer
+          description: The shares outstanding used to calculate Basic EPS, which is
+            the weighted average common share outstanding through the whole accounting
+            period. If Basic Average Shares are not presented by the firm in the Income
+            Statement, this data point will be null.
+          format: int64
+    valuationRatios:
+      type: object
+      properties:
+        bookValuePerShare:
+          type: number
+          description: Common Shareholder’s Equity / Diluted Shares Outstanding
+          format: float
+        bookValueYield:
+          type: number
+          description: BookValuePerShare / Price
+          format: float
+        CFYield:
+          type: number
+          description: CFOPerShare / Price
+          format: float
+        cashReturn:
+          type: number
+          description: Refers to the ratio of free cash flow to enterprise value.
+            Morningstar calculates the ratio by using the underlying data reported
+            in the company filings or reports. FCF /Enterprise Value. This number
+            tells you what cash return you would get if you bought the entire company,
+            including its debt. [Note- Enterprise Value = Market Cap + Preferred stock
+            + Long-Term Debt And Capital Lease + Short Term Debt And Capital Lease
+            + Securities Sold But Not Yet Repurchased - Cash, Cash Equivalent And
+            Market Securities - Securities Purchased with Agreement to Resell - Securities
+            Borrowed]
+          format: float
+        dividendYield:
+          type: number
+          description: Dividends Per Share over the trailing 12 months / Price
+          format: float
+        earningYield:
+          type: number
+          description: Diluted EPS / Price
+          format: float
+        FCFPerShare:
+          type: number
+          description: Free Cash Flow / Average Diluted Shares Outstanding
+          format: float
+        FCFRatio:
+          type: number
+          description: 1 / FCFYield. If result is negative, then null
+          format: float
+        FCFYield:
+          type: number
+          description: FCFPerShare / Price
+          format: float
+        forwardEarningYield:
+          type: number
+          description: Estimated Earnings Per Share / Price Note- a) The “Next” Year’s
+            EPS Estimate is used; For instance, if today’s actual date is March 1,
+            2009, the “Current” EPS Estimate for MSFT is June 2009, and the “Next”
+            EPS Estimate for MSFT is June 2010; the latter is used. b) The eps estimated
+            data is sourced from a third party.
+          format: float
+        forwardPERatio:
+          type: number
+          description: 1 / ForwardEarningYield. If result is negative, then null
+          format: float
+        PBRatio:
+          type: number
+          description: 1 / BookValueYield. If result is negative, then null
+          format: float
+        PCFRatio:
+          type: number
+          description: 1 / CFYield. If result is negative, then null
+          format: float
+        PEGPayback:
+          type: number
+          description: The number of years it would take for a company's cumulative
+            earnings to equal the stock's current trading price, assuming that the
+            company continues to increase its annual earnings at the growth rate used
+            to calculate the PEG ratio. [ Log (PG/E + 1) / Log (1 + G) ] - 1 Where
+            P = Price, E = Next Fiscal Year’s Estimated EPS, G = Long-term Average
+            Earning Growth
+          format: float
+        PERatio:
+          type: number
+          description: 1 / Earnings Yield. If result is negative, then null
+          format: float
+        PSRatio:
+          type: number
+          description: 1 / SalesYield. If result is negative, then null
+          format: float
+        payoutRatio:
+          type: number
+          description: Dividend per share / Diluted earning per share
+          format: float
+        salesPerShare:
+          type: number
+          description: Sales / Average Diluted Shares Outstanding
+          format: float
+        salesYield:
+          type: number
+          description: SalesPerShare / Price
+          format: float
+        sustainableGrowthRate:
+          type: number
+          description: ROE * (1 – Payout Ratio)
+          format: float
+    operationRatios:
+      type: object
+      properties:
+        9M:
+          $ref: '#/components/schemas/operationRatio'
+        6M:
+          $ref: '#/components/schemas/operationRatio'
+        1Y:
+          $ref: '#/components/schemas/operationRatio'
+        3M:
+          $ref: '#/components/schemas/operationRatio'
+      description: Different periods may be returned for different companies
+    operationRatio:
+      type: object
+      properties:
+        period:
+          type: string
+        fiscalYearEnd:
+          type: string
+        reportType:
+          type: string
+        assetsTurnover:
+          type: number
+          description: Revenue / Average Total Assets
+          format: float
+        capExSalesRatio:
+          type: number
+          description: Capital Expenditure / Revenue
+          format: float
+        cashConversionCycle:
+          type: number
+          description: Days In Inventory + Days In Sales – Days In Payment
+          format: float
+        daysInInventory:
+          type: number
+          description: 365 / Inventory turnover
+          format: float
+        daysInPayment:
+          type: number
+          description: 365 / Payable turnover
+          format: float
+        daysInSales:
+          type: number
+          description: 365 / Receivable Turnover
+          format: float
+        EBITDAMargin:
+          type: number
+          description: Refers to the ratio of earnings before interest, taxes and
+            depreciation and amortization to revenue. Morningstar calculates the ratio
+            by using the underlying data reported in the company filings or reports
+            EBITDA / Revenue.
+          format: float
+        EBITMargin:
+          type: number
+          description: Refers to the ratio of earnings before interest and taxes to
+            revenue. Morningstar calculates the ratio by using the underlying data
+            reported in the company filings or reports EBIT / Revenue.
+          format: float
+        FCFNetIncomeRatio:
+          type: number
+          description: Free Cash Flow / Net Income
+          format: float
+        FCFSalesRatio:
+          type: number
+          description: Free Cash flow / Revenue
+          format: float
+        fixAssetTurnover:
+          type: number
+          description: Revenue / Average PP&E
+          format: float
+        grossMargin:
+          type: number
+          description: Refers to the ratio of gross profit to revenue. Morningstar
+            calculates the ratio by using the underlying data reported in the company
+            filings or reports. (Revenue – Cost of Goods Sold) / Revenue.
+          format: float
+        interestCoverage:
+          type: number
+          description: Ratio used to determine how easily a company can pay their
+            interest expenses on outstanding debt. T
+          format: float
+        netIncomeContOpsGrowth:
+          type: number
+          description: The growth in the company’s net income from continuing operations
+            on a percentage basis. Morningstar calculates the growth percentage based
+            on the underlying net income from continuing operations data reported
+            in the Income Statement within the company filings or reports. This figure
+            represents the rate of net income growth for parts of the business that
+            will continue to generate revenue in the future.
+          format: float
+        netIncomeGrowth:
+          type: number
+          description: The growth in the company’s net income on a percentage basis.
+            Morningstar calculates the growth percentage based on the underlying net
+            income data reported in the Income Statement within the company filings
+            or reports.
+          format: float
+        netMargin:
+          type: number
+          description: Refers to the ratio of net income to revenue. Morningstar calculates
+            the ratio by using the underlying data reported in the company filings
+            or reports. Net Income / Revenue.
+          format: float
+        normalizedNetProfitMargin:
+          type: number
+          description: Normalized Income / Total Revenue. A measure of profitability
+            of the company calculated by finding Normalized Net Profit as a percentage
+            of Total Revenues.
+          format: float
+        operationIncomeGrowth:
+          type: number
+          description: Ratio of growth of operating income.
+          format: float
+        operationMargin:
+          type: number
+          description: Refers to the ratio of operating income to revenue. Morningstar
+            calculates the ratio by using the underlying data reported in the company
+            filings or reports. Operating Income / Revenue.
+          format: float
+        operationRevenueGrowth3MonthAvg:
+          type: number
+          description: The growth in the company’s operating revenue on a percentage
+            basis. Morningstar calculates the growth percentage based on the underlying
+            operating revenue data reported in the Income Statement within the company
+            filings or reports.
+          format: float
+        pretaxMargin:
+          type: number
+          description: Refers to the ratio of pretax income to revenue. Morningstar
+            calculates the ratio by using the underlying data reported in the company
+            filings or reports. Pretax Income / Revenue.
+          format: float
+        quickRatio:
+          type: number
+          description: Refers to the ratio of liquid assets to Current Liabilities.
+            Morningstar calculates the ratio by using the underlying data reported
+            in the Balance Sheet within the company filings or reports. ( Cash, Cash
+            Equivalents, and ShortTerm Investments + Receivables ) / Current Liabilities.
+          format: float
+        ROA:
+          type: number
+          description: Net Income / Average Total Assets
+          format: float
+        ROE:
+          type: number
+          description: Net Income / Average Total Common Equity
+          format: float
+        ROIC:
+          type: number
+          description: Net Income / (Total Equity + Long-term Debt and Capital Lease
+            Obligation + Short-term Debt and Capital Lease Obligation)
+          format: float
+        receivableTurnover:
+          type: number
+          description: Revenue / Average Accounts Receivables
+          format: float
+        revenueGrowth:
+          type: number
+          description: The growth in the company’s revenue on a percentage basis.
+            Morningstar calculates the growth percentage based on the underlying revenue
+            data reported in the Income Statement within the company filings or reports.
+          format: float
+        salesPerEmployee:
+          type: number
+          description: Refers to the ratio of Revenue to Employees. Morningstar calculates
+            the ratio by using the underlying data reported in the company filings
+            or reports. Revenue / Employee Number.
+          format: float
+        taxRate:
+          type: number
+          description: Refers to the ratio of tax provision to pretax income. Morningstar
+            calculates the ratio by using the underlying data reported in the company
+            filings or reports. Tax Provision / Pretax Income. Valid only when positive
+            pretax income, and positive tax expense (not tax benefit)
+          format: float
+        totalDebtEquityRatio:
+          type: number
+          description: Refers to the ratio of Current Debt and Long Term Debt to Common
+            Equity. Morningstar calculates the ratio by using the underlying data
+            reported in the Balance Sheet within the company filings or reports. (Current
+            Debt And Current Capital Lease Obligation + Long-Term Debt And Long-Term
+            Capital Lease Obligation / Common Equity.  Common Equity = Total Shareholder’s
+            Equity – Preferred Stock
+          format: float
+      description: Some periods might not include all fields
+    alphaBeta:
+      type: object
+      properties:
+        60M:
+          $ref: '#/components/schemas/alphaBetaObj'
+        120M:
+          $ref: '#/components/schemas/alphaBetaObj'
+        36M:
+          $ref: '#/components/schemas/alphaBetaObj'
+    alphaBetaObj:
+      type: object
+      properties:
+        period:
+          type: string
+        asOf:
+          type: string
+        alpha:
+          type: number
+          format: double
+        beta:
+          type: number
+          format: double
+    assetClassification:
+      type: object
+      properties:
+        sic:
+          type: integer
+        sicName:
+          type: string
+        naics:
+          type: integer
+        naicsName:
+          type: string
+        msSuperSectorCode:
+          type: integer
+        msSuperSectorname:
+          type: string
+        msSectorCode:
+          type: integer
+        msSectorName:
+          type: string
+        msGroupCode:
+          type: integer
+        msGroupName:
+          type: string
+        msIndustryCode:
+          type: integer
+        msIndustryName:
+          type: string
+    financials:
+      type: array
+      items:
+        $ref: '#/components/schemas/financial'
+    financial:
+      type: object
+      properties:
+        asOf:
+          type: string
+        period:
+          type: string
+        reportType:
+          type: string
+        aorOrRestate:
+          type: string
+        balanceSheet:
+          type: object
+          properties:
+            id:
+              type: object
+              properties:
+                companyId:
+                  type: string
+                asOf:
+                  type: string
+                reportType:
+                  type: string
+                period:
+                  type: string
+                aorOrRestate:
+                  type: string
+            fiscalYearEnd:
+              type: integer
+            currencyId:
+              type: string
+            isCalculated:
+              type: boolean
+            periodEndingDate:
+              type: string
+              description: The exact date that is given in the financial statements
+                for each quarter’s end.
+            accountsPayable:
+              type: integer
+              description: Any money that a company owes its suppliers for goods and
+                services purchased on credit and is expected to pay within the next
+                year or operating cycle.
+            accountsReceivable:
+              type: integer
+              description: Accounts owed to a company by customers within a year as
+                a result of exchanging goods or services on credit.
+            currentAccruedExpences:
+              type: integer
+              description: An expense recognized before it is paid for. Includes compensation,
+                interest, pensions and all other miscellaneous accruals reported by
+                the company. Expenses incurred during the accounting period, but not
+                required to be paid until a later date.
+            accumulateDepreciation:
+              type: integer
+              description: The cumulative amount of wear and tear or obsolescence
+                charged against the fixed assets of a company.
+            additionalPaidInCapital:
+              type: integer
+              description: Excess of issue price over par or stated value of the entity's
+                capital stock and amounts received from other transactions involving
+                the entity's stock or stockholders. Includes adjustments to additional
+                paid in capital. There are two major categories of additional paid
+                in capital- 1) Paid in capital in excess of par/stated value, which
+                is the difference between the actual issue price of the shares and
+                the shares’ par/stated value. 2) Paid in capital from other transactions
+                which includes treasury stock, retirement of stock, stock dividends
+                recorded at market, lapse of stock purchase warrants, conversion of
+                convertible bonds in excess of the par value of the stock, and any
+                other additional capital from the company’s own stock transactions.
+            capitalStock:
+              type: integer
+              description: The total amount of stock authorized for issue by a corporation,
+                including common and preferred stock.
+            cashAndCashEquivalents:
+              type: integer
+              description: Includes unrestricted cash on hand, money market instruments
+                and other debt securities which can be converted to cash immediately.
+            cashCashEquivalentAndMarketableSecurities:
+              type: integer
+              description: The aggregate amount of cash, cash equivalents, and marketable
+                securities.
+            commonStock:
+              type: integer
+              description: Common stock (all issues) at par value, as reported within
+                the Stockholder’s Equity section of the balance sheet; i.e. it is
+                one component of Common Stockholder’s Equity
+            currentAssets:
+              type: integer
+              description: The total amount of assets considered to be convertible
+                into cash within a relatively short period of time, usually a year.
+            currentDebtAndCapitalLeaseOblication:
+              type: integer
+              description: All borrowings due within one year including current portions
+                of long-term debt and capital leases as well as short-term debt such
+                as bank loans and commercial paper.
+            currentLiabilities:
+              type: integer
+              description: The debts or obligations of the firm that are due within
+                one year.
+            currentCapitalLeaseObligation:
+              type: integer
+              description: Represents the total amount of long-term capital leases
+                that must be paid within the next accounting period. Capital lease
+                obligations are contractual obligations that arise from obtaining
+                the use of property or equipment via a capital lease contract.
+            nonCurrentDeferredLiabilities:
+              type: integer
+              description: Represents the non-current portion of obligations, which
+                is a liability that usually would have been paid but is now past due.
+            currentDeferredLiabilities:
+              type: integer
+              description: Represents the current portion of obligations, which is
+                a liability that usually would have been paid but is now past due.
+            currentDeferredRevenue:
+              type: integer
+              description: Represents collections of cash or other assets related
+                to revenue producing activity for which revenue has not yet been recognized.
+                Generally, an entity records deferred revenue when it receives consideration
+                from a customer before achieving certain criteria that must be met
+                for revenue to be recognized in conformity with GAAP. It can be either
+                current or non-current item. Also called unearned revenue.
+            nonCurrentDeferredRevenue:
+              type: integer
+              description: The non-current portion of deferred revenue amount as of
+                the balance sheet date. Deferred revenue is a liability related to
+                revenue producing activity for which revenue has not yet been recognized,
+                and is not expected be recognized in the next twelve months.
+            grossPpe:
+              type: integer
+              description: Carrying amount at the balance sheet date for long-lived
+                physical assets used in the normal conduct of business and not intended
+                for resale. This can include land, physical structures, machinery,
+                vehicles, furniture, computer equipment, construction in progress,
+                and similar items. Amount does not include depreciation.
+            inventory:
+              type: integer
+              description: A company's merchandise, raw materials, and finished and
+                unfinished products which have not yet been sold.
+            longTermDebt:
+              type: integer
+              description: Sum of the carrying values as of the balance sheet date
+                of all long-term debt, which is debt initially having maturities due
+                after one year or beyond the operating cycle, if longer, but excluding
+                the portions thereof scheduled to be repaid within one year or the
+                normal operating cycle, if longer. Long-term debt includes notes payable,
+                bonds payable, mortgage loans, convertible debt, subordinated debt
+                and other types of long term debt.
+  parameters:
+    accept:
+      name: accept
+      in: header
+      description: Specifies return format
+      schema:
+        type: string
+        enum:
+        - application/json
+        - application/xml (deprecated)
+    symbols:
+      name: symbols
+      in: query
+      description: One or more stock ticker symbol in comma separated list specifies
+        company data to return
+      schema:
+        type: string
+        format: csv
+    asOf:
+      name: asOf
+      in: query
+      description: Return results for dates greater than or equal date specified in
+        this parameter
+      schema:
+        type: string
+        format: YYYY-MM-DD
+    cik:
+      name: cik
+      in: query
+      description: One or more cik identifier in comma separated list specifies company
+        data to return
+      schema:
+        type: string
+        format: csv
+    period:
+      name: period
+      in: query
+      description: Specifies the time period of the returned results
+      schema:
+        type: string
+        default: ALL
+        enum:
+        - 3M
+        - 6M
+        - 9M
+        - 12M
+        - 1Y
+        - ALL
+        - TTM
+    reportType:
+      name: reportType
+      in: query
+      description: TTM, A (as originally reported), R (restated). P (Preliminary anouncements)
+      schema:
+        type: string
+        default: A
+        enum:
+        - TTM
+        - A
+        - R
+        - P
+  securitySchemes:
+    token:
+      type: apiKey
+      name: token
+      in: query

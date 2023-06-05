@@ -1,0 +1,345 @@
+---
+openapi: 3.0.1
+info:
+  title: Signals
+  description: "This REST API returns structured data for various signals such as\
+    \ unusual options activity.\n \n### Best Practices\nFor optimal performance, we\
+    \ have a few recommendations.\n \n#### Limit query, improve performance\n \nLimiting\
+    \ the scope of the query will directly improve the latency of the API.  This can\
+    \ be accomplished by using parameters such as `parameters[tickers]` and `parameters[date]`,\
+    \ or (preferably) by using `parameters[updated]` for deltas.\n \n#### Using Deltas\n\
+    \ \nA common pattern is to use a delta to query for the latest change in a dataset.\
+    \  By reducing the amount of data available in the query, it will produce results\
+    \ with the least amount of latency and limited data an application will have to\
+    \ traverse.\n \nIn our case, we recommend tracking and querying by the latest\
+    \ updated timestamp.\n \nOne caveat to allow for some latency and second-only\
+    \ timestamps: when querying, set `parameters[updated]` to a value 5 seconds earlier\
+    \ than you actually want.  A query may look like:\n \n`/signal/option_activity?parameters[updated]=LAGGED_TIMESTAMP`\n\
+    Where `LAGGED_TIMESTAMP` is set to be five seconds less than the maximum value\
+    \ of the `updated` field in rows already pulled from our API."
+  version: 1.0.0
+servers:
+- url: https://api.benzinga.com/api/v1
+- url: http://api.benzinga.com/api/v1
+paths:
+  /signal/option_activity:
+    get:
+      summary: Returns option activity signals
+      parameters:
+      - name: accept
+        in: header
+        description: Specifies return format. Query parameters work the same for both
+          formats.
+        schema:
+          type: string
+          default: application/json
+          enum:
+          - application/json
+          - application/xml (deprecated)
+      - name: page
+        in: query
+        description: Page offset.
+        schema:
+          type: integer
+          default: 0
+      - name: pagesize
+        in: query
+        description: Number of results returned. Limit 1000
+        schema:
+          type: integer
+      - name: parameters[date]
+        in: query
+        description: Date to query for data. Shorthand for date_from and date_to if
+          they are the same. Defaults for latest.
+        schema:
+          type: string
+          format: YYYY-MM-DD
+      - name: parameters[date_from]
+        in: query
+        description: Date to query from point in time.
+        schema:
+          type: string
+          format: YYYY-MM-DD
+      - name: parameters[date_to]
+        in: query
+        description: Date to query to point in time.
+        schema:
+          type: string
+          format: YYYY-MM-DD
+      - name: parameters[tickers]
+        in: query
+        description: One or more ticker symbols separated by a comma.
+        schema:
+          type: string
+          format: csv
+      - name: parameters[updated]
+        in: query
+        description: Records last Updated Unix timestamp (UTC). This will force the
+          sort order to be Greater Than or Equal to the timestamp indicated.
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/option-activity'
+            application/xml (deprecated):
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/option-activity'
+      security:
+      - token: []
+components:
+  schemas:
+    option-activity:
+      required:
+      - aggressor_ind
+      - cost_basis
+      - date
+      - date_expiration
+      - description
+      - id
+      - midpoint
+      - open_interest
+      - option_activity_type
+      - option_symbol
+      - put_call
+      - sentiment
+      - size
+      - strike_price
+      - ticker
+      - time
+      - trade_count
+      - underlying_type
+      - updated
+      - volume
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique ID of this signal shared across all signal types
+        date:
+          type: string
+          description: The date the signal was created
+          format: YYYY-MM-DD
+        time:
+          type: string
+          description: The time the signal was created
+          format: HH:MM:SS
+        ticker:
+          type: string
+          description: Ticker Symbol (F, MSFT, etc...)
+        exchange:
+          type: string
+          description: Exchange (NYSE, NASDAQ, etc...)
+        description:
+          type: string
+          description: A human readable description of the signal. This description
+            may updated at any time without notice
+        description_extended:
+          type: string
+          description: An extended human readable description of the signal that may
+            include exchange restricted fields. This description may updated at any
+            time without notice. Due to its inclusion of restricted fields, description_extended
+            is available based on vendor and exchange agreement.
+        updated:
+          type: integer
+          description: Last updated timestamp, UTC.
+        sentiment:
+          type: string
+          description: Indicates whether the trade or sweep was bullish or bearish
+            (i.e., how near the bid or ask  it was exected at)
+          enum:
+          - BULLISH
+          - BEARISH
+        aggressor_ind:
+          type: string
+          description: 0.0 = 100% trades were at the bid, 1.0 = 100% of trades were
+            at the ask. The value can exceed 1.0 or 0.0 because trades can be executed
+            above or below the current bid or ask at the time.
+          format: float
+        option_symbol:
+          type: string
+          description: Option symbol
+          format: SPY190826P00292000
+        underlying_type:
+          type: string
+          description: Security type of the underlying symbol
+          enum:
+          - ETF
+          - STOCK
+        underlying_price:
+          type: string
+          description: Price of the underlying security. Field is available based
+            on vendor and exchange agreement.
+          format: float
+        cost_basis:
+          type: string
+          description: Cost outlay of the entire sweep or block option trade
+          format: float
+        put_call:
+          type: string
+          description: Indicates PUT or CALL
+          enum:
+          - CALL
+          - PUT
+        strike_price:
+          type: string
+          description: Strike price of the option
+          format: float
+        price:
+          type: string
+          description: Last price of a trade, or last price of last trade in a sweep.
+            Field is available based on vendor and exchange agreement.
+          format: float
+        size:
+          type: string
+          description: Total order size (either of the 1 trade, or the sum of trade
+            sizes for a sweep)
+          format: integer
+        date_expiration:
+          type: string
+          description: Expiration date of the option
+          format: YYYY-MM-DD
+        option_activity_type:
+          type: string
+          description: Type of unusual option.
+          enum:
+          - SWEEP
+          - TRADE
+        trade_count:
+          type: string
+          description: Number of trades involved in the sweep or trade. Always 1 when
+            optionActivityType = TRADE. Always > 1 when optionActivityType = SWEEP
+          format: integer
+        open_interest:
+          type: string
+          description: Current open interest
+          format: integer
+        volume:
+          type: string
+          description: Day volume
+          format: integer
+        bid:
+          type: string
+          description: Bid price at the time of trade, or last trade in case of a
+            sweep. Field is available based on vendor and exchange agreement.
+          format: float
+        ask:
+          type: string
+          description: Ask price at the time of trade, or last trade in case of a
+            sweep. Field is available based on vendor and exchange agreement.
+          format: float
+        midpoint:
+          type: string
+          description: Midpoint price at the time of trade, or last trade in case
+            of a sweep
+          format: float
+        execution_estimate:
+          type: string
+          description: Price in relation to the Bid/Ask.
+          enum:
+          - UNKNOWN
+          - BELOW_BID
+          - AT_BID
+          - AT_MIDPOINT
+          - AT_ASK
+          - ABOVE_ASK
+  parameters:
+    accept:
+      name: accept
+      in: header
+      description: Specifies return format. Query parameters work the same for both
+        formats.
+      schema:
+        type: string
+        default: application/json
+        enum:
+        - application/json
+        - application/xml (deprecated)
+    page:
+      name: page
+      in: query
+      description: Page offset.
+      schema:
+        type: integer
+        default: 0
+    pagesize:
+      name: pagesize
+      in: query
+      description: Number of results returned. Limit 1000
+      schema:
+        type: integer
+    parameters[date]:
+      name: parameters[date]
+      in: query
+      description: Date to query for data. Shorthand for date_from and date_to if
+        they are the same. Defaults for latest.
+      schema:
+        type: string
+        format: YYYY-MM-DD
+    parameters[date_from]:
+      name: parameters[date_from]
+      in: query
+      description: Date to query from point in time.
+      schema:
+        type: string
+        format: YYYY-MM-DD
+    parameters[date_to]:
+      name: parameters[date_to]
+      in: query
+      description: Date to query to point in time.
+      schema:
+        type: string
+        format: YYYY-MM-DD
+    parameters[tickers]:
+      name: parameters[tickers]
+      in: query
+      description: One or more ticker symbols separated by a comma.
+      schema:
+        type: string
+        format: csv
+    parameters[importance]:
+      name: parameters[importance]
+      in: query
+      description: The importance level to filter by. Uses Greater Than or Equal To
+        the importance indicated
+      schema:
+        type: integer
+        enum:
+        - 0
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+    parameters[updated]:
+      name: parameters[updated]
+      in: query
+      description: Records last Updated Unix timestamp (UTC). This will force the
+        sort order to be Greater Than or Equal to the timestamp indicated.
+      schema:
+        type: integer
+        format: int64
+    parameters[date_sort]:
+      name: parameters[date_sort]
+      in: query
+      description: Dividend date field to sort on
+      schema:
+        type: string
+        enum:
+        - announced
+        - ex
+        - payable
+        - record
+  securitySchemes:
+    token:
+      type: apiKey
+      name: token
+      in: query

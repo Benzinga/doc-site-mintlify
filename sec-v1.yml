@@ -1,0 +1,323 @@
+---
+openapi: 3.0.1
+info:
+  title: SEC Filings
+  description: SEC filings data
+  version: 1.0.0
+servers:
+- url: https://api.benzinga.com/api/v1/sec
+paths:
+  /insider_transactions/filings:
+    get:
+      summary: Returns insider transactions data (SEC Form 4)
+      parameters:
+      - name: date
+        in: query
+        description: Date to query for data. Shorthand for date_from and date_to if
+          they are the same. Defaults for latest.
+        schema:
+          type: string
+          format: YYYY-MM-DD
+      - name: date_from
+        in: query
+        description: Date to query from point in time.
+        schema:
+          type: string
+          format: YYYY-MM-DD
+      - name: date_to
+        in: query
+        description: Date to query to point in time.
+        schema:
+          type: string
+          format: YYYY-MM-DD
+      - name: fields
+        in: query
+        description: |
+          A comma (,) separated list of returned fields.
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            format: array
+      - name: pagesize
+        in: query
+        description: Number of results returned. Limit 1000
+        schema:
+          type: integer
+          default: 50
+      - name: page
+        in: query
+        description: Page offset.
+        schema:
+          type: integer
+          default: 0
+      - name: search_keys
+        in: query
+        description: One or more security symbols separated by a comma. Maximum 50
+          securities. Security identifiers must be in the format of ticker symbols,
+          only for US-listed equities.
+        schema:
+          type: string
+          format: csv
+      - name: search_keys_type
+        in: query
+        description: The type of identifier being searched.  Supported types are currently
+          a security symbol, accession number and filing id.
+        schema:
+          type: string
+          default: symbol
+          enum:
+          - symbol
+          - accession_number
+          - id
+      - name: updated_since
+        in: query
+        description: |
+          Records last Updated Unix timestamp (UTC). This will force the sort order
+          to be Greater Than or Equal to the timestamp indicated.
+
+          Timestamp may also be in python format to include millisecond updates.
+        schema:
+          type: number
+          format: double
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/insider_transactions_filings'
+      security:
+      - token: []
+components:
+  schemas:
+    insider_transactions_filings:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Benzinga-generated unique identifier for this individual insider
+            transaction.
+        accession_number:
+          type: string
+          description: Accession Number of the filling - Unique identifier assigned
+            automatically to an accepted submission by the SEC. This will be same
+            for all transaction (entries) of that filling.
+        company_cik:
+          type: string
+          description: Central Index Key (CIK) for the filing company.
+        company_name:
+          type: string
+          description: Name of the company.
+        company_symbol:
+          type: string
+          description: Primary (i.e. common stock ticker) symbol of the company whose
+            securities are getting purchased / sold.
+        filing_date:
+          type: string
+          description: Date of the SEC filing.
+          format: YYYY-MM-DD
+        footnotes:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                description: Footnote ID. (i.e. 'F1')
+              text:
+                type: string
+                description: Footnote explainations of the responses on the form.
+        form_type:
+          type: string
+          description: SEC form type.
+        html_url:
+          type: string
+          description: URL of the original SEC Form.
+        owner:
+          type: object
+          properties:
+            insider_cik:
+              type: string
+              description: Central Index Key (CIK) of the reporting insider.
+            insider_name:
+              type: string
+              description: Name of the reporting insider.
+            insider_title:
+              type: string
+              description: Official title of the insider.
+            is_director:
+              type: boolean
+              description: A boolean signifying the relationship of Reporting Person(s)
+                to Issuer (true/false)
+            is_officer:
+              type: boolean
+              description: A boolean signifying the relationship of Reporting Person(s)
+                to Issuer (true/false)
+            is_other_relation:
+              type: boolean
+              description: A boolean signifying the relationship of Reporting Person(s)
+                to Issuer (true/false)
+            is_ten_percent_owner:
+              type: boolean
+              description: A boolean signifying the relationship of Reporting Person(s)
+                to Issuer (true/false)
+            raw_signature:
+              type: string
+              description: Signature of reporting person.
+          description: null
+        transactions:
+          type: array
+          description: All derivative and non-derivative transactions associated with
+            the filing.
+          items:
+            type: object
+            properties:
+              is_derivative:
+                type: boolean
+                description: If the transaction is a derivative
+              acquired_or_disposed:
+                type: string
+                description: Code denoting whether the security was acquired (A) or
+                  disposed (D).
+              conversion_exercise_price_derivative:
+                type: string
+                description: Conversion or exercise price of derivative security.
+              date_deemed_execution:
+                type: string
+                description: The deemed execution date (if any), had there not been
+                  a directly identifiable date.
+              date_exercisable:
+                type: string
+                description: The date in which the derivative security may be exercised.
+                format: YYYY-MM-DD
+              date_expiration:
+                type: string
+                description: The expiration date of the derivative security.
+                format: YYYY-MM-DD
+              date_transaction:
+                type: string
+                description: The date of the transaction.
+                format: YYYY-MM-DD
+              post_transaction_quantity:
+                type: integer
+                description: Quantity of shares remaining after the transaction.
+              price_per_share:
+                type: string
+                description: Price of each individual share transacted.
+                format: float
+              security_title:
+                type: string
+                description: The name of the security transacted.
+              shares:
+                type: integer
+                description: The number of shares involved in the transaction.
+              transaction_code:
+                type: string
+                description: Code describing the transaction. (https://www.sec.gov/edgar/searchedgar/ownershipformcodes.html)
+              transaction_id:
+                type: string
+                description: Unique ID of the transaction.
+              underlying_security_title:
+                type: string
+                description: The name of the security transacted.
+              underlying_shares:
+                type: integer
+                description: The number of shares involved in the subject transaction.
+              voluntarily_reported:
+                type: string
+                description: Signifies whether the transaction is reported earlier
+                  than required (true/false)
+        updated:
+          type: integer
+          description: Last updated timestamp, UTC.
+  parameters:
+    page:
+      name: page
+      in: query
+      description: Page offset.
+      schema:
+        type: integer
+        default: 0
+    pagesize:
+      name: pagesize
+      in: query
+      description: Number of results returned. Limit 1000
+      schema:
+        type: integer
+        default: 50
+    date:
+      name: date
+      in: query
+      description: Date to query for data. Shorthand for date_from and date_to if
+        they are the same. Defaults for latest.
+      schema:
+        type: string
+        format: YYYY-MM-DD
+    date_from:
+      name: date_from
+      in: query
+      description: Date to query from point in time.
+      schema:
+        type: string
+        format: YYYY-MM-DD
+    date_to:
+      name: date_to
+      in: query
+      description: Date to query to point in time.
+      schema:
+        type: string
+        format: YYYY-MM-DD
+    search_keys:
+      name: search_keys
+      in: query
+      description: One or more security symbols separated by a comma. Maximum 50 securities.
+        Security identifiers must be in the format of ticker symbols, only for US-listed
+        equities.
+      schema:
+        type: string
+        format: csv
+    search_keys_type:
+      name: search_keys_type
+      in: query
+      description: The type of identifier being searched.  Supported types are currently
+        a security symbol, accession number and filing id.
+      schema:
+        type: string
+        default: symbol
+        enum:
+        - symbol
+        - accession_number
+        - id
+    updated_since:
+      name: updated_since
+      in: query
+      description: |
+        Records last Updated Unix timestamp (UTC). This will force the sort order
+        to be Greater Than or Equal to the timestamp indicated.
+
+        Timestamp may also be in python format to include millisecond updates.
+      schema:
+        type: number
+        format: double
+    fields:
+      name: fields
+      in: query
+      description: |
+        A comma (,) separated list of returned fields.
+      style: form
+      explode: false
+      schema:
+        type: array
+        items:
+          type: string
+          format: array
+  securitySchemes:
+    token:
+      type: apiKey
+      name: token
+      in: query
