@@ -1,6 +1,6 @@
 # Benzinga Documentation
 
-The content and configuration powering the documentation available at [docs.benzinga.com](https://docs.benzinga.com)
+The content and configuration powering the documentation available at [docs.benzinga.io](https://docs.benzinga.io)
 
 ### 👩‍💻 Development
 
