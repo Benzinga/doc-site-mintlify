@@ -30,42 +30,42 @@
       "https://api.benzinga.com/api/v1/sec",
       "https://api.benzinga.com/api/v1/gov/usa/congress",
       "https://api.benzinga.com/api/v1/market",
-      "wss://api.benzinga.com/api/v1/news", 
-      "https://api.benzinga.com/api/v1.1", 
+      "wss://api.benzinga.com/api/v1/news",
+      "https://api.benzinga.com/api/v1.1",
       "https://api.benzinga.com/api/v2",
       "https://jwtapi.benzinga.com/api/v2/logos",
       "https://api.benzinga.com/api/v2/logos",
       "https://jwtapi.benzinga.com/api/v2",
       "https://api.benzinga.com/api/v2.1",
       "https://api.benzinga.io/v4.1/fxstreet"
-    ]
+    ],
     "playground": {
-        "mode": "simple"
+      "mode": "simple"
     }
   },
   "anchors": [
     {
-      "name": "API Suite", 
+      "name": "API Suite",
       "icon": "list",
       "url": "https://www.benzinga.com/apis/data"
     },
     {
-      "name": "New Features", 
+      "name": "New Features",
       "icon": "sparkles",
       "url": "https://www.benzinga.com/apis/new-features"
     },
     {
-      "name": "Advertising", 
+      "name": "Advertising",
       "icon": "megaphone",
       "url": "https://www.benzinga.com/apis/advertising/"
     },
     {
-      "name": "Blog", 
+      "name": "Blog",
       "icon": "newspaper",
       "url": "https://www.benzinga.com/apis/blog/"
     },
     {
-      "name": "Contact Us", 
+      "name": "Contact Us",
       "icon": "envelope",
       "url": "mailto:licensing@benzinga.com"
     }
@@ -73,21 +73,15 @@
   "navigation": [
     {
       "group": "Introduction",
-      "pages": [
-        "home",
-        "python-client"
-      ]
+      "pages": ["home", "python-client"]
     },
     {
-      "group": "Benzinga APIs", 
+      "group": "Benzinga APIs",
       "pages": [
         "benzinga-apis/introduction",
         {
           "group": "Historical Bar Data",
-          "pages": [
-            "benzinga-apis/bars/bars-v2",
-            "benzinga-apis/bars/get-bars"
-          ]
+          "pages": ["benzinga-apis/bars/bars-v2", "benzinga-apis/bars/get-bars"]
         },
         {
           "group": "Calendar",
@@ -97,11 +91,11 @@
             "benzinga-apis/calendar/get-dividends",
             "benzinga-apis/calendar/get-earnings",
             "benzinga-apis/calendar/get-economics",
-            "benzinga-apis/calendar/get-fda", 
-            "benzinga-apis/calendar/get-guidance", 
-            "benzinga-apis/calendar/get-ipos", 
-            "benzinga-apis/calendar/get-offerings", 
-            "benzinga-apis/calendar/get-ratings", 
+            "benzinga-apis/calendar/get-fda",
+            "benzinga-apis/calendar/get-guidance",
+            "benzinga-apis/calendar/get-ipos",
+            "benzinga-apis/calendar/get-offerings",
+            "benzinga-apis/calendar/get-ratings",
             "benzinga-apis/calendar/get-ma",
             "benzinga-apis/calendar/get-splits",
             "benzinga-apis/calendar/get-removed",
@@ -110,43 +104,43 @@
           ]
         },
         {
-          "group": "Delayed Quote", 
+          "group": "Delayed Quote",
           "pages": [
             "benzinga-apis/delayed-quote/delayed-quote-v1",
             "benzinga-apis/delayed-quote/get-quoteDelayed"
           ]
         },
         {
-          "group":"Fundamentals v2.1",
+          "group": "Fundamentals v2.1",
           "pages": [
             "benzinga-apis/fundamentals/fundamentals-v2.1",
             "benzinga-apis/fundamentals/get-fundamentals",
             "benzinga-apis/fundamentals/get-valuationRatios",
-            "benzinga-apis/fundamentals/get-earningRatios", 
-            "benzinga-apis/fundamentals/get-operationRatios", 
-            "benzinga-apis/fundamentals/get-financials", 
-            "benzinga-apis/fundamentals/get-shareClass", 
-            "benzinga-apis/fundamentals/get-earningsReports", 
+            "benzinga-apis/fundamentals/get-earningRatios",
+            "benzinga-apis/fundamentals/get-operationRatios",
+            "benzinga-apis/fundamentals/get-financials",
+            "benzinga-apis/fundamentals/get-shareClass",
+            "benzinga-apis/fundamentals/get-earningsReports",
             "benzinga-apis/fundamentals/get-alphaBeta",
-            "benzinga-apis/fundamentals/get-company", 
+            "benzinga-apis/fundamentals/get-company",
             "benzinga-apis/fundamentals/get-companyProfile",
-            "benzinga-apis/fundamentals/get-shareClassProfile", 
+            "benzinga-apis/fundamentals/get-shareClassProfile",
             "benzinga-apis/fundamentals/get-assetClassification"
           ]
         },
         {
           "group": "Fundamentals v2 (Deprecated)",
-          "pages":[
+          "pages": [
             "benzinga-apis/fundamentals-deprecated/fundamentals-v2",
             "benzinga-apis/fundamentals-deprecated/get-fundamentals",
-            "benzinga-apis/fundamentals-deprecated/get-valuationRatios", 
-            "benzinga-apis/fundamentals-deprecated/get-earningRatios", 
-            "benzinga-apis/fundamentals-deprecated/get-operationRatios", 
+            "benzinga-apis/fundamentals-deprecated/get-valuationRatios",
+            "benzinga-apis/fundamentals-deprecated/get-earningRatios",
+            "benzinga-apis/fundamentals-deprecated/get-operationRatios",
             "benzinga-apis/fundamentals-deprecated/get-financials"
           ]
         },
         {
-          "group": "Fxstreet Economic Calendar", 
+          "group": "Fxstreet Economic Calendar",
           "pages": [
             "benzinga-apis/fxstreet-econ/fxstreet-econ-ref",
             "benzinga-apis/fxstreet-econ/get-econ"
@@ -170,12 +164,12 @@
           "group": "Corporate Logos v2.0 JWT",
           "pages": [
             "benzinga-apis/corporate-logos-v2.0JWT/corporate-logos-ref",
-            "benzinga-apis/corporate-logos-v2.0JWT/get-search", 
+            "benzinga-apis/corporate-logos-v2.0JWT/get-search",
             "benzinga-apis/corporate-logos-v2.0JWT/get-sync"
           ]
         },
         {
-          "group": "Corporate Logos v2.0", 
+          "group": "Corporate Logos v2.0",
           "pages": [
             "benzinga-apis/corporate-logos-v2/corporate-logos-ref",
             "benzinga-apis/corporate-logos-v2/get-search",
@@ -214,7 +208,7 @@
           ]
         },
         {
-          "group": "SEC Filings", 
+          "group": "SEC Filings",
           "pages": [
             "benzinga-apis/sec-filings/sec-filings-ref",
             "benzinga-apis/sec-filings/get-insider-filings"
