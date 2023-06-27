@@ -39,6 +39,9 @@
       "https://api.benzinga.com/api/v2.1",
       "https://api.benzinga.io/v4.1/fxstreet"
     ]
+    "playground": {
+        "mode": "simple"
+    }
   },
   "anchors": [
     {
