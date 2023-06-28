@@ -40,7 +40,7 @@
       "https://api.benzinga.io/v4.1/fxstreet"
     ],
     "playground": {
-      "mode": "simple"
+      "mode": "show"
     }
   },
   "anchors": [
