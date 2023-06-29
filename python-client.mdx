@@ -1,0 +1,851 @@
+---
+title: "Python Client"
+description: "Benzinga's Python Client Library's Documentation"
+---
+## Getting Started
+Benzinga's Python client library focuses on financial data methods, that can be used for quantitative analysis, and on news data from Benzinga, that can help give meaningful insights that complement quantitative data.
+
+The installation process varies depending on your python version and system used. The basic installation instructions are as follows:
+
+```python
+pip install benzinga
+```
+
+Alternatively, the package can be installed by using:
+
+```python
+pip3 install benzinga
+```
+
+Once you have successfully installed the package, you can either import the Financial Data module, for quantitative financial data:
+
+```python
+from benzinga import financial_data
+```
+
+or you can import the Benzinga News Data module, if you're looking into financial news:
+
+```python
+from benzinga import news_data
+```
+
+## Your Key
+**Api Key** To initiate a class, an API key is used, for authentication purposes. [Contact us](https://cloud.benzinga.com/data/) if you don't yet have a key, we will take care of you!
+
+_Sample API Key (type: str) : "testkey892834789s9s8abshtuy"_
+
+## Sample Test Financial Data Module
+
+1. Initiating the class:
+```python
+from benzinga import financial_data
+api_key = "testkey892834789s9s8abshtuy"
+fin = financial_data.Benzinga(api_key)
+```
+
+2. A sample test run to get ratings on a stock. (Returns a JSON object):
+```python
+stock_ratings = fin.ratings()
+```
+
+3. Since `fin.ratings()` returns a JSON dict, for a better view of the dict, you can call the `fin.output()` method on the result. Example:
+```python
+fin.output(stock_ratings)
+```
+
+## Sample Test News Data Module
+
+1. Initiating the class:
+```python
+from benzinga import news_data
+api_key = "testkey892834789s9s8abshtuy"
+paper = news_data.News(api_key)
+```
+
+2. A sample test run to get general news. (Returns a JSON Object)
+```python
+stories = paper.news()
+```
+
+3. Since `fin.news()` returns a JSON dict, for a better view of the dict, you can call the `fin.output()` method on the result. Example:
+```python
+paper.output(stories)
+```
+
+It is important to note that for both the Financial Data Module and the News Data Module, there are many **optional** parameters for the methods. Below is a detailed listing of possible methods for the Financial Data Module and the news Data Module, their method call names, arguments, and what they return.
+
+## Best Practices
+When possible, we **highly** recommend using `updated` parameters, particularly for ingestion of live data (as opposed to historical data). It shrinks the query universe much more efficiently than the other parameters, mitigating latency.
+
+## Financial Data methods
+### Bars
+```
+fin.bars()
+```
+Public Method: Benzinga Bars looks at detailed price values over a period of time.
+
+<Accordion title="Arguments">
+    <ResponseField name="company_tickers" type="str" required="true"> </ResponseField>
+
+    <ResponseField name="date_from" type="str" required="true"> 
+    For date_from, you can enter `YTD` for the first trading day of the year. `1d`, `5d` or `1m`. You can also enter the date from in the "YYYY-MM-DD" format.
+    </ResponseField>
+
+    <ResponseField name="date_to" type="str">
+    "YYYY-MM-DD"
+    </ResponseField>
+
+    <ResponseField name="interval" type="str" default="5M">
+    `1MONTH`, `1W`, `1D`, `1H`, `15M`, `5M`
+    </ResponseField>
+</Accordion>
+
+<Accordion title="Returns">
+`open`, `high`, `low`, `close`, `volume`, `time`, `dateTime`
+</Accordion>
+
+### Delayed Quote
+```
+fin.delayed_quote()
+```
+Public Method: Benzinga Quote looks at many different attributes of the ticker like high, low, close etc
+
+<Accordion title="Arguments">
+    <ResponseField name="company_tickers" type="str" required="true"></ResponseField>
+</Accordion>
+<Accordion title="Returns">
+`date`, `previousClose`, `change`, `changePercent`, `fiftyTwoWeekHigh`, `fiftyTwoWeekLow`, `currency`, `last`, `tradingHalted`, `volume`, `previousCloseDate`
+</Accordion>
+
+### Dividends
+```
+fin.dividends()
+```
+Public Method: Benzinga Dividends looks at the relevant dividend information for a company.
+
+<Accordion title="Arguments">
+    <ResponseField name="page" type="int">
+    page offset
+    </ResponseField>
+
+    <ResponseField name="pagesize" type="int">
+    limit of results returned
+    </ResponseField>
+
+    <ResponseField name="date_asof" type="str">
+    "YYYY-MM-DD"
+    </ResponseField>
+
+    <ResponseField name="date_from" type="str">
+    "YYYY-MM-DD"
+    </ResponseField>
+
+    <ResponseField name="date_to" type="str">
+    "YYYY-MM-DD"
+    </ResponseField>
+
+    <ResponseField name="company_tickers" type="str"></ResponseField>
+
+    <ResponseField name="importance" type="int">
+    not tested yet
+    </ResponseField>
+
+    <ResponseField name="date_sort" type="str">
+    Dividend date field to sort on (`ex`, `payable`, `record`)
+    </ResponseField>
+
+    <ResponseField name="updated_params" type="int64">
+    Records last updated unix time stamp. Forces the sort order to be greater or equal to the time stamp indicated.
+    </ResponseField>
+
+    <ResponseField name="div_yield_operation" type="str">
+    To filter the div yield by for eg. `gt`, `gte`, `eq`, `lte`, `lt`. Not tested
+    </ResponseField>
+
+    <ResponseField name="div_yield" type="int">
+    Div yield amount fo filter by. `1` for 100% or above.
+    </ResponseField>
+</Accordion>
+
+<Accordion title="Returns">
+the `id`, `date`, `updated`, `ticker`, `name`, `exchange`, `frequency`, `dividend`, `dividend prior`, `dividend type`, `dividend yield`, `ex-dividend date`, `payable date`, `record date`, `importance`
+</Accordion>
+
+### Ratings
+```
+fin.ratings()
+```
+Public Method: Benzinga Ratings looks at ratings from different firms
+
+<Accordion title="Arguments">
+
+<ResponseField name="page" type="int">
+page offset
+</ResponseField>
+
+<ResponseField name="pagesize" type="int">
+limit of results returned
+</ResponseField>
+
+<ResponseField name="date_asof" type="str">
+"YYYY-MM-DD"
+</ResponseField>
+
+<ResponseField name="date_from" type="str">
+"YYYY-MM-DD"
+</ResponseField>
+
+<ResponseField name="date_to" type="str">
+"YYYY-MM-DD"
+</ResponseField>
+
+<ResponseField name="company_tickers" type="str"></ResponseField>
+
+<ResponseField name="importance" type="int">
+not tested yet.
+</ResponseField>
+
+<ResponseField name="date_sort" type="str">
+Ratings date field to sort on
+</ResponseField>
+
+<ResponseField name="updated_params" type="int64">
+records last updated unix time stamp. Forces the sort order to be greater or equal to the time stamp indicated.
+</ResponseField>
+
+<ResponseField name="action" type="str">
+Options are: `Downgrades`, `Maintains`, `Reinstates`, `Reiterates`, `Upgrades`, `Assumes`, `Initiates Coverage On`, `Terminates Coverage On`, `Removes`, `Suspends`, `Firm Dissolved`
+</ResponseField>
+
+</Accordion>
+
+<Accordion title="Returns">
+`id`, `date`, `time`, `ticker`, `exchange`, `name`, `action_pt`, `action_company`, `rating_current`, `pt_current`, `rating_prior`, `pt_prior`, `url`, `importance`, `updated`, `url_calendar`, `url_news`, `analyst`, `analyst_name`
+</Accordion>
+
+### Earnings
+```
+fin.earnings()
+```
+Public Method: Benzinga Earnings looks at the quarterly earnings reports for different companies.
+
+<Accordion title="Arguments">
+
+<ResponseField name="page" type="int">
+page offset
+</ResponseField>
+
+<ResponseField name="pagesize" type="int">
+limit of results returned
+</ResponseField>
+
+<ResponseField name="date_asof" type="str">
+"YYYY-MM-DD"
+</ResponseField>
+
+<ResponseField name="date_from" type="str">
+"YYYY-MM-DD"
+</ResponseField>
+
+<ResponseField name="date_to" type="str">
+"YYYY-MM-DD"
+</ResponseField>
+
+<ResponseField name="company_tickers" type="str"></ResponseField>
+
+<ResponseField name="importance" type="int">
+not tested yet.
+</ResponseField>
+
+<ResponseField name="date_sort" type="str">
+Earnings date field to sort on
+</ResponseField>
+
+<ResponseField name="updated_params" type="int64">
+records last updated unix time stamp. Forces the sort order to be greater or equal to the time stamp indicated.
+</ResponseField>
+
+</Accordion>
+
+<Accordion title="Returns">
+`id`, `date`, `date confirmed`, `time`, `ticker`, `exchange`, `name`, `period`, `period_year`, `eps`, `eps_est`, `eps_prior`, `eps_surprise`, `eps_surprise_percent`, `revenue`, `revenue est`, `revenue_prior`, `revenue_surprise`, `revenue_surprise_percent`, `importance`, `updated`
+</Accordion>
+
+### Splits
+```
+fin.splits()
+```
+Public Method: Benzinga Splits looks at the stock splits calendar data
+<Accordion title="Arguments">
+
+<ResponseField name="page" type="int">
+page offset
+</ResponseField>
+
+<ResponseField name="pagesize" type="int">
+limit of results returned
+</ResponseField>
+
+<ResponseField name="date_asof" type="str">
+"YYYY-MM-DD"
+</ResponseField>
+
+<ResponseField name="date_from" type="str">
+"YYYY-MM-DD"
+</ResponseField>
+
+<ResponseField name="date_to" type="str">
+"YYYY-MM-DD"
+</ResponseField>
+
+<ResponseField name="company_tickers" type="str"></ResponseField>
+
+<ResponseField name="importance" type="int">
+not tested yet.
+</ResponseField>
+
+<ResponseField name="date_sort" type="str">
+Splits date field to sort on
+</ResponseField>
+
+<ResponseField name="updated_params" type="int64">
+records last updated unix time stamp. Forces the sort order to be greater or equal to the time stamp indicated.
+</ResponseField>
+
+</Accordion>
+
+<Accordion title="Returns">
+`id`, `updated`, `date`, `time`, `ticker`, `exchange`, `importance`, `ratio`, `optionable`, `date_ex`, `date_recorded`, `date_distribution`
+</Accordion>
+
+### Economics
+```
+fin.economics()
+```
+Public Method: Benzinga Economics looks at different economic events in a country.
+
+<Accordion title="Arguments">
+<ResponseField name="page" type="int">
+page offset
+</ResponseField>
+
+<ResponseField name="pagesize" type="int">
+limit of results returned
+</ResponseField>
+
+<ResponseField name="date_asof" type="str">
+"YYYY-MM-DD"
+</ResponseField>
+
+<ResponseField name="date_from" type="str">
+"YYYY-MM-DD"
+</ResponseField>
+
+<ResponseField name="date_to" type="str">
+"YYYY-MM-DD"
+</ResponseField>
+
+<ResponseField name="importance" type="int">
+not tested yet.
+</ResponseField>
+
+<ResponseField name="date_sort" type="str">
+Economics date field to sort on
+</ResponseField>
+
+<ResponseField name="updated_params" type="int64">
+records last updated unix time stamp. Forces the sort order to be greater or equal to the time stamp indicated.
+</ResponseField>
+
+<ResponseField name="country" type="str">
+3 digit country code
+</ResponseField>
+
+</Accordion>
+
+<Accordion title="Returns">
+`id`, `date`, `time`, `country`, `event_name`, `event_period`, `period_year`, `actual`, `actual_t consensus`, `consensus_t`, `prior`, `importance`, `updated`, `description`
+</Accordion>
+
+### Guidance
+```
+fin.guidance()
+```
+Public Method: Benzinga Guidance looks at different attributes like revenue guidance etc.
+
+<Accordion title="Arguments">
+
+<ResponseField name="page" type="int">
+page offset
+</ResponseField>
+
+<ResponseField name="pagesize" type="int">
+limit of results returned
+</ResponseField>
+
+<ResponseField name="date_asof" type="str">
+"YYYY-MM-DD"
+</ResponseField>
+
+<ResponseField name="date_from" type="str">
+"YYYY-MM-DD"
+</ResponseField>
+
+<ResponseField name="date_to" type="str">
+"YYYY-MM-DD"
+</ResponseField>
+
+<ResponseField name="company_tickers" type="str"></ResponseField>
+
+<ResponseField name="importance" type="int">
+not tested yet.
+</ResponseField>
+
+<ResponseField name="date_sort" type="str">
+Guidance date field to sort on
+</ResponseField>
+
+<ResponseField name="updated_params" type="int64">
+records last updated unix time stamp. Forces the sort order to be greater or equal to the time stamp indicated.
+</ResponseField>
+
+<ResponseField name="country" type="str">
+3 digit country code
+</ResponseField>
+
+</Accordion>
+
+<Accordion title="Returns">
+`id`, `date`, `time`, `ticker`, `exchange`, `name`, `period`, `period_year`, `prelim`, `eps_guidance_est`, `eps_guidance_max`, `eps_guidance_min`, `eps_guidance_prior_max`, `eps_guidance_prior_min`, `revenue_guidance_est`, `revenue_guidance_max`, `revenue_guidance_min`, `revenue_guidance_prior_max` , `revenue_guidance_prior_min`, `importance`, `updated`
+</Accordion>
+
+### IPO 
+```
+fin.ipo()
+```
+Public Method: Benzing IPO looks at initial public offering data for companies.
+
+<Accordion title="Arguments">
+<ResponseField name="page" type="int">
+page offset
+</ResponseField>
+
+<ResponseField name="pagesize" type="int">
+limit of results returned
+</ResponseField>
+
+<ResponseField name="date_asof" type="str">
+"YYYY-MM-DD"
+</ResponseField>
+
+<ResponseField name="date_from" type="str">
+"YYYY-MM-DD"
+</ResponseField>
+
+<ResponseField name="date_to" type="str">
+"YYYY-MM-DD"
+</ResponseField>
+
+<ResponseField name="company_tickers" type="str">
+ note: new tickers may not return results right away as we do not automatically link them to the underlying company's data. To obtain the most recent rows, send queries without this parameter specified.
+</ResponseField>
+
+<ResponseField name="date_sort" type="str">
+IPO date field to sort on
+</ResponseField>
+
+<ResponseField name="updated_params" type="int64">
+records last updated unix time stamp. Forces the sort order to be greater or equal to the time stamp indicated.
+</ResponseField>
+
+</Accordion>
+
+<Accordion title="Returns">
+`id`, `date`, `time`, `ticker`, `exchange`, `name`, `pricing_date`, `currency`, `price_min`, `price_max`, `deal_status`, `ipo_type`, `insider_lockup_days`, `insider_lockup_date`, `offering_value`, `offering_shares`, `shares_outstanding`, `lead_underwriters`, `other_underwriters`, `underwriter_quiet_expiration_days`, `underwriter_quiet_expiration_date`, notes`, `updated`
+</Accordion>
+
+### Conference Calls 
+```
+fin.conference_calls()
+```
+Public Method: Benzinga Conference calls looks at conference calls.
+
+<Accordion title="Arguments">
+
+<ResponseField name="page" type="int">
+page offset
+</ResponseField>
+
+<ResponseField name="pagesize" type="int">
+limit of results returned
+</ResponseField>
+
+<ResponseField name="date_asof" type="str">
+"YYYY-MM-DD"
+</ResponseField>
+
+<ResponseField name="date_from" type="str">
+"YYYY-MM-DD"
+</ResponseField>
+
+<ResponseField name="date_to" type="str">
+"YYYY-MM-DD"
+</ResponseField>
+
+<ResponseField name="company_tickers" type="str"></ResponseField>
+
+<ResponseField name="date_sort" type="str">
+Conference call date field to sort on
+</ResponseField>
+
+<ResponseField name="updated_params" type="int64">
+records last updated unix time stamp. Forces the sort order to be greater or equal to the time stamp indicated.
+</ResponseField>
+
+<ResponseField name="country" type="str">
+3 digit country code
+</ResponseField>
+
+</Accordion>
+
+<Accordion title="Returns">
+`id`, `date`, `time`, `ticker`, `exchange`, `name`, `start_time`, `phone_num`, `international_line`, `reservation_num`, `access_code`, `webcast_url`, `importance`, `updated`
+</Accordion>
+
+### Fundamentals 
+```
+fin.fundamentals()
+```
+Public Method: Benzinga Fundamentals looks at overall financial data for a company.
+
+<Accordion title="Arguments">
+<ResponseField name="company_tickers" type="str" required="true"></ResponseField>
+<ResponseField name="date_asof" type="str">
+"YYYY-MM-DD"
+</ResponseField>
+</Accordion>
+
+<Accordion title="Returns">
+`company`, `companyProfile`, `shareClass`, `earningReports`, `financialStatements`, `operation earning and valuation ratios`, `alphaBeta`
+</Accordion>
+
+### Financials 
+```
+fin.financials()
+```
+Public Method: Benzinga Financials looks at overall financial data like for a company.
+
+<Accordion title="Arguments">
+
+<ResponseField name="company_tickers" type="str" required="true"></ResponseField>
+
+<ResponseField name="date_asof" type="str">
+"YYYY-MM-DD"
+</ResponseField>
+
+<ResponseField name="period" type="str">
+ select from (`3M` , `6M` , `9M` , `12M` , `1Y`)
+</ResponseField>
+
+<ResponseField name="reporttype" type="str" default="A">
+select from (`TTM`, `A`, `R`,`P`)
+</ResponseField>
+</Accordion>
+
+<Accordion title="Returns">
+`company`, financials such as balance sheet information, assets and liabilities
+</Accordion>
+
+### Valuation Ratios 
+```
+fin.valuation_ratios()
+```
+Public Method: Benzinga Valuation Ratios looks at overall financial data like for a company.
+
+<Accordion title="Arguments">
+<ResponseField name="company_tickers" type="str" required="true"></ResponseField>
+
+<ResponseField name="date_asof" type="str">
+"YYYY-MM-DD"
+</ResponseField>
+
+</Accordion>
+
+<Accordion title="Returns">
+different attributes of the valuation ratios
+</Accordion>
+
+### Earning Ratios
+```
+fin.earning_ratios()
+```
+Public Method: Benzinga Earning Ratios
+
+<Accordion title="Arguments">
+<ResponseField name="company_tickers" type="str" required="true"></ResponseField>
+
+<ResponseField name="date_asof" type="str">
+"YYYY-MM-DD"
+</ResponseField>
+
+</Accordion>
+
+<Accordion title="Returns">
+different attributes of the earning ratios
+</Accordion>
+
+### Operation Ratios 
+```
+fin.operation_ratios()
+```
+Public Method: Benzinga Operation Ratios
+
+<Accordion title="Arguments">
+<ResponseField name="company_tickers" type="str" required="true"></ResponseField>
+
+<ResponseField name="date_asof" type="str">
+"YYYY-MM-DD"
+</ResponseField>
+
+</Accordion>
+
+<Accordion title="Returns">
+different attributes of the operation ratios
+</Accordion>
+
+### Share Class 
+```
+fin.share_class()
+```
+Public Method: Benzinga Share Class
+<Accordion title="Arguments">
+<ResponseField name="company_tickers" type="str" required="true"></ResponseField>
+
+<ResponseField name="date_asof" type="str">
+"YYYY-MM-DD"
+</ResponseField>
+
+</Accordion>
+
+<Accordion title="Returns">
+different attributes of the share class
+</Accordion>
+
+### Earning Reports 
+```
+fin.earning_reports()
+```
+Public Method: Benzinga Earning Reports looks at overall earning reports for a company.
+
+<Accordion title="Arguments">
+<ResponseField name="company_tickers" type="str" required="true"></ResponseField>
+
+<ResponseField name="date_asof" type="str">
+"YYYY-MM-DD"
+</ResponseField>
+
+</Accordion>
+
+<Accordion title="Returns">
+different attributes of the earning reports
+</Accordion>
+
+### Alpha Beta 
+```
+fin.alpha_beta()
+```
+Public Method: Benzinga Alpha Beta
+
+<Accordion title="Arguments">
+<ResponseField name="company_tickers" type="str" required="true"></ResponseField>
+
+<ResponseField name="date_asof" type="str">
+"YYYY-MM-DD"
+</ResponseField>
+
+</Accordion>
+
+<Accordion title="Returns">
+different attributes of alphabeta 
+</Accordion>
+
+### Company Profile 
+```
+fin.company_profile()
+```
+Public Method: Benzinga Company Profile
+
+<Accordion title="Arguments">
+<ResponseField name="company_tickers" type="str" required="true"></ResponseField>
+
+<ResponseField name="date_asof" type="str">
+"YYYY-MM-DD"
+</ResponseField>
+
+</Accordion>
+
+<Accordion title="Returns">
+different attributes of company profile
+</Accordion>
+
+### Company 
+```
+fin.company()
+```
+Public Method: Benzinga Company
+
+<Accordion title="Arguments">
+<ResponseField name="company_tickers" type="str" required="true"></ResponseField>
+
+<ResponseField name="date_asof" type="str">
+"YYYY-MM-DD"
+</ResponseField>
+
+</Accordion>
+
+<Accordion title="Returns">
+different attributes of the company 
+</Accordion>
+
+### Asset Classification 
+```
+fin.asset_classification()
+```
+Public Method: Benzinga Asset Classification
+
+<Accordion title="Arguments">
+<ResponseField name="company_tickers" type="str" required="true"></ResponseField>
+
+<ResponseField name="date_asof" type="str">
+"YYYY-MM-DD"
+</ResponseField>
+
+</Accordion>
+
+<Accordion title="Returns">
+different attributes of the asset classification  
+</Accordion>
+
+### Summary 
+```
+fin.summary()
+```
+Public Method: Summary
+
+<Accordion title="Arguments">
+<ResponseField name="company_tickers" type="str" required="true"></ResponseField>
+
+<ResponseField name="date_asof" type="str">
+"YYYY-MM-DD"
+</ResponseField>
+
+</Accordion>
+
+<Accordion title="Returns">
+different attributes of the summary 
+</Accordion>
+
+### Logos 
+```
+fin.logos()
+```
+Public Method: Benzinga Logos
+
+<Accordion title="Arguments">
+<ResponseField name="company_tickers" type="str" required="true"></ResponseField>
+
+<ResponseField name="date_asof" type="str">
+"YYYY-MM-DD"
+</ResponseField>
+
+</Accordion>
+
+<Accordion title="Returns">
+different attributes of the logos 
+</Accordion>
+
+### Options Activity
+```
+fin.options_activity()
+```
+Public Method: Benzinga Options Activity
+
+<Accordion title="Arguments">
+<ResponseField name="company_tickers" type="str" required="true"></ResponseField>
+
+<ResponseField name="pagesize" type="int">
+Limit is set to 1000
+</ResponseField>
+
+<ResponseField name="page" type="int"></ResponseField>
+
+<ResponseField name="date_from" type="str">
+"YYYY-MM-DD"
+</ResponseField>
+
+<ResponseField name="date_to" type="str">
+"YYYY-MM-DD"
+</ResponseField>
+
+</Accordion>
+
+<Accordion title="Returns">
+different attributes for options activity
+</Accordion>
+
+## News Data
+
+### News 
+```
+fin.news()
+```
+Public Method: Benzinga News
+
+<Accordion title="Arguments">
+<ResponseField name="pagesize" type="int" default="15"></ResponseField>
+
+<ResponseField name="page" type="int" default="0"></ResponseField>
+
+<ResponseField name="display_output" type="str">
+select from `full`, `abstract`, `headline`
+</ResponseField>
+
+<ResponseField name="base_date" type="str">
+"YYYY-MM-DD" The date to query for calendar data. Shorthand for `date_from` and `date_to` if they are the same. Defaults for latest.
+</ResponseField>
+
+<ResponseField name="date_from" type="str">
+"YYYY-MM-DD"
+</ResponseField>
+
+<ResponseField name="date_to" type="str">
+"YYYY-MM-DD"
+</ResponseField>
+
+<ResponseField name="updated_since" type="str">
+The last updated unix timestamp (UTC) to pull and sort by.
+</ResponseField>
+
+<ResponseField name="published_since" type="str">
+The last published unix timestamp (UTC) to pull and sort by.
+</ResponseField>
+
+<ResponseField name="company_tickers" type="str"></ResponseField>
+
+<ResponseField name="channel" type="str">
+multiple channels separated by comma
+</ResponseField>
+</Accordion>
+
+<Accordion title="Returns">
+`Author`, `created`, `updated`, `title`, `teaser`, `body`, `url`, `image`, `channels`, `stocks`, `tags`
+</Accordion>
+
+[Benzinga News](https://www.benzinga.com/)
+
+[Benzinga Pro](https://pro.benzinga.com/)
+
+
+
+
+

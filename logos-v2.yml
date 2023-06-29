@@ -1,0 +1,298 @@
+---
+swagger: "2.0"
+info:
+  version: "2.0.0"
+  title: Corporate Logos v2.0
+  description: >-
+    The Benzinga Corporate Logo API is designed to be flexible with client
+    sizing requirements.
+host: api.benzinga.com
+basePath: /api/v2/logos
+schemes:
+  - https
+produces:
+  - application/json
+securityDefinitions:
+  token:
+    type: apiKey
+    name: token
+    in: query
+paths:
+  /search:
+    get:
+      summary: Search logos for market securities/companies
+      parameters:
+        - in: header
+          name: accept
+          enum:
+            - application/json
+          default: application/json
+          description: Specifies return format
+          required: false
+          type: string
+        - in: query
+          name: search_keys
+          description: |
+            A comma (,) separated list of search identifiers.  Identifiers are based on the `search_type` field.  Limit 100 per request.
+
+            Example: F,AAPL
+          required: true
+          type: array
+          collectionFormat: csv
+          items:
+            type: string
+            format: array
+          maxItems: 100
+        - in: query
+          name: search_keys_type
+          description: The type of identifier being searched.  Supported types are currently a security symbol and CIK.
+          required: false
+          type: string
+          enum:
+            - symbol
+            - cik
+            - cusip
+          default: symbol
+        - $ref: "#/parameters/fields"
+        - in: query
+          name: composite_auto
+          description: If no image exists, generate a fill image based on the company name and background color.
+          required: false
+          type: boolean
+          default: false
+        - in: query
+          name: composite_radius
+          description: |
+            Apply a radius to the composite image.
+
+            Default value is 0.  Maximum value is 50 (50%) which will result in a circle.
+          required: false
+          type: integer
+          default: 0
+        - in: query
+          name: scale
+          description: |
+            Specified as the WIDTHxHEIGHT to scale the image down in pixels.  Images will only be scaled down, never up, and fit within the bounds set.  In CSS terms, the object-fit property is set to `contain`.
+
+            Scale will be applied to: logo_light, logo_dark, mark_light, mark_dark, mark_composite_light, mark_composite_dark
+
+            Example: 300x600
+          required: false
+          type: string
+      security:
+        - token: []
+      responses:
+        "200":
+          description: Successful response
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/data"
+  /sync:
+    get:
+      summary: Bulk sync logos.
+      parameters:
+        - in: header
+          name: accept
+          enum:
+            - application/json
+          default: application/json
+          description: Specifies return format
+          required: false
+          type: string
+        - in: query
+          name: updated_since
+          description: Last updated unix timestamp, UTC
+          required: false
+          type: integer
+          format: int64
+        - $ref: "#/parameters/fields"
+        - in: query
+          name: composite_auto
+          description: If no image exists, generate a fill image based on the company name and background color.
+          required: false
+          type: boolean
+          default: false
+        - in: query
+          name: composite_radius
+          description: |
+            Apply a radius to the composite image.
+
+            Default value is 0.  Maximum value is 50 (50%) which will result in a circle.
+          required: false
+          type: integer
+          default: 0
+        - in: query
+          name: scale
+          description: |
+            Specified as the WIDTHxHEIGHT to scale the image down in pixels.  Images will only be scaled down, never up, and fit within the bounds set.  In CSS terms, the object-fit property is set to `contain`.
+
+            Scale will be applied to: logo_light, logo_dark, mark_light, mark_dark, mark_composite_light, mark_composite_dark
+
+            Example: 300x600
+          required: false
+          type: string
+        - in: query
+          name: page
+          description: Page offset.
+          required: false
+          type: integer
+        - in: query
+          name: pagesize
+          description: Number of results returned. Default 100
+          required: false
+          type: integer
+      security:
+        - token: []
+      responses:
+        "200":
+          description: Successful response
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/data"
+parameters:
+  fields:
+    in: query
+    name: fields
+    description: |
+      A comma (,) separated list of returned fields.
+
+      Example: mark_light,background_light
+
+      Would return ONLY the mark_light, background_light values from the API.
+    required: true
+    type: array
+    collectionFormat: csv
+    items:
+      type: string
+      format: array
+      enum:
+        - logo_light
+        - logo_dark
+        - logo_vector_light
+        - logo_vector_dark
+        - mark_light
+        - mark_dark
+        - mark_vector_light
+        - mark_vector_dark
+        - mark_composite_light
+        - mark_composite_dark
+definitions:
+  ok:
+    type: boolean
+    required: true
+    description: Return status indicating the status of the result (OK if true, ERROR if false)
+  errors:
+    type: object
+    properties:
+      id:
+        type: string
+        description: Reference request error ID. (You can use this for reporting to Benzinga team.)
+      code:
+        type: string
+        description: The error status
+      value:
+        type: string
+        description: Details for the error state
+    required: false
+    description: Error result if status is NOT ok.
+  data:
+    type: object
+    required:
+      - search_key
+      - created
+      - updated
+      - files
+    properties:
+      id:
+        type: string
+        description: Record identifier
+      search_key:
+        type: string
+        description: |
+          The identifying search term, ex. cik or symbol value(s).
+          If search was not used, not value will be returned.
+      created_at:
+        type: string
+        format: RFC3339/ISO8601
+        description: "Created timestamp, UTC"
+      updated_at:
+        type: string
+        format: RFC3339/ISO8601
+        description: "Last updated timestamp, UTC"
+      colors:
+        $ref: "#/definitions/colors"
+      files:
+        $ref: "#/definitions/files"
+      securities:
+        $ref: "#/definitions/securities"
+  colors:
+    type: object
+    properties:
+      background_light:
+        type: string
+        format: "#000/#abc000"
+        description: Background color in HEX format to use in a white/light theme.
+      background_dark:
+        type: string
+        format: "#000/#abc000"
+        description: Background color in HEX format to use in a dark theme.
+  files:
+    type: object
+    properties:
+      logo_light:
+        type: string
+        description: URI of company logo for use in a white/light theme. Image file type of PNG.
+      logo_dark:
+        type: string
+        description: URI of company logo for use in a dark theme. Image file type of PNG.
+      logo_vector_light:
+        type: string
+        description: URI of company logo for use in a white/light theme. Vector file type of SVG.
+      logo_vector_dark:
+        type: string
+        description: URI of company logo for use in a dark theme. Vector file type of SVG.
+      mark_light:
+        type: string
+        description: URI of company mark for use in a white/light theme. Image file type of PNG.
+      mark_dark:
+        type: string
+        description: URI of company mark for use in a dark theme. Image file type of PNG.
+      mark_composite_light:
+        type: string
+        description: URI of composite image with the company mark for use in a light/white theme.
+      mark_composite_dark:
+        type: string
+        description: URI of composite image with the company mark for use in a dark theme.
+      mark_vector_light:
+        type: string
+        description: URI of company mark for use in a white/light theme. Vector file type of SVG.
+      mark_vector_dark:
+        type: string
+        description: URI of company mark for use in a dark theme. Vector file type of SVG.
+  securities:
+    type: array
+    items:
+      type: object
+      description: |
+        A security object.  Only included with sync operations.
+      properties:
+        exchange:
+          type: string
+          description: Exchange on which the security is listed
+        symbol:
+          type: string
+          description: Ticker symbol for the security
+        name:
+          type: string
+          description: Name of security or company
+        cik:
+          type: string
+          description: CIK
+        cusip:
+          type: string
+          description: CUSIP
+        isin:
+          type: string
+          description: ISIN

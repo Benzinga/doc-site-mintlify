@@ -1,0 +1,220 @@
+---
+openapi: 3.0.1
+info:
+  title: WIIMs
+  description: "This REST API returns structured data for WIIMs or Why Is It Moving.\n\
+    \ \n### Best Practices\nFor optimal performance, we have a few recommendations.\n\
+    \ \n#### Limit query, improve performance\n \nLimiting the scope of the query\
+    \ will directly improve the latency of the API.  This can be accomplished by using\
+    \ parameters such as `symbols`, or (preferably) by using `updated` for deltas.\n\
+    \ \n#### Using Deltas\n \nA common pattern is to use a delta to query for the\
+    \ latest change in a dataset.  By reducing the amount of data available in the\
+    \ query, it will produce results with the least amount of latency and limited\
+    \ data an application will have to traverse.\n \nIn our case, we recommend tracking\
+    \ and querying by the latest updated timestamp.\n \nOne caveat to allow for some\
+    \ latency and second-only timestamps: when querying, set `updated` to a value\
+    \ 5 seconds earlier than you actually want.  A query may look like:\n \n`/wiims?updated=LAGGED_TIMESTAMP`\n\
+    Where `LAGGED_TIMESTAMP` is set to be five seconds less than the maximum value\
+    \ of the `updated` field in rows already pulled from our API."
+  version: 1.0.0
+servers:
+- url: https://api.benzinga.com/api/v1
+- url: http://api.benzinga.com/api/v1
+paths:
+  /wiims:
+    get:
+      summary: Returns WIIMs data
+      parameters:
+      - name: accept
+        in: header
+        description: Specifies return format.
+        schema:
+          type: string
+          default: application/json
+          enum:
+          - application/json
+      - name: country
+        in: query
+        description: Country code for the region of coverage.
+        schema:
+          type: string
+      - name: page
+        in: query
+        description: Page offset.
+        schema:
+          type: integer
+          default: 0
+      - name: pagesize
+        in: query
+        description: Number of results returned. Limit 500
+        schema:
+          type: integer
+          default: 50
+      - name: search_keys
+        in: query
+        description: "One or more security symbols separated by a comma. Maximum 50\
+          \ securities. \nSecurity identifiers must be in the format of ticker symbols,\
+          \ only for US-listed equities.\n"
+        schema:
+          type: string
+          format: csv
+      - name: search_keys_type
+        in: query
+        description: The type of identifier being searched.  Supported types are currently
+          a security symbol.
+        schema:
+          type: string
+          default: symbol
+          enum:
+          - symbol
+      - name: updated_since
+        in: query
+        description: |
+          Records last Updated Unix timestamp (UTC). This will force the sort order
+          to be Greater Than or Equal to the timestamp indicated.
+
+          Timestamp may also be in python format to include millisecond updates.
+        schema:
+          type: number
+          format: double
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/wiim'
+      security:
+      - token: []
+components:
+  schemas:
+    wiim:
+      required:
+      - created
+      - description
+      - id
+      - security
+      - updated
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique ID of this signal shared across all signal types
+        description:
+          type: string
+          description: The listed WIIMs for the security
+        search_key:
+          type: string
+          description: Searched key, if active WIIMs
+        security:
+          type: object
+          properties:
+            exchange:
+              type: string
+              description: The listed exchange
+            symbol:
+              type: string
+              description: The security symbol
+            name:
+              type: string
+              description: The name of the security
+            country:
+              type: string
+              description: The country of the security
+            cusip:
+              type: string
+              description: CUSIP, available for licenced customers
+            isin:
+              type: string
+              description: ISIN, available for licenced customers
+          description: Security
+        created:
+          type: string
+          description: Created timestamp, UTC.
+          format: double
+        updated:
+          type: string
+          description: Last updated timestamp, UTC.
+          format: double
+        expired:
+          type: string
+          description: The timestamp, UTC, in which the WIIMs expires and is no longer
+            considered active.
+          format: double
+  parameters:
+    accept:
+      name: accept
+      in: header
+      description: Specifies return format.
+      schema:
+        type: string
+        default: application/json
+        enum:
+        - application/json
+    page:
+      name: page
+      in: query
+      description: Page offset.
+      schema:
+        type: integer
+        default: 0
+    pagesize:
+      name: pagesize
+      in: query
+      description: Number of results returned. Limit 500
+      schema:
+        type: integer
+        default: 50
+    search_keys:
+      name: search_keys
+      in: query
+      description: "One or more security symbols separated by a comma. Maximum 50\
+        \ securities. \nSecurity identifiers must be in the format of ticker symbols,\
+        \ only for US-listed equities.\n"
+      schema:
+        type: string
+        format: csv
+    country:
+      name: country
+      in: query
+      description: Country code for the region of coverage.
+      schema:
+        type: string
+    search_keys_type:
+      name: search_keys_type
+      in: query
+      description: The type of identifier being searched.  Supported types are currently
+        a security symbol.
+      schema:
+        type: string
+        default: symbol
+        enum:
+        - symbol
+    active:
+      name: active
+      in: query
+      description: Whether the WIIMs is currently active or `In Play`.
+      schema:
+        type: boolean
+        default: true
+    updated_since:
+      name: updated_since
+      in: query
+      description: |
+        Records last Updated Unix timestamp (UTC). This will force the sort order
+        to be Greater Than or Equal to the timestamp indicated.
+
+        Timestamp may also be in python format to include millisecond updates.
+      schema:
+        type: number
+        format: double
+  securitySchemes:
+    token:
+      type: apiKey
+      name: token
+      in: query

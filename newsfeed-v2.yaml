@@ -1,0 +1,368 @@
+---
+openapi: 3.0.1
+info:
+  title: Newsfeed & Why is it Moving v2
+  description: "This REST API returns structured data for news.\n### Best Practices\n\
+    For optimal performance, we have a few recommendations.\n \n#### Limit query,\
+    \ improve performance\n \nLimiting the scope of the query will directly improve\
+    \ the latency of the API.  This can be accomplished by using parameters such as\
+    \ `tickers`, `date`, and `channels`, or (preferably) by using `updatedSince` for\
+    \ deltas.\n \n#### Using Deltas\n \nA common pattern is to use a delta to query\
+    \ for the latest change in a dataset.  By reducing the amount of data available\
+    \ in the query, it will produce results with the least amount of latency and limited\
+    \ data an application will have to traverse.\n \nIn our case, we recommend tracking\
+    \ and querying by the latest updated timestamp.\n \nOne caveat to allow for some\
+    \ latency and second-only timestamps: when querying, set `updatedSince` to a value\
+    \ 5 seconds earlier than you actually want.  A query may look like:\n \n`/news?updatedSince=LAGGED_TIMESTAMP`\n\
+    Where `LAGGED_TIMESTAMP` is set to be five seconds less than the maximum value\
+    \ of the `updated` field (converted to a Unix timestamp) in rows already pulled\
+    \ from our API."
+  version: 2.0.0
+servers:
+- url: https://api.benzinga.com/api/v2
+- url: http://api.benzinga.com/api/v2
+security:
+- token: []
+- Bearer: []
+paths:
+  /news:
+    get:
+      summary: Get the news items
+      parameters:
+      - name: accept
+        in: header
+        description: Specify return format.
+        required: true
+        schema:
+          type: string
+          default: application/json
+          enum:
+          - application/json
+          - application/xml (deprecated)
+      - name: page
+        in: query
+        description: |-
+          Page offset.
+          For optimization, performance and technical reasons, page offsets are limited from 0 - 100000.  Limit the query results by other parameters such as date.
+        schema:
+          type: integer
+          default: 0
+      - name: pageSize
+        in: query
+        description: Number of results returned.
+        schema:
+          maximum: 100
+          type: integer
+          default: 15
+      - name: displayOutput
+        in: query
+        description: Specify headline only (headline), headline + teaser (abstract),
+          or headline + full body (full) text
+        schema:
+          type: string
+          default: headline
+          enum:
+          - full
+          - abstract
+          - headline
+      - name: date
+        in: query
+        description: The date to query for news. Shorthand for date_from and date_to
+          if they are the same
+        schema:
+          type: string
+          format: yyyy-mm-dd
+      - name: dateFrom
+        in: query
+        description: Date to query from point in time. Sorted by published date
+        schema:
+          type: string
+          format: yyyy-mm-dd
+      - name: dateTo
+        in: query
+        description: Date to query to point in time. Sorted by published date
+        schema:
+          type: string
+          format: yyyy-mm-dd
+      - name: updatedSince
+        in: query
+        description: The last updated Unix timestamp (UTC) to pull and sort by
+        schema:
+          type: integer
+          format: int64
+      - name: publishedSince
+        in: query
+        description: The last published Unix timestamp (UTC) to pull and sort by
+        schema:
+          type: integer
+          format: Unix timestamp
+      - name: sort
+        in: query
+        description: "Allows control of results sorting.  Default is created, DESC.\n\
+          \ \nSort Fields\n  * id\n  * created\n  * updated\n \nSort Order Direction\n\
+          \  * asc (ascending)\n  * desc (descending)"
+        schema:
+          type: string
+          format: field, field:direction
+          enum:
+          - id:asc
+          - id:desc
+          - created:asc
+          - created:desc
+          - updated:asc
+          - updated:desc
+      - name: isin
+        in: query
+        description: One or more ISINs separated by a comma.  Maximum 50.
+        schema:
+          type: string
+          format: csv
+      - name: cusip
+        in: query
+        description: One or more CUSIPs separated by a comma.  Maximum 50.  License
+          agreement required.
+        schema:
+          type: string
+          format: csv
+      - name: tickers
+        in: query
+        description: One or more ticker symbols separated by a comma.  Maximum 50.
+        schema:
+          type: string
+          format: csv
+      - name: channels
+        in: query
+        description: One or more channel names or IDs separated by a comma
+        schema:
+          type: string
+          format: csv
+      - name: topics
+        in: query
+        description: One or more words/phrases separated by a comma; searches Title,
+          Tags, and Body in order of priority.
+        schema:
+          type: string
+          format: csv
+      - name: authors
+        in: query
+        description: One or more authors separated by a comma
+        schema:
+          type: string
+          format: csv
+      - name: content_types
+        in: query
+        description: One or more content types separated by a comma
+        schema:
+          type: string
+          format: csv
+      responses:
+        200:
+          description: success
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BenzingaStory'
+  /news-removed:
+    get:
+      summary: Returns the removed news data
+      parameters:
+      - name: accept
+        in: header
+        description: Specifies return format. Query parameters work the same for both
+          formats.
+        required: true
+        schema:
+          type: string
+          default: application/json
+          enum:
+          - application/json
+      - name: page
+        in: query
+        description: |-
+          Page offset.
+          For optimization, performance and technical reasons, page offsets are limited from 0 - 100000.  Limit the query results by other parameters such as date.
+        schema:
+          type: integer
+          default: 0
+      - name: pageSize
+        in: query
+        description: Number of results returned.
+        schema:
+          maximum: 100
+          type: integer
+          default: 15
+      - name: updated
+        in: query
+        description: The last updated Unix timestamp (UTC) to pull and sort by
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: success
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  removed:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/news-removed'
+      security:
+      - token: []
+components:
+  schemas:
+    BenzingaStory:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The unique identifier of the article. This identifier is also
+            found in the path of url on benzinga.com.
+        author:
+          type: string
+          description: The author of the article. This could be a Benzinga journalist,
+            news desk analyst or contributor on benzinga.com.
+        created:
+          type: string
+          description: The moment the article is created. The time zone is Greenwich
+            Mean Time (GMT) - 4:00, commonly know as Eastern Daylight Time (EDT).
+            This time stamp will not change. The date format standard used is RFC
+            2822 / RFC 1123.
+          format: Wed, 17 May 2017 14:20:15 -0400
+        updated:
+          $ref: '#/components/schemas/updated'
+        title:
+          type: string
+          description: The headline of the article. This will only be plain text.
+        teaser:
+          type: string
+          description: Depending on where the content is originated from (Benzinga.com
+            or Benzinga Pro Terminal) the teaser functions in different ways. If the
+            article is a full length article from Benzinga.com, where the body field
+            is filled out, this will be the first sentence of the article up to 256
+            characters. If this is a Benzinga Pro headline, this will function like
+            the body of an article and provide additional context to the headline,
+            usually no more than a few paragraphs. This field can contain html and
+            html encoded characters such as '&quot' etc.
+        body:
+          type: string
+          description: The article content. This field can contain html and html encoded
+            characters such as 'quot' etc.
+        url:
+          type: string
+          description: The url where the article lives on Benzinga.com. If this is
+            a pro headline, it will take the user to a shortened headline with a paywall
+            to purchase the Benzinga Pro terminal, so use with caution.
+        image:
+          type: array
+          description: The featured image related to the article, if applicable. Benzinga
+            Pro headlines will not contain a featured image.
+          items:
+            type: object
+            properties:
+              size:
+                type: string
+              url:
+                type: string
+        channels:
+          type: array
+          description: "The topic(s) or categories that relate to the article. Channels\
+            \ can have sub-channels, but they will all be listed as their own item\
+            \ and not as a sub-level of the array.\n \nFor Why is it Moving (WIIM)\
+            \ data, enter `WIIM` as channel."
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+        stocks:
+          type: array
+          description: The stock symbols that are listed within the article body.
+            This will not display competitor symbols unless they are specifically
+            referenced in the article.
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+        tags:
+          type: array
+          description: Additional tags that are not channels or categories, but are
+            reoccuring themes including, but not limited to; analyst names, bills
+            being talked about in Congress (Dodd-Frank), specific products (iPhone),
+            politicians, celebrities, stock movements (i.e. 'Mid-day Losers' & 'Mid-day
+            Gainers').
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+    news-removed:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: id of removed news content
+        updated:
+          $ref: '#/components/schemas/updated'
+    updated:
+      type: string
+      description: The timestamp of the last update to the article. The time zone
+        is Greenwich Mean Time (GMT) - 4:00, commonly know as Eastern Daylight Time
+        (EDT). This time stamp has the ability to change one or many times, updating
+        each time an update is pushed to the article. The date format standard used
+        is RFC 2822 / RFC 1123.
+      format: Wed, 17 May 2017 14:20:15 -0400
+  parameters:
+    accept:
+      name: accept
+      in: header
+      description: Specifies return format. Query parameters work the same for both
+        formats.
+      required: true
+      schema:
+        type: string
+        default: application/json
+        enum:
+        - application/json
+    page:
+      name: page
+      in: query
+      description: |-
+        Page offset.
+        For optimization, performance and technical reasons, page offsets are limited from 0 - 100000.  Limit the query results by other parameters such as date.
+      schema:
+        type: integer
+        default: 0
+    pageSize:
+      name: pageSize
+      in: query
+      description: Number of results returned.
+      schema:
+        maximum: 100
+        type: integer
+        default: 15
+    updated:
+      name: updated
+      in: query
+      description: The last updated Unix timestamp (UTC) to pull and sort by
+      schema:
+        type: integer
+        format: int64
+    updatedSince:
+      name: updatedSince
+      in: query
+      description: The last updated Unix timestamp (UTC) to pull and sort by
+      schema:
+        type: integer
+        format: int64
+  securitySchemes:
+    token:
+      type: apiKey
+      description: apiKey to be passed as token in query parameter.
+      name: token
+      in: query

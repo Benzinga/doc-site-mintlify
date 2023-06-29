@@ -1,0 +1,63 @@
+---
+openapi: 3.0.1
+info:
+  title: Webhook v1 Test Trigger
+  description: Trigger API that initiates webhook payload delivery to your endpoint
+    for testing.
+  version: "1.0"
+servers:
+- url: https://api.benzinga.com/api/v1
+- url: http://api.benzinga.com/api/v1
+paths:
+  /webhook/test:
+    get:
+      summary: this endpoint will send data to your endpoint so you may test.
+      parameters:
+      - name: accept
+        in: header
+        description: Specifies return format
+        schema:
+          type: string
+          enum:
+          - application/json
+      - name: token
+        in: query
+        description: (optional) specify token to have data transformed for production
+          usage
+        schema:
+          type: string
+      - name: version
+        in: query
+        description: api version currently webhook/v1
+        schema:
+          type: string
+          enum:
+          - webhook/v1
+      - name: kind
+        in: query
+        description: Identifies the message kind. Currently News/v1
+        schema:
+          type: string
+          enum:
+          - News/v1
+      - name: destination
+        in: query
+        description: where the api will send the fake data
+        schema:
+          type: string
+      responses:
+        200:
+          description: success.
+          content: {}
+        400:
+          description: Error Indicating that the Request received invalid. Inspect
+            response body for details.
+          content: {}
+        424:
+          description: Error Indicating that the system encountered an error delivering
+            the test payload. Inspect response body for details.
+          content: {}
+        500:
+          description: Internal System Error.
+          content: {}
+components: {}
