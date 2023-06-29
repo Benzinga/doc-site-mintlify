@@ -1,4 +1,6 @@
-# Benzinga Documentation
+![Benzinga APIs Logo-44 (4)](https://github.com/Benzinga/doc-site-mintlify/assets/93008740/3a8c92fa-e563-4276-8156-d703d470bb28)
+
+### Benzinga API Documentation
 
 The content and configuration powering the documentation available at [docs.benzinga.com](https://docs.benzinga.com)
 
