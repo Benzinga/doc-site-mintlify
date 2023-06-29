@@ -33,12 +33,13 @@
       "wss://api.benzinga.com/api/v1/news", 
       "https://api.benzinga.com/api/v1.1", 
       "https://api.benzinga.com/api/v2",
-      "https://jwtapi.benzinga.com/api/v2/logos",
       "https://api.benzinga.com/api/v2/logos",
-      "https://jwtapi.benzinga.com/api/v2",
       "https://api.benzinga.com/api/v2.1",
       "https://api.benzinga.io/v4.1/fxstreet"
-    ]
+    ],
+    "playground": {
+        "mode": "simple"
+    }
   },
   "anchors": [
     {
