@@ -1,0 +1,120 @@
+---
+title: "Delayed Quote Models"
+---
+## DelayedQuotesResponse: object
+
+<ResponseField name="quotes"	type="object[]"></ResponseField>
+
+<ResponseField name="quotes[].security"	type="object"></ResponseField>
+
+<ResponseField name="quotes[].security.symbol"	type="string">
+Registered symbol of security
+</ResponseField>
+
+<ResponseField name="quotes[].security.cik"	type="string">
+Unique identifier of security
+</ResponseField>
+
+<ResponseField name="quotes[].security.valoren"	type="string">
+Unique identifier of security
+</ResponseField>
+
+<ResponseField name="quotes[].security.name"	type="string">
+Registered name of security
+</ResponseField>
+
+<ResponseField name="quotes[].quote"	type="object"></ResponseField>
+
+<ResponseField name="quotes[].quote.date"	type="string">
+Date and time of current trading day. UTC.
+</ResponseField>
+
+<ResponseField name="quotes[].quote.open"	type="number (float)">
+Price at same day market open
+</ResponseField>
+
+<ResponseField name="quotes[].quote.high"	type="number (float)">
+Indicator of highest price of security for same day
+</ResponseField>
+
+<ResponseField name="quotes[].quote.low"	type="number (float)">
+Indicator of lowest price of security for same day
+</ResponseField>
+
+<ResponseField name="quotes[].quote.close"	type="number (float)">
+Price at same day close. Only available after market close.
+</ResponseField>
+
+<ResponseField name="quotes[].quote.previousClose"	type="number (float)">
+Price at the close of previous trading day
+</ResponseField>
+
+<ResponseField name="quotes[].quote.change"	type="number (float)">
+Change in price of security
+</ResponseField>
+
+<ResponseField name="quotes[].quote.changePercent"	type="number (float)">
+Percentage of change in price of security
+</ResponseField>
+
+<ResponseField name="quotes[].quote.fiftyTwoWeekHigh"	type="number (float)">
+Highest price of security in previous fifty two weeks
+</ResponseField>
+
+<ResponseField name="quotes[].quote.fiftyTwoWeekLow"	type="number (float)">
+Lowest price of security in previous fifty two weeks
+</ResponseField>
+
+<ResponseField name="quotes[].quote.currency"	type="string">
+Type of currency the security is priced
+</ResponseField>
+
+<ResponseField name="quotes[].quote.last"	type="number (float)">
+Price of last open
+</ResponseField>
+
+<ResponseField name="quotes[].quote.tradingHalted"	type="boolean">
+Indicator if trade was halted on security
+</ResponseField>
+
+<ResponseField name="quotes[].quote.volume" type="integer (int64)">
+Measurement of trading activity
+</ResponseField>
+
+<ResponseField name="quotes[].quote.previousCloseDate"	type="string">
+Date of previous close for exchange. UTC.
+</ResponseField>
+
+<Accordion title="Structure (JSON)">
+```JSON
+{
+  "quotes": [
+    {
+      "security": {
+        "symbol": "string",
+        "cik": "string",
+        "valoren": "string",
+        "name": "string"
+      },
+      "quote": {
+        "date": "string",
+        "open": "number (float)",
+        "high": "number (float)",
+        "low": "number (float)",
+        "close": "number (float)",
+        "previousClose": "number (float)",
+        "change": "number (float)",
+        "changePercent": "number (float)",
+        "fiftyTwoWeekHigh": "number (float)",
+        "fiftyTwoWeekLow": "number (float)",
+        "currency": "string",
+        "last": "number (float)",
+        "tradingHalted": "boolean",
+        "volume": "integer (int64)",
+        "previousCloseDate": "string"
+      }
+    }
+  ]
+}
+```
+</Accordion>

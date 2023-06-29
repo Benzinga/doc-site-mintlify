@@ -1,0 +1,45 @@
+---
+title: "GET IPOs"
+description: "Returns ipo data"
+openapi: "GET /calendar/ipos"
+---
+<ResponseExample>
+```json Response (200 OK)
+{
+  "ipos": [
+    {
+      "id": "string",
+      "date": "string (YYYY-MM-DD, YYYY-QN, YYYY-MM, YYYY-HN, YYYY)",
+      "time": "string (HH:MM:SS)",
+      "ticker": "string",
+      "exchange": "string",
+      "name": "string",
+      "open_date_verified": "boolean",
+      "pricing_date": "string (YYYY-MM-DD)",
+      "currency": "string",
+      "price_min": "string (double)",
+      "price_max": "string (double)",
+      "price_public_offering": "string (double)",
+      "price_open": "string (double)",
+      "deal_status": "string",
+      "ipo_type": "string",
+      "insider_lockup_days": "integer",
+      "insider_lockup_date": "string (YYYY-MM-DD)",
+      "offering_value": "integer (int64)",
+      "offering_shares": "integer (int64)",
+      "shares_outstanding": "integer",
+      "lead_underwriters": [
+        "string"
+      ],
+      "other_underwriters": [
+        "string"
+      ],
+      "underwriter_quiet_expiration_days": "integer",
+      "underwriter_quiet_expiration_date": "string (YYYY-MM-DD)",
+      "notes": "string",
+      "updated": "integer (int64)"
+    }
+  ]
+}
+```
+</ResponseExample>

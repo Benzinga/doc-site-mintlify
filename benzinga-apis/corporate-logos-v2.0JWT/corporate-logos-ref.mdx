@@ -1,0 +1,24 @@
+---
+title: 'Corporate Logos v2.0 JWT API Reference'
+description: 'The Benzinga Corporate Logo API is designed to be flexible with client sizing requirements. It supports JWT based authentication.'
+---
+
+<Info>
+  ### Api Endpoint https://jwtapi.benzinga.com/api/v2/logos ### Response
+  Content-Types application/json, application/xml (deprecated) ### Schemes
+  https, http ### Version 2.0.0
+</Info>
+
+## Authentication
+
+### `Bearer` authentication
+
+JWT, Refer [Benzinga JWT](https://github.com/Benzinga/jwt) for more information. For JWT, we recommend using RS256. You may generate sample JWT using https://jwt.io/. You need to send us public/private key depending upon which algorithm you are using. We will add that public/private key on our side, so it will verify signature generated. Also, you need to send us the value of iss (issuer) value of payload.
+
+**Note:** Prepend **Bearer** to your actual jwt when you authorize here to test.
+
+**Type:** apiKey
+
+**Name:** Authorization
+
+**In:** header

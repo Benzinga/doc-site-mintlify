@@ -1,0 +1,378 @@
+---
+title: "GET Fundamentals"
+description: "Get all of fundamentals data such as valuation ratios, earning ratios, operation ratios, balance sheet, share class, alpha beta and asset classification."
+openapi: "GET /fundamentals"
+---
+
+<ResponseExample>
+```json Response (200 OK)
+{
+  "result": [
+    {
+      "company": {
+        "primarySymbol": "string",
+        "primaryExchange": "string",
+        "cik": "string",
+        "valoren": "string",
+        "sedol": "string",
+        "standardName": "string"
+      },
+      "companyProfile": {
+        "companyStatus": "string",
+        "countryId": "string",
+        "fiscalYearEnd": "string",
+        "shortName": "string",
+        "standardName": "string",
+        "address1": "string",
+        "city": "string",
+        "country": "string",
+        "fax": "string",
+        "homepage": "string",
+        "phone": "string",
+        "postalCode": "string",
+        "province": "string",
+        "legalName": "string",
+        "shortDescription": "string",
+        "longDescription": "string"
+      },
+      "shareClass": {
+        "currency": "string",
+        "ipoDate": "string (Unix timestamp)",
+        "isDepositaryRecipt": "boolean",
+        "isPrimary": "boolean",
+        "securityType": "string",
+        "enterpriseValue": "integer",
+        "marketCap": "integer"
+      },
+      "earningReports": {
+        "6M": {
+          "period": "string",
+          "asOf": "string",
+          "reportType": "string",
+          "currency": "string",
+          "fiscalYearEnd": "string",
+          "basicContinuousOperations": "number (float)",
+          "continuingAndDiscontinuedBasicEPS": "number (float)",
+          "continuingAndDiscontinuedDilutedEPS": "number (double)",
+          "dilutedAverageShares": "integer (int64)",
+          "dilutedContinuousOperations": "integer (int64)",
+          "dilutedEPS": "number (float)",
+          "dividendPerShare": "number (float)",
+          "basicAverageShares": "integer (int64)"
+        },
+        "3M": {
+          "period": "string",
+          "asOf": "string",
+          "reportType": "string",
+          "currency": "string",
+          "fiscalYearEnd": "string",
+          "basicContinuousOperations": "number (float)",
+          "continuingAndDiscontinuedBasicEPS": "number (float)",
+          "continuingAndDiscontinuedDilutedEPS": "number (double)",
+          "dilutedAverageShares": "integer (int64)",
+          "dilutedContinuousOperations": "integer (int64)",
+          "dilutedEPS": "number (float)",
+          "dividendPerShare": "number (float)",
+          "basicAverageShares": "integer (int64)"
+        },
+        "12M": {
+          "period": "string",
+          "asOf": "string",
+          "reportType": "string",
+          "currency": "string",
+          "fiscalYearEnd": "string",
+          "basicContinuousOperations": "number (float)",
+          "continuingAndDiscontinuedBasicEPS": "number (float)",
+          "continuingAndDiscontinuedDilutedEPS": "number (double)",
+          "dilutedAverageShares": "integer (int64)",
+          "dilutedContinuousOperations": "integer (int64)",
+          "dilutedEPS": "number (float)",
+          "dividendPerShare": "number (float)",
+          "basicAverageShares": "integer (int64)"
+        }
+      },
+      "valuationRatios": {
+        "result": [
+          {
+            "valuationRatios": [
+              {
+                "id": {
+                  "shareClassId": "string",
+                  "date": "string (YYYY-MM-DD)"
+                },
+                "payoutRatio": "number (float)",
+                "sustainableGrowthRate": "number (float)",
+                "cashReturn": "number (float)",
+                "salesPerShare": "number (float)",
+                "bookValuePerShare": "number (float)",
+                "cfoPerShare": "number (float)",
+                "fcfPerShare": "number (float)",
+                "earningYield": "number (float)",
+                "peRatio": "number (float)",
+                "salesYield": "number (float)",
+                "psRatio": "number (float)",
+                "bookValueYield": "number (float)",
+                "pbRatio": "number (float)",
+                "cfYield": "number (float)",
+                "pcfRatio": "number (float)",
+                "fcfYield": "number (float)",
+                "fcfRatio": "number (float)",
+                "trailingDividendYield": "number (float)",
+                "forwardDividendYield": "number (float)",
+                "forwardEarningYield": "number (float)",
+                "forwardPeRatio": "number (float)",
+                "pegRatio": "number (float)",
+                "pegPayback": "number (float)",
+                "tangibleBookValuePerShare": "number (float)",
+                "tangibleBvPerShare3YrAvg": "number (float)",
+                "tangibleBvPerShare5YrAvg": "number (float)",
+                "forwardDividend": "number (float)",
+                "workingCapitalPerShare": "number (float)",
+                "workingCapitalPerShare3YrAvg": "number (float)",
+                "workingCapitalPerShare5YrAvg": "number (float)",
+                "evToEbitda": "number (float)",
+                "buyBackYield": "number (float)",
+                "totalYield": "number (float)",
+                "ratioPe5YearAverage": "number (float)",
+                "priceChange1M": "number (float)",
+                "normalizedPeRatio": "number (float)",
+                "pricetoEbitda": "number (float)"
+              }
+            ]
+          }
+        ]
+      },
+      "operationRatios": {
+        "result": [
+          {
+            "company": {
+              "primarySymbol": "string",
+              "primaryExchange": "string",
+              "cik": "string",
+              "valoren": "string",
+              "sedol": "string",
+              "standardName": "string"
+            },
+            "operationRatios": {
+              "3M": {
+                "period": "string",
+                "fiscalYearEnd": "string",
+                "reportType": "string",
+                "assetsTurnover": "number (float)",
+                "capExSalesRatio": "number (float)",
+                "cashConversionCycle": "number (float)",
+                "daysInInventory": "number (float)",
+                "daysInPayment": "number (float)",
+                "daysInSales": "number (float)",
+                "EBITDAMargin": "number (float)",
+                "EBITMargin": "number (float)",
+                "FCFNetIncomeRatio": "number (float)",
+                "FCFSalesRatio": "number (float)",
+                "fixAssetTurnover": "number (float)",
+                "grossMargin": "number (float)",
+                "interestCoverage": "number (float)",
+                "netIncomeContOpsGrowth": "number (float)",
+                "netIncomeGrowth": "number (float)",
+                "netMargin": "number (float)",
+                "normalizedNetProfitMargin": "number (float)",
+                "operationIncomeGrowth": "number (float)",
+                "operationMargin": "number (float)",
+                "operationRevenueGrowth3MonthAvg": "number (float)",
+                "pretaxMargin": "number (float)",
+                "quickRatio": "number (float)",
+                "ROA": "number (float)",
+                "ROE": "number (float)",
+                "ROIC": "number (float)",
+                "receivableTurnover": "number (float)",
+                "revenueGrowth": "number (float)",
+                "salesPerEmployee": "number (float)",
+                "taxRate": "number (float)",
+                "totalDebtEquityRatio": "number (float)"
+              },
+              "6M": {
+                "period": "string",
+                "fiscalYearEnd": "string",
+                "reportType": "string",
+                "assetsTurnover": "number (float)",
+                "capExSalesRatio": "number (float)",
+                "cashConversionCycle": "number (float)",
+                "daysInInventory": "number (float)",
+                "daysInPayment": "number (float)",
+                "daysInSales": "number (float)",
+                "EBITDAMargin": "number (float)",
+                "EBITMargin": "number (float)",
+                "FCFNetIncomeRatio": "number (float)",
+                "FCFSalesRatio": "number (float)",
+                "fixAssetTurnover": "number (float)",
+                "grossMargin": "number (float)",
+                "interestCoverage": "number (float)",
+                "netIncomeContOpsGrowth": "number (float)",
+                "netIncomeGrowth": "number (float)",
+                "netMargin": "number (float)",
+                "normalizedNetProfitMargin": "number (float)",
+                "operationIncomeGrowth": "number (float)",
+                "operationMargin": "number (float)",
+                "operationRevenueGrowth3MonthAvg": "number (float)",
+                "pretaxMargin": "number (float)",
+                "quickRatio": "number (float)",
+                "ROA": "number (float)",
+                "ROE": "number (float)",
+                "ROIC": "number (float)",
+                "receivableTurnover": "number (float)",
+                "revenueGrowth": "number (float)",
+                "salesPerEmployee": "number (float)",
+                "taxRate": "number (float)",
+                "totalDebtEquityRatio": "number (float)"
+              },
+              "9M": {
+                "period": "string",
+                "fiscalYearEnd": "string",
+                "reportType": "string",
+                "assetsTurnover": "number (float)",
+                "capExSalesRatio": "number (float)",
+                "cashConversionCycle": "number (float)",
+                "daysInInventory": "number (float)",
+                "daysInPayment": "number (float)",
+                "daysInSales": "number (float)",
+                "EBITDAMargin": "number (float)",
+                "EBITMargin": "number (float)",
+                "FCFNetIncomeRatio": "number (float)",
+                "FCFSalesRatio": "number (float)",
+                "fixAssetTurnover": "number (float)",
+                "grossMargin": "number (float)",
+                "interestCoverage": "number (float)",
+                "netIncomeContOpsGrowth": "number (float)",
+                "netIncomeGrowth": "number (float)",
+                "netMargin": "number (float)",
+                "normalizedNetProfitMargin": "number (float)",
+                "operationIncomeGrowth": "number (float)",
+                "operationMargin": "number (float)",
+                "operationRevenueGrowth3MonthAvg": "number (float)",
+                "pretaxMargin": "number (float)",
+                "quickRatio": "number (float)",
+                "ROA": "number (float)",
+                "ROE": "number (float)",
+                "ROIC": "number (float)",
+                "receivableTurnover": "number (float)",
+                "revenueGrowth": "number (float)",
+                "salesPerEmployee": "number (float)",
+                "taxRate": "number (float)",
+                "totalDebtEquityRatio": "number (float)"
+              },
+              "1Y": {
+                "period": "string",
+                "fiscalYearEnd": "string",
+                "reportType": "string",
+                "assetsTurnover": "number (float)",
+                "capExSalesRatio": "number (float)",
+                "cashConversionCycle": "number (float)",
+                "daysInInventory": "number (float)",
+                "daysInPayment": "number (float)",
+                "daysInSales": "number (float)",
+                "EBITDAMargin": "number (float)",
+                "EBITMargin": "number (float)",
+                "FCFNetIncomeRatio": "number (float)",
+                "FCFSalesRatio": "number (float)",
+                "fixAssetTurnover": "number (float)",
+                "grossMargin": "number (float)",
+                "interestCoverage": "number (float)",
+                "netIncomeContOpsGrowth": "number (float)",
+                "netIncomeGrowth": "number (float)",
+                "netMargin": "number (float)",
+                "normalizedNetProfitMargin": "number (float)",
+                "operationIncomeGrowth": "number (float)",
+                "operationMargin": "number (float)",
+                "operationRevenueGrowth3MonthAvg": "number (float)",
+                "pretaxMargin": "number (float)",
+                "quickRatio": "number (float)",
+                "ROA": "number (float)",
+                "ROE": "number (float)",
+                "ROIC": "number (float)",
+                "receivableTurnover": "number (float)",
+                "revenueGrowth": "number (float)",
+                "salesPerEmployee": "number (float)",
+                "taxRate": "number (float)",
+                "totalDebtEquityRatio": "number (float)"
+              }
+            }
+          }
+        ]
+      },
+      "alphaBeta": {
+        "60M": {
+          "period": "string",
+          "asOf": "string",
+          "alpha": "number (double)",
+          "beta": "number (double)"
+        },
+        "120M": {
+          "period": "string",
+          "asOf": "string",
+          "alpha": "number (double)",
+          "beta": "number (double)"
+        },
+        "36M": {
+          "period": "string",
+          "asOf": "string",
+          "alpha": "number (double)",
+          "beta": "number (double)"
+        }
+      },
+      "earningRatios": {
+        "result": [
+          {
+            "company": {
+              "primarySymbol": "string",
+              "primaryExchange": "string",
+              "cik": "string",
+              "valoren": "string",
+              "sedol": "string",
+              "standardName": "string"
+            },
+            "earningRatios": [
+              {
+                "id": {
+                  "shareClassId": "string",
+                  "asOf": "string (YYY-MM-DD)",
+                  "reportType": "string",
+                  "period": "string",
+                  "aorOrRestate": "string"
+                },
+                "fiscalYearEnd": "integer",
+                "dilutedEpsGrowth": "number (float)",
+                "dilutedConstEpsGrowth": "number (float)",
+                "dpsGrowth": "number (float)",
+                "equityPerShareGrowth": "number (float)"
+              }
+            ],
+            "symbol": "string",
+            "idType": "string",
+            "id": "string"
+          }
+        ],
+        "processingTimeMillis": "integer"
+      },
+      "assetClassification": {
+        "sic": "integer",
+        "sicName": "string",
+        "naics": "integer",
+        "naicsName": "string",
+        "msSuperSectorCode": "integer",
+        "msSuperSectorname": "string",
+        "msSectorCode": "integer",
+        "msSectorName": "string",
+        "msGroupCode": "integer",
+        "msGroupName": "string",
+        "msIndustryCode": "integer",
+        "msIndustryName": "string"
+      },
+      "shareClassProfileHistory": {
+        "asOf": "string",
+        "marketCap": "integer"
+      },
+      "processingTimeMillis": "integer"
+    }
+  ]
+}
+```
+</ResponseExample>

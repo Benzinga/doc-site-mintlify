@@ -1,0 +1,31 @@
+---
+title: 'Newsfeed & Why is it Moving v2'
+description: 'This REST API returns structured data for news.'
+---
+
+## Best Practices
+
+For optimal performance, we have a few recommendations.
+
+### Limit query, improve performance
+
+Limiting the scope of the query will directly improve the latency of the API. This can be accomplished by using parameters such as `tickers`, `date`, and `channels`, or (preferably) by using `updatedSince` for deltas.
+
+### Using Deltas
+
+A common pattern is to use a delta to query for the latest change in a dataset. By reducing the amount of data available in the query, it will produce results with the least amount of latency and limited data an application will have to traverse.
+
+In our case, we recommend tracking and querying by the latest updated timestamp.
+
+One caveat to allow for some latency and second-only timestamps: when querying, set `updatedSince` to a value 5 seconds earlier than you actually want. A query may look like: `/news?updatedSince=LAGGED_TIMESTAMP Where LAGGED_TIMESTAMP` is set to be five seconds less than the maximum value of the `updated` field (converted to a Unix timestamp) in rows already pulled from our API.
+
+<Info>
+  ### API Endpoint https://api.benzinga.com/api/v2 ### Schemes https, http ###
+  Version 2.0.0
+</Info>
+
+## Authentication
+
+<ParamField query="token" type="apiKey">
+  Include key in either query or header
+</ParamField>

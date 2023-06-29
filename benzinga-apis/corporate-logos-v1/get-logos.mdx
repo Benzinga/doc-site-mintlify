@@ -1,0 +1,28 @@
+---
+title: "GET Logos"
+description: "Logos for market securities"
+openapi: "GET /logos"
+---
+
+<ResponseExample>
+```JSON Response (200 OK)
+[
+  {
+    "created": "integer (int64)",
+    "updated": "integer (int64)",
+    "files": {
+      "original": "string",
+      "90x60_white": "string",
+      "90x60_grayscale": "string",
+      "CUSTOM_FILTER": "string"
+    },
+    "security": {
+      "symbol": "string",
+      "cik": "integer (int64)",
+      "name": "string",
+      "exchange": "string"
+    }
+  }
+]
+```
+</ResponseExample>

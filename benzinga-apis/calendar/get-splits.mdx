@@ -1,0 +1,27 @@
+---
+title: "GET Splits"
+description: "Retunrs the splits calendar data"
+openapi: "GET /calendar/splits"
+---
+<ResponseExample>
+```json Response (200 OK)
+{
+  "splits": [
+    {
+      "id": "string",
+      "updated": "integer",
+      "date_announced": "string (YYYY-DD-MM)",
+      "ticker": "string",
+      "exchange": "string",
+      "ratio": "string (x:y)",
+      "optionable": "boolean",
+      "date_ex": "string (YYYY-MM-DD)",
+      "date_recorded": "string (YYYY-MM-DD)",
+      "date_distribution": "string (YYYY-MM-DD)",
+      "importance": "integer",
+      "notes": "string"
+    }
+  ]
+}
+```
+</ResponseExample>

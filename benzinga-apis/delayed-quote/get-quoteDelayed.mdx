@@ -1,0 +1,39 @@
+---
+title: "GET Delayed Quote"
+description: "Get the delayed quotes."
+openapi: "GET /quoteDelayed"
+---
+
+<ResponseExample>
+```json Response (200 OK)
+{
+  "quotes": [
+    {
+      "security": {
+        "symbol": "string",
+        "cik": "string",
+        "valoren": "string",
+        "name": "string"
+      },
+      "quote": {
+        "date": "string",
+        "open": "number (float)",
+        "high": "number (float)",
+        "low": "number (float)",
+        "close": "number (float)",
+        "previousClose": "number (float)",
+        "change": "number (float)",
+        "changePercent": "number (float)",
+        "fiftyTwoWeekHigh": "number (float)",
+        "fiftyTwoWeekLow": "number (float)",
+        "currency": "string",
+        "last": "number (float)",
+        "tradingHalted": "boolean",
+        "volume": "integer (int64)",
+        "previousCloseDate": "string"
+      }
+    }
+  ]
+}
+```
+</ResponseExample>

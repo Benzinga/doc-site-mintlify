@@ -1,0 +1,64 @@
+---
+title: "GET Financials"
+description: "Get the balance sheet and cash-flow statement for a company."
+openapi: "GET /fundamentals/financials"
+---
+<ResponseExample>
+```JSON Response (200 OK)
+{
+  "result": [
+    {
+      "company": {
+        "primarySymbol": "string",
+        "primaryExchange": "string",
+        "cik": "string",
+        "valoren": "string",
+        "sedol": "string",
+        "standardName": "string"
+      },
+      "financials": [
+        {
+          "asOf": "string",
+          "period": "string",
+          "reportType": "string",
+          "aorOrRestate": "string",
+          "balanceSheet": {
+            "id": {
+              "companyId": "string",
+              "asOf": "string",
+              "reportType": "string",
+              "period": "string",
+              "aorOrRestate": "string"
+            },
+            "fiscalYearEnd": "integer",
+            "currencyId": "string",
+            "isCalculated": "boolean",
+            "periodEndingDate": "string",
+            "accountsPayable": "integer",
+            "accountsReceivable": "integer",
+            "currentAccruedExpences": "integer",
+            "accumulateDepreciation": "integer",
+            "additionalPaidInCapital": "integer",
+            "capitalStock": "integer",
+            "cashAndCashEquivalents": "integer",
+            "cashCashEquivalentAndMarketableSecurities": "integer",
+            "commonStock": "integer",
+            "currentAssets": "integer",
+            "currentDebtAndCapitalLeaseOblication": "integer",
+            "currentLiabilities": "integer",
+            "currentCapitalLeaseObligation": "integer",
+            "nonCurrentDeferredLiabilities": "integer",
+            "currentDeferredLiabilities": "integer",
+            "currentDeferredRevenue": "integer",
+            "nonCurrentDeferredRevenue": "integer",
+            "grossPpe": "integer",
+            "inventory": "integer",
+            "longTermDebt": "integer"
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+</ResponseExample>

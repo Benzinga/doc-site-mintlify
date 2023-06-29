@@ -1,0 +1,140 @@
+---
+title: "Webhook v1"
+---
+## What is a Webhook
+Put simply it's a message sent to a URL whenever something happens.
+
+Webhooks are a common communication mechanism used in many event-based systems. Inside Benzinga systems, an event is triggered when a piece of news is published or updated. For clients this means you can choose to have event data delivered from Benzinga to your system as soon as it happens inside our systems. This allows you to structure your system in a way that allows it to react to Benzinga Events without maintaining a connection or checking for updates.
+
+## Webhook Usage Examples
+- News events sent to Discord Server.
+- Benzinga Why Is It Moving (WIIM) published triggers AWS Lambda workflow.
+- Benzinga news published triggers [Zapier](https://zapier.com/page/webhooks/) Zap.
+- Press Release triggers machine-learning assisted trading bot.
+
+## REST API vs. Websocket Streaming vs Webhook
+We offer pull-based REST APIs, streaming Websocket, and push-based Webhook delivery mechanisms.
+
+The REST API is suitable for many use cases, but has the disadvantage of being subject to rate-limits and other complexity often found with REST APIs.
+
+The Websocket offers an always-on connection that provides data real-time as soon as it becomes available in our system. Webhooks offer the same realtime delivery, but the connection is not maintained between deliveries. In most cases this means < 50ms of added latency which should be acceptable in most cases with the advantage of not needing to maintain an always-on connection and allowing clients to easily build event-driven systems.
+
+## Documentation
+**Example Webhook Receiver Code:**
+- https://github.com/Benzinga/webhook-receiver-example
+
+### System Requirements
+- Must accept `POST` requests on URL provided to Benzinga.
+- Must respond to Benzinga Webhook with HTTP status code `200-OK`, `201-Created`, `202-Accepted` or `204-NoContent`. Any other will result in redelivery.
+- Re-delivery attempts will happen using exponential backoff starting from `500 ms` for up to `5 minutes` at which point the system will retry every `5 minutes` to resume deliveries. Please provide an email address to notification of issues.
+- Events undeliverable for more than 24 hours will expire (or based on client agreement).
+- Must handle incoming webhook within `30 seconds`; payloads taking more than this time to deliver will timeout. If your system takes longer than this to process incoming deliveries you will need to store the payload and respond with a success status code to continue processing.
+- Must **NOT** send response body on success.
+- Must **NOT** send response greater than 5 KiB on error response.
+
+### System Notes
+- Benzinga will immediately cease deliveries and will not attempt redelivery if any status code in the range of `401-403` is received.
+- News events can sometimes happen in burst, the system will respect `429` rate limit status codes, but receivers should be capable of processing several events per second in peak periods dependending on content selections.
+
+### Delivery Details
+**HTTP `POST`**
+
+Can be delivered to any valid URL provided to Benzigna.
+
+**Headers**
+- `X-BZ-Delivery`: UUID string identifying delivery attempt; you can provide this for troubleshooting.
+- `User-Agent`: Identifies the system sending the message. ex. `Benzinga-Dispatch/<id> v1.0.0`
+- `Content-Type`: `application/json`. Identifies payload content type.
+
+**Body**
+**Fields:**
+```
+"id": UUID string identifying delivery attempt, you can provide this for troubleshooting, same as header 'X-BZ-Delivery' (string)
+"api_version": Indicates the payload format. Verifying this matches expectations is probably a good idea. (string)
+"kind": Identifies the message kind. Currently 'News/v1' is the only kind delivered. (string)
+"data": Contains message data payload, this may vary with 'apiVersion' and 'kind'. (object)
+    "action": Indicates the type of news_event. One of 'Created', 'Updated', or 'Removed'. (string)
+    "id": Benzinga News Event ID. (number)
+    "timestamp": Indicates event time. (string:RFC3339Milli)
+    "content": contains news content fields. (object)
+      "id": Article Identifier, will not update on subsequent revisions. (number)
+      "revision_id": Article revision id. This is updated with each revision and higher numbers indicate more recent revision. (number)
+      "type": Article type/source. ex. 'story'. (string)
+      "created_at": Publication timestamp. (string:RFC3339Milli)
+      "updated_at": Revision publication timestamp. (string:RFC3339Milli)
+      "title": The headline of the article. This will only be plain text. May be updated with revisions. (string)
+      "body": The article content. This field can contain html and html encoded
+        characters such as `&amp` or `.` etc. You may request plaintext only with HTML removed,
+        but this may impact formatting/style and produce results different from what the source intended. (string)
+      "authors": The authors of the article. (array:string)
+      "teaser": Depending on where the content is originated from (Benzinga.com or
+        Benzinga Pro terminal) the teaser functions in different ways. If the
+        article is a full length article from Benzinga.com, where the body
+        field is filled out, this will be the first sentence of the article up
+        to 256 characters. If this is a Benzinga Pro headline, this will
+        function like the body of an article and provide additional context to
+        the headline, usually no more than a few paragraphs. This field can
+        contain html and html encoded characters such as `&amp` or `.`. 
+        You may request plaintext only with HTML removed, but this may impact 
+        formatting/style and produce results different from what the source intended. (string)
+      "url": The publicly available URL for the content. (string)
+      "tags": Additional tags that are not channels or categories, but are
+      reoccuring themes including, but not limited to; analyst names, bills
+      being talked about in Congress (Dodd-Frank), specific products
+      (iPhone), politicians, celebrities, stock movements (i.e. 'Mid-day
+      Losers' & 'Mid-day Gainers'). (array:string)
+      "channels": The topic(s) or categories that relate to the article. Channels can
+      have sub-channels, but they will all be listed as their own item and
+      not as a sub-level of the array. Why Is It Moving (WIIM) data will be labeled with the `WIIM` channel. (array:string)
+      "securities": The securities that are listed within the article body. This will
+        not display competitor symbols unless they are specifically referenced
+        in the article. Additional fields beyond name are not enabled by default
+        and must be enabled by Benzinga staff. (array:object)
+        "symbol": Security symbol. (string)
+        "exchange": Exchange for security. (string)
+        "primary": Indicates that the security is the primary subject of the article. (boolean)
+```
+
+**Example:**
+```
+{
+  "id": "e33bd797-92e3-4923-b888-0f80ad9c3867",
+  "api_version": "webhook/v1",
+  "kind": "News/v1",
+  "data": {
+      "action": "Created",
+      "id": 1234567890,
+      "content": {
+        "id": 2353787,
+        "revision_id": 6421725,
+        "type": "story",
+        "created_at": "2012-02-17T21:01:39.000Z",
+        "updated_at": "2020-02-05T11:31:08.000Z",
+        "title": "Company A reports record earnings in Q1",
+        "body": "During a Pre-Market earnings annoucement Company A reported ...",
+        "authors": ["Scott Rubin"],
+        "teaser": "During a Pre-Market earnings annoucement ...",
+        "url": "https://www.benzinga.com/news/21/05/2353787/company-a-makes-big-moves",
+        "tags": [
+          "Earnings"
+        ],
+        "securities": [
+          {
+            "symbol":"GOOG",
+            "exchange":"NASDAQ",
+            "primary":false
+          }
+        ],
+        "channels": [
+          "News",
+          "Movers & Shakers"
+        ]
+      },
+      "timestamp": "2012-02-17T21:01:39.000Z"
+  }
+}
+```
+
+
+## Webhook Test API
+- [Webhook Test Trigger](https://docs.benzinga.io/benzinga/test-trigger-webhook-v1.html) Use this API to trigger test payload deliveries to your Webhook endpoint.

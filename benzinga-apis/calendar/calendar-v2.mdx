@@ -1,0 +1,34 @@
+---
+title: 'Calendar API Reference'
+description: 'This REST API returns structured data for conference calls, dividends, earnings (and future earnings dates), economics, pharmaceutical announcements, guidance, IPOs, secondary offerings, ratings, M&A activity, and splits.'
+---
+
+## Best Practices
+
+For optimal performance, we have a few recommendations.
+
+### Limit query, improve performance
+
+Limiting the scope of the query will directly improve the latency of the API. This can be accomplished by using parameters such as `parameters[tickers]` and `parameters[date]`, or (preferably) by using `parameters[updated]` for deltas.
+
+### Using Deltas
+
+A common pattern is to use a delta to query for the latest change in a dataset. By reducing the amount of data available in the query, it will produce results with the least amount of latency and limited data an application will have to traverse.
+
+In our case, we recommend tracking and querying by the latest updated timestamp.
+
+One caveat to allow for some latency and second-only timestamps: when querying, set `parameters[updated]` to a value 5 seconds earlier than you actually want. A query may look like:
+
+`/calendar/earnings?parameters[updated]=LAGGED_TIMESTAMP` Where `LAGGED_TIMESTAMP` is set to be five seconds less than the maximum value of the `updated` field in rows already pulled from our API.
+
+<Info>
+  ### API Endpoint https://api.benzinga.com/api/v2.1 ### Response Content-Types
+  application/json, application/xml (deprecated) ### Schemes https, http ###
+  Version 2.0.0
+</Info>
+
+## Authentication
+
+<ParamField query="token" type="apiKey">
+  The `token` authentication
+</ParamField>

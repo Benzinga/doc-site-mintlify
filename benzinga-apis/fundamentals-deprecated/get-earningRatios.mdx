@@ -1,0 +1,44 @@
+---
+title: "GET Earning Ratios"
+description: "Returns the earning ratios."
+openapi: "GET /fundamentals/earningRatios"
+---
+
+<ResponseExample>
+```JSON Response (200 OK)
+{
+  "result": [
+    {
+      "company": {
+        "primarySymbol": "string",
+        "primaryExchange": "string",
+        "cik": "string",
+        "valoren": "string",
+        "sedol": "string",
+        "standardName": "string"
+      },
+      "earningRatios": [
+        {
+          "id": {
+            "shareClassId": "string",
+            "asOf": "string (YYY-MM-DD)",
+            "reportType": "string",
+            "period": "string",
+            "aorOrRestate": "string"
+          },
+          "fiscalYearEnd": "integer",
+          "dilutedEpsGrowth": "number (float)",
+          "dilutedConstEpsGrowth": "number (float)",
+          "dpsGrowth": "number (float)",
+          "equityPerShareGrowth": "number (float)"
+        }
+      ],
+      "symbol": "string",
+      "idType": "string",
+      "id": "string"
+    }
+  ],
+  "processingTimeMillis": "integer"
+}
+```
+</ResponseExample>

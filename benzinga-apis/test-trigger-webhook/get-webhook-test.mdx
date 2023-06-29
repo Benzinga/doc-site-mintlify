@@ -1,0 +1,21 @@
+---
+title: "GET Webhook Test"
+description: "this endpoint will send data to your endpoint so you may test."
+openapi: "GET /webhook/test"
+---
+### Responses 
+<ResponseField name="200 OK" type="Responses">
+success.
+</ResponseField>
+
+<ResponseField name="400 Bad Request" type="Responses">
+Error Indicating that the Request received invalid. Inspect response body for details.
+</ResponseField>
+
+<ResponseField name="424 Failed Dependency" type="Responses">
+Error Indicating that the system encountered an error delivering the test payload. Inspect response body for details.
+</ResponseField>
+
+<ResponseField name="500 Internal Server Error" type="Responses">
+Internal System Error.
+</ResponseField>

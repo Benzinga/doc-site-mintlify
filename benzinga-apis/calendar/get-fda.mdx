@@ -1,0 +1,52 @@
+---
+title: "GET FDA"
+description: "FDA approvals, clinical trials, and PDUFA dates"
+openapi: "GET /calendar/fda"
+---
+
+<ResponseExample>
+```json Response (200 OK)
+{
+  "fda": [
+    {
+      "id": "string",
+      "event_type": "string",
+      "date": "string (YYYY-DD-MM)",
+      "time": "string (HH:MM:SS)",
+      "companies": [
+        {
+          "id": "string",
+          "name": "string",
+          "cik": "string (10-digit integer)",
+          "securities": [
+            {
+              "exchange": "string",
+              "symbol": "string"
+            }
+          ]
+        }
+      ],
+      "drug": {
+        "id": "integer",
+        "name": "string",
+        "indication_symptom": [
+          "string"
+        ],
+        "generic": "boolean"
+      },
+      "status": "string",
+      "nic_number": "string (NCTXXXXXXXX)",
+      "target_date": "string (YYYY-MM-DD, YYYY-MM, YYYY-Q[1-4], YYYY-H[1-2], or YYYY-[EARLY, MID, LATE])",
+      "outcome_brief": "string",
+      "outcome": "string",
+      "commentary": "string",
+      "source_type": "string",
+      "source_link": "string",
+      "notes": "string",
+      "created": "integer",
+      "updated": "integer"
+    }
+  ]
+}
+```
+</ResponseExample>

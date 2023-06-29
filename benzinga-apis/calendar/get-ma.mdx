@@ -1,0 +1,34 @@
+---
+title: "GET Mergers and Acquisitions"
+description: "Returns the mergers and acquisitions data"
+openapi: "GET /calendar/ma"
+---
+<ResponseExample>
+```json Response (200 OK)
+{
+  "ma": [
+    {
+      "id": "string",
+      "date": "string (YYYY-MM-DD)",
+      "date_expected": "string (YYYY-MM-DD, YYYY-QN, YYYY-MM)",
+      "date_completed": "string (YYYY-MM-DD)",
+      "acquirer_ticker": "string",
+      "acquirer_exchange": "string",
+      "acquirer_name": "string",
+      "target_ticker": "string",
+      "target_exchange": "string",
+      "target_name": "string",
+      "currency": "string",
+      "deal_type": "string",
+      "deal_size": "string (double)",
+      "deal_payment_type": "string",
+      "deal_status": "string",
+      "deal_terms_extra": "string",
+      "importance": "integer",
+      "notes": "string",
+      "updated": "integer (int64)"
+    }
+  ]
+}
+```
+</ResponseExample>

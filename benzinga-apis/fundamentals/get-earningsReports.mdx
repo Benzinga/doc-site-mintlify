@@ -1,0 +1,57 @@
+---
+title: "GET Earnings Reports"
+description: "Get detailed earning reports for company."
+openapi: "GET /fundamentals/earningReports"
+---
+
+<ResponseExample> 
+```JSON Response (200 OK)
+{
+  "6M": {
+    "period": "string",
+    "asOf": "string",
+    "reportType": "string",
+    "currency": "string",
+    "fiscalYearEnd": "string",
+    "basicContinuousOperations": "number (float)",
+    "continuingAndDiscontinuedBasicEPS": "number (float)",
+    "continuingAndDiscontinuedDilutedEPS": "number (double)",
+    "dilutedAverageShares": "integer (int64)",
+    "dilutedContinuousOperations": "integer (int64)",
+    "dilutedEPS": "number (float)",
+    "dividendPerShare": "number (float)",
+    "basicAverageShares": "integer (int64)"
+  },
+  "3M": {
+    "period": "string",
+    "asOf": "string",
+    "reportType": "string",
+    "currency": "string",
+    "fiscalYearEnd": "string",
+    "basicContinuousOperations": "number (float)",
+    "continuingAndDiscontinuedBasicEPS": "number (float)",
+    "continuingAndDiscontinuedDilutedEPS": "number (double)",
+    "dilutedAverageShares": "integer (int64)",
+    "dilutedContinuousOperations": "integer (int64)",
+    "dilutedEPS": "number (float)",
+    "dividendPerShare": "number (float)",
+    "basicAverageShares": "integer (int64)"
+  },
+  "12M": {
+    "period": "string",
+    "asOf": "string",
+    "reportType": "string",
+    "currency": "string",
+    "fiscalYearEnd": "string",
+    "basicContinuousOperations": "number (float)",
+    "continuingAndDiscontinuedBasicEPS": "number (float)",
+    "continuingAndDiscontinuedDilutedEPS": "number (double)",
+    "dilutedAverageShares": "integer (int64)",
+    "dilutedContinuousOperations": "integer (int64)",
+    "dilutedEPS": "number (float)",
+    "dividendPerShare": "number (float)",
+    "basicAverageShares": "integer (int64)"
+  }
+}
+```
+</ResponseExample>

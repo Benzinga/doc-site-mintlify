@@ -1,0 +1,41 @@
+---
+title: "GET Option Activity"
+description: "Returns option activity signals"
+openapi: "GET /signal/option_activity"
+---
+
+<ResponseExample>
+```JSON Response (200 OK)
+[
+  {
+    "id": "string",
+    "date": "string (YYYY-MM-DD)",
+    "time": "string (HH:MM:SS)",
+    "ticker": "string",
+    "exchange": "string",
+    "description": "string",
+    "description_extended": "string",
+    "updated": "integer",
+    "sentiment": "string",
+    "aggressor_ind": "string (float)",
+    "option_symbol": "string (SPY190826P00292000)",
+    "underlying_type": "string",
+    "underlying_price": "string (float)",
+    "cost_basis": "string (float)",
+    "put_call": "string",
+    "strike_price": "string (float)",
+    "price": "string (float)",
+    "size": "string (integer)",
+    "date_expiration": "string (YYYY-MM-DD)",
+    "option_activity_type": "string",
+    "trade_count": "string (integer)",
+    "open_interest": "string (integer)",
+    "volume": "string (integer)",
+    "bid": "string (float)",
+    "ask": "string (float)",
+    "midpoint": "string (float)",
+    "execution_estimate": "string"
+  }
+]
+```
+</ResponseExample>

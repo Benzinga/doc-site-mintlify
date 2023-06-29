@@ -1,0 +1,41 @@
+---
+title: "GET Guidance"
+description: "Returns guidance data"
+openapi: "GET /calendar/guidance"
+---
+<ResponseExample>
+```json Response (200 OK)
+{
+  "guidance": [
+    {
+      "id": "string",
+      "date": "string (YYYY-MM-DD)",
+      "time": "string (HH:MM:SS)",
+      "ticker": "string",
+      "exchange": "string",
+      "name": "string",
+      "currency": "string",
+      "period": "string",
+      "period_year": "integer (YYYY)",
+      "prelim": "string",
+      "is_primary": "string",
+      "eps_type": "string",
+      "eps_guidance_est": "string (float)",
+      "eps_guidance_max": "string (float)",
+      "eps_guidance_min": "string (float)",
+      "eps_guidance_prior_max": "string (float)",
+      "eps_guidance_prior_min": "string (float)",
+      "revenue_guidance_est": "string (float)",
+      "revenue_guidance_max": "string (float)",
+      "revenue_guidance_min": "string (float)",
+      "revenue_guidance_prior_max": "string (float)",
+      "revenue_guidance_prior_min": "string (float)",
+      "revenue_type": "string",
+      "importance": "integer",
+      "notes": "string",
+      "updated": "integer (int64)"
+    }
+  ]
+}
+```
+</ResponseExample>

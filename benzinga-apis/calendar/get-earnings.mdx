@@ -1,0 +1,41 @@
+---
+title: "GET Earnings"
+description: "Returns the earnings data"
+openapi: "GET /calendar/earnings"
+---
+
+<ResponseExample>
+```json Response (200 OK)
+{
+  "earnings": [
+    {
+      "id": "string",
+      "date": "string (YYYY-DD-MM)",
+      "date_confirmed": "string (1/0)",
+      "time": "string (HH:MM:SS)",
+      "ticker": "string",
+      "exchange": "string",
+      "name": "string",
+      "currency": "string",
+      "period": "string",
+      "period_year": "integer",
+      "eps_type": "string",
+      "eps": "string (double)",
+      "eps_est": "string (double)",
+      "eps_prior": "string (double)",
+      "eps_surprise": "string (double)",
+      "eps_surprise_percent": "string (double)",
+      "revenue_type": "string",
+      "revenue": "string (integer)",
+      "revenue_est": "string (integer)",
+      "revenue_prior": "string (integer)",
+      "revenue_surprise": "string (integer)",
+      "revenue_surprise_percent": "string (double)",
+      "importance": "integer",
+      "notes": "string",
+      "updated": "integer"
+    }
+  ]
+}
+```
+</ResponseExample>

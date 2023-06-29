@@ -1,0 +1,34 @@
+---
+title: "GET Dividends"
+description: "Dividends Events"
+openapi: "GET /calendar/dividends"
+---
+Returns dividends data for a selected period and/or security.
+
+<ResponseExample>
+```json Response (200 OK)
+{
+  "dividends": [
+    {
+      "id": "string",
+      "date": "string (YYYY-DD-MM)",
+      "notes": "string",
+      "updated": "integer",
+      "ticker": "string",
+      "name": "string",
+      "exchange": "string",
+      "currency": "string",
+      "frequency": "integer",
+      "dividend": "string (double)",
+      "dividend_prior": "string (double)",
+      "dividend_type": "string",
+      "dividend_yield": "string (double)",
+      "ex_dividend_date": "string (YYYY-DD-MM)",
+      "payable_date": "string (YYYY-DD-MM)",
+      "record_date": "string (YYYY-DD-MM)",
+      "importance": "integer"
+    }
+  ]
+}
+```
+</ResponseExample>

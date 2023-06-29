@@ -1,0 +1,20 @@
+---
+title: "GET Firms"
+description: "Returns the available firms providing analyst ratings"
+openapi: "GET /calendar/ratings/firms"
+---
+<ResponseExample>
+```json Response (200 OK)
+{
+  "analyst_ratings_firm": [
+    {
+      "id": "string",
+      "currency": "string",
+      "homepage": "string",
+      "name": "string",
+      "updated": "integer (int64)"
+    }
+  ]
+}
+```
+</ResponseExample>

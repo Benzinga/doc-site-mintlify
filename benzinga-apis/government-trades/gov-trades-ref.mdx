@@ -1,0 +1,33 @@
+---
+title: 'Government Trades API Reference'
+description: 'This REST API returns structured data for Government Trades - House & Senate.'
+---
+
+## Best Practices
+
+For optimal performance, we have a few recommendations.
+
+### Limit query, improve performance
+
+Limiting the scope of the query will directly improve the latency of the API. This can be accomplished by using parameters such as `symbols`, or (preferably) by using `updated` for deltas.
+
+### Using deltas
+
+A common pattern is to use a delta to query for the latest change in a dataset. By reducing the amount of data available in the query, it will produce results with the least amount of latency and limited data an application will have to traverse.
+
+In our case, we recommend tracking and querying by the latest updated timestamp.
+
+One caveat to allow for some latency and second-only timestamps: when querying, set `updated` to a value 5 seconds earlier than you actually want. A query may look like:
+
+`/government_trades?updated=LAGGED_TIMESTAMP` Where `LAGGED_TIMESTAMP` is set to be five seconds less than the maximum value of the `updated` field in rows already pulled from our API.
+
+<Info>
+  ### Api Endpoint https://api.benzinga.com/api/v1/gov/usa/congress ### Response
+  Content-Types application/json ### Schemes https ### Version 1.0.0
+</Info>
+
+## Authentication
+
+<ParamField query="token" type="apiKey">
+  Include key in either query or header
+</ParamField>

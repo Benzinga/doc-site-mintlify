@@ -1,0 +1,61 @@
+---
+title: "GET Valuation Ratios"
+description: "Returns the valuation ratios"
+openapi: "GET /fundamentals/valuationRatios"
+---
+
+<ResponseExample>
+```JSON Response (200 OK)
+{
+  "result": [
+    {
+      "valuationRatios": [
+        {
+          "id": {
+            "shareClassId": "string",
+            "date": "string (YYYY-MM-DD)"
+          },
+          "payoutRatio": "number (float)",
+          "sustainableGrowthRate": "number (float)",
+          "cashReturn": "number (float)",
+          "salesPerShare": "number (float)",
+          "bookValuePerShare": "number (float)",
+          "cfoPerShare": "number (float)",
+          "fcfPerShare": "number (float)",
+          "earningYield": "number (float)",
+          "peRatio": "number (float)",
+          "salesYield": "number (float)",
+          "psRatio": "number (float)",
+          "bookValueYield": "number (float)",
+          "pbRatio": "number (float)",
+          "cfYield": "number (float)",
+          "pcfRatio": "number (float)",
+          "fcfYield": "number (float)",
+          "fcfRatio": "number (float)",
+          "trailingDividendYield": "number (float)",
+          "forwardDividendYield": "number (float)",
+          "forwardEarningYield": "number (float)",
+          "forwardPeRatio": "number (float)",
+          "pegRatio": "number (float)",
+          "pegPayback": "number (float)",
+          "tangibleBookValuePerShare": "number (float)",
+          "tangibleBvPerShare3YrAvg": "number (float)",
+          "tangibleBvPerShare5YrAvg": "number (float)",
+          "forwardDividend": "number (float)",
+          "workingCapitalPerShare": "number (float)",
+          "workingCapitalPerShare3YrAvg": "number (float)",
+          "workingCapitalPerShare5YrAvg": "number (float)",
+          "evToEbitda": "number (float)",
+          "buyBackYield": "number (float)",
+          "totalYield": "number (float)",
+          "ratioPe5YearAverage": "number (float)",
+          "priceChange1M": "number (float)",
+          "normalizedPeRatio": "number (float)",
+          "pricetoEbitda": "number (float)"
+        }
+      ]
+    }
+  ]
+}
+```
+</ResponseExample>

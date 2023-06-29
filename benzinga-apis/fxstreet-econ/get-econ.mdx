@@ -1,0 +1,53 @@
+---
+title: "GET Econ"
+description: "Get an array of event date objects"
+openapi: "GET /econ"
+---
+
+<ResponseExample>
+```JSON Response (200 OK)
+[
+  {
+    "Event": {
+      "Id": "string",
+      "DateUtc": "string (ISO date)",
+      "Name": "string",
+      "Description": "string",
+      "HTMLDescription": "string",
+      "CuntryID": "string",
+      "InternationalCountryCode": "string",
+      "CountryName": "string",
+      "EventTypeID": "string",
+      "EventTypeDescription": "string",
+      "Potency": "number",
+      "PotencySymbol": "string",
+      "CurrencyId": "string",
+      "CurrencySymbol": "string",
+      "Symbol": "string",
+      "IsSpeech": "boolean",
+      "IsReport": "boolean",
+      "RiseType": "string"
+    },
+    "Id": "string",
+    "DateUtc": "string (ISO Date)",
+    "Comments": "string",
+    "IsPreliminary": "boolean",
+    "PeriodType": "string",
+    "ForPeriod": "string (ISO Date)",
+    "Volatility": "integer",
+    "Consensus": "number",
+    "HasRelatedContent": "boolean",
+    "Previous": "number",
+    "Revised": "number",
+    "IsTentative": "boolean",
+    "IsAllDay": "boolean",
+    "IsBetterThanExpected": "boolean",
+    "HasNews": "boolean",
+    "HasRelateds": "boolean",
+    "HasHistory": "boolean",
+    "UrlSource": "string",
+    "CreateDateUtc": "string (ISO Date)"
+  }
+]
+```
+</ResponseExample>

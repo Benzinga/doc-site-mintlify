@@ -1,0 +1,29 @@
+---
+title: "GET WIIMs"
+description: "Returns WIIMs data"
+openapi: "GET /wiims"
+---
+<ResponseExample>
+```JSON Response (200 OK)
+{
+  "data": [
+    {
+      "id": "string",
+      "description": "string",
+      "search_key": "string",
+      "security": {
+        "exchange": "string",
+        "symbol": "string",
+        "name": "string",
+        "country": "string",
+        "cusip": "string",
+        "isin": "string"
+      },
+      "created": "string (double)",
+      "updated": "string (double)",
+      "expired": "string (double)"
+    }
+  ]
+}
+```
+</ResponseExample>

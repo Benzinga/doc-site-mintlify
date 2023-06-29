@@ -1,0 +1,32 @@
+---
+title: "GET Economics"
+description: "Returns the economic calendar data"
+openapi: "GET /calendar/economics"
+---
+<ResponseExample>
+```json Response (200 OK)
+{
+  "economics": [
+    {
+      "id": "string",
+      "date": "string (YYYY-MM-DD)",
+      "time": "string (HH:MM:SS)",
+      "country": "string",
+      "event_name": "string",
+      "event_period": "string",
+      "period_year": "integer (YYYY)",
+      "actual": "string (float)",
+      "actual_t": "string",
+      "consensus": "string (float)",
+      "consensus_t": "string",
+      "prior": "string (float)",
+      "prior_t": "string",
+      "importance": "integer",
+      "updated": "integer",
+      "description": "string"
+    }
+  ]
+}
+
+```
+</ResponseExample>

@@ -1,0 +1,43 @@
+---
+title: "GET Sync"
+description: "Bulk sync logos."
+openapi: "GET /sync"
+---
+<ResponseExample> 
+```JSON Response (200 OK)
+[
+  {
+    "id": "string",
+    "search_key": "string",
+    "created_at": "string (RFC3339/ISO8601)",
+    "updated_at": "string (RFC3339/ISO8601)",
+    "colors": {
+      "background_light": "string (#000/#abc000)",
+      "background_dark": "string (#000/#abc000)"
+    },
+    "files": {
+      "logo_light": "string",
+      "logo_dark": "string",
+      "logo_vector_light": "string",
+      "logo_vector_dark": "string",
+      "mark_light": "string",
+      "mark_dark": "string",
+      "mark_composite_light": "string",
+      "mark_composite_dark": "string",
+      "mark_vector_light": "string",
+      "mark_vector_dark": "string"
+    },
+    "securities": [
+      {
+        "exchange": "string",
+        "symbol": "string",
+        "name": "string",
+        "cik": "string",
+        "cusip": "string",
+        "isin": "string"
+      }
+    ]
+  }
+]
+```
+</ResponseExample>

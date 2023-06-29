@@ -1,0 +1,31 @@
+---
+title: "GET Conference Calls"
+description: "Returns Conference call data"
+openapi: "GET /calendar/conference-calls"
+---
+
+<ResponseExample>
+```json Response (200 OK)
+{
+  "conference": [
+    {
+      "id": "string",
+      "date": "string (YYYY-MM-DD)",
+      "time": "string (HH:MM:SS)",
+      "name": "string",
+      "exchange": "string",
+      "ticker": "string",
+      "start_time": "string (HH:MM:SS)",
+      "phone_num": "string (NNN-NNN-NNNN)",
+      "international_num": "string (NNN-NNN-NNNN)",
+      "reservation_num": "string (NNN-NNN-NNNN)",
+      "access_code": "string",
+      "webcast_url": "string (URL)",
+      "importance": "integer",
+      "notes": "string",
+      "updated": "integer (int64)"
+    }
+  ]
+}
+```
+</ResponseExample>

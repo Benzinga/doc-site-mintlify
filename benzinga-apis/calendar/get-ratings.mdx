@@ -1,0 +1,75 @@
+---
+title: "GET Ratings"
+description: "Returns analyst ratings data"
+openapi: "GET /calendar/ratings"
+---
+<ResponseExample>
+```json Response (200 OK)
+{
+  "ratings": [
+    {
+      "id": "string",
+      "date": "string (YYYY-MM-DD)",
+      "time": "string (HH:MM:SS)",
+      "ticker": "string",
+      "exchange": "string",
+      "name": "string",
+      "currency": "string",
+      "action_pt": "string",
+      "action_company": "string",
+      "rating_current": "string",
+      "pt_current": "string (float)",
+      "adjusted_pt_current": "string (float)",
+      "rating_prior": "string",
+      "pt_prior": "string (float)",
+      "adjusted_pt_prior": "string (float)",
+      "url": "string (URL)",
+      "url_calendar": "string (URL)",
+      "url_news": "string (URL)",
+      "analyst": "string",
+      "analyst_id": "string",
+      "analyst_name": "string",
+      "ratings_accuracy": {
+        "smart_score": "string (double)",
+        "overall_success_rate": "string (double)",
+        "overall_avg_return_percentile": "string (double)",
+        "total_ratings_percentile": "string (double)",
+        "total_ratings": "integer (int64)",
+        "overall_gain_count": "integer (int64)",
+        "overall_loss_count": "integer (int64)",
+        "overall_average_return": "string (double)",
+        "overall_stdev": "string (double)",
+        "1m_gain_count": "string (double)",
+        "1m_loss_count": "string (double)",
+        "1m_average_return": "string (double)",
+        "1m_stdev": "string (double)",
+        "3m_gain_count": "string (double)",
+        "3m_loss_count": "string (double)",
+        "3m_average_return": "string (double)",
+        "3m_stdev": "string (double)",
+        "9m_gain_count": "string (double)",
+        "9m_loss_count": "string (double)",
+        "9m_average_return": "string (double)",
+        "9m_stdev": "string (double)",
+        "1y_gain_count": "string (double)",
+        "1y_loss_count": "string (double)",
+        "1y_average_return": "string (double)",
+        "1y_stdev": "string (double)",
+        "2y_gain_count": "string (double)",
+        "2y_loss_count": "string (double)",
+        "2y_average_return": "string (double)",
+        "2y_stdev": "string (double)",
+        "3y_gain_count": "string (double)",
+        "3y_loss_count": "string (double)",
+        "3y_average_return": "string (double)",
+        "3y_stdev": "string (double)",
+        "updated": "integer (int64)"
+      },
+      "importance": "string",
+      "notes": "string",
+      "updated": "integer (int64)"
+    }
+  ]
+}
+```
+</ResponseExample>

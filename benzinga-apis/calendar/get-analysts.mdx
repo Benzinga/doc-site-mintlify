@@ -1,0 +1,58 @@
+---
+title: "GET Analysts"
+description: "Returns the full list of analyst that are providing ratings"
+openapi: "GET /calendar/ratings/analysts"
+---
+<ResponseExample>
+```json Response (200 OK)
+{
+  "removed": [
+    {
+      "id": "string",
+      "firm_id": "string",
+      "firm_name": "string",
+      "name_first": "string",
+      "name_last": "string",
+      "name_full": "string",
+      "ratings_accuracy": {
+        "smart_score": "string (double)",
+        "overall_success_rate": "string (double)",
+        "overall_avg_return_percentile": "string (double)",
+        "total_ratings_percentile": "string (double)",
+        "total_ratings": "integer (int64)",
+        "overall_gain_count": "integer (int64)",
+        "overall_loss_count": "integer (int64)",
+        "overall_average_return": "string (double)",
+        "overall_stdev": "string (double)",
+        "1m_gain_count": "string (double)",
+        "1m_loss_count": "string (double)",
+        "1m_average_return": "string (double)",
+        "1m_stdev": "string (double)",
+        "3m_gain_count": "string (double)",
+        "3m_loss_count": "string (double)",
+        "3m_average_return": "string (double)",
+        "3m_stdev": "string (double)",
+        "9m_gain_count": "string (double)",
+        "9m_loss_count": "string (double)",
+        "9m_average_return": "string (double)",
+        "9m_stdev": "string (double)",
+        "1y_gain_count": "string (double)",
+        "1y_loss_count": "string (double)",
+        "1y_average_return": "string (double)",
+        "1y_stdev": "string (double)",
+        "2y_gain_count": "string (double)",
+        "2y_loss_count": "string (double)",
+        "2y_average_return": "string (double)",
+        "2y_stdev": "string (double)",
+        "3y_gain_count": "string (double)",
+        "3y_loss_count": "string (double)",
+        "3y_average_return": "string (double)",
+        "3y_stdev": "string (double)",
+        "updated": "integer (int64)"
+      },
+      "updated": "integer (int64)"
+    }
+  ]
+}
+```
+</ResponseExample>

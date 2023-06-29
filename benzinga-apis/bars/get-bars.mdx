@@ -1,0 +1,27 @@
+---
+title: "GET bars"
+openapi: "GET /bars"
+description: "Get the delayed quotes"
+---
+
+<ResponseExample>
+```json Response (200 OK)
+[
+  {
+    "symbol": "string",
+    "interval": "number",
+    "candles": [
+      {
+        "open": "number (float)",
+        "high": "number (float)",
+        "low": "number (float)",
+        "close": "number (float)",
+        "volume": "integer",
+        "time": "integer",
+        "dateTime": "string (YYYY-MM-DDTHH:MM:SS.mmm-ZZ:zz)"
+      }
+    ]
+  }
+]
+```
+</ResponseExample>

@@ -1,0 +1,456 @@
+---
+title: "Squawk v4"
+description: "Squawk is a realtime broadcast which includes important headlines, price movement and rumors as stories develop to give traders and investors news in the fastest and most convenient form."
+---
+
+## Connecting to Squawk
+There are two ways you can connect to Sqauwk:
+- [Using WebRTC](#using-webrtc)
+- [Using RTP](#using-rtp)
+
+**Notes for both WebRTC and RTP:**
+1. It is advised to add reconnect functionality for WebSocket. It is useful, in case socket connection drops for any reason (maybe the internet is down for a couple of minutes). So add a functionality to try reconnection at some regular interval after WebScoket gets disconnected.
+
+2. The ID field (id) in each request/message is a unique `UUID` string used to coordinate messages between client and server over WebSocket.
+
+3. Each response to a message sent from the client will have `Response` appended at the end of the message's type sent. For e.g. a message with type `joinRoom` will receive a response with type `joinRoomResponse`
+
+4. Following is the format of the generic error response. In event of any error to a sent request, you will get the following response:
+
+```JSON
+{
+    "error": "Cannot join room PRO",
+    "id": "4158f900-d652-483a-8147-866d99ed9f8a"
+    "type": "joinRoomResponse"
+}
+```
+
+As stated earlier, the type indicates the response to the message earlier sent.
+
+## Using WebRTC
+Squawk is built on top of WebRTC. So one can connect to it through WebRTC supported browser using standard WebRTC API methods. The following are the methods that you will need to implement while writing a client for connecting to squawk.
+
+- [Create a socket connection](#create-a-socket-connection)
+- [Authenticate](#authenticate)
+- [Join Room](#join-room)
+- [Get Available Streams/Channels](#get-available-streamschannels)
+- [Create peer connections](#create-peer-connections)
+- [Send ICE Candidate to peers](#send-ice-candidate-to-peers)
+- [Message Types](#message-types)
+- [Ping/Pong mechanism to keep alive the Web Socket](#ping-pong-mechanism-to-keep-alive-the-web-socket)
+- [Logout](#logout)
+
+### Create a socket connection
+First, create a web socket connection to squawk. The Benzinga Squawk WebRTC service WebSocket address is:
+
+**Address if using API key**
+wss://squawk.benzinga.com/ws/v4/squawk
+
+**Address if using JWT**
+wss://squawk.benzinga.com/ws/v4/webrtc
+
+**Note:** API Key support is deprecated and new integrations should use JWT.
+
+### Authenticate
+
+**Using API key**
+```JSON
+{
+    "apikey": "f5kec5x6gplwdv8o5dcn5aydtyx132u8",    
+    "role": "viewer",
+    "type": "auth",
+    "id": "4158f900-d652-483a-8147-866d99ed9f8a"
+}
+```
+
+**Note:** If you do not yet have an API key (`apikey`), please get in touch with the Benzinga licensing team at licensing@benzinga.com. This is a one-time process. Save this API key securely.
+
+
+**Using JWT**
+Benzinga APIs support asymmetric JWT (JSON Web Token) for authentication.
+
+To authenticate using JWT, send the token in query parameter when you open the WebSocket connection. Pseudo-code for connecting (and authenticating) would be as below:
+```
+socket.connect("wss://squawk.benzinga.com/ws/v4/webrtc?jwt=<jwt_token>")
+```
+
+With JWT there is no need to send a separate auth message as the token includes all of the relevant properties. Be sure to refer to Benzinga JWT documentation.
+
+Please refer to https://github.com/Benzinga/jwt for more information on Benzinga JWT token. For JWT, you will need to share the hosting location/endpoint of your public key to Benzinga from where our authenticator service would be able to download the public key using key ID. At the moment this is a manual one time process.
+
+On successful authentication and connection, you should get the following response:
+```JSON
+{
+    "iceServers": [{
+        "urls": "turn:turnserver.benzinga.com:443",
+        "username": "1567755301:XQbpzZ0YzltGon1q6paqbfensmE\u003d",
+        "credential": "JfJBS295kI/5pjCQgGGJDgHv9ms\u003d"
+    }],
+    "id": "4158f900-d652-483a-8147-866d99ed9f8a",
+    "type": "authResponse"
+}
+```
+The ice server details contains both STUN and TURN server.
+
+### Join Room
+Once you have received the `iceServers` details, authentication is done. Next, send the join room request/message. The room name for benzinga broadcasts is `PRO`. Sample join room request format:
+```JSON 
+{
+    "room": "PRO",
+    "type": "joinRoom",
+    "id": "a5fd1a15-17cf-4f66-83a2-0d77704e1870"
+}
+```
+If the join room is successful, you should just get the same message id in response and no error. On success, you should create a room on client side.
+```JSON
+{
+    "existingPresenters": [{
+        "userId": "c85d0de5-630e-532e-7208-a9e148c93a08:b:071f00f9-8f2f-4479-8cd7-30804d689ca7",
+        "username": "Charles Gross"
+    }, {
+        "userId": "5e7631ab-d88b-ec1c-1f14-55753629f80d:b:3db50b88-4181-4914-abcb-5e9c0624d86b",
+        "username": "Benzinga Newsdesk"
+    }],
+    "id": "a5fd1a15-17cf-4f66-83a2-0d77704e1870",
+    "type": "joinRoomResponse"
+}
+```
+`existingPresenters` represents active broadcasters at the moment.
+
+### Get Available Streams/Channels
+Fetch the list of available streams/channels in the room
+```
+{
+    "id": "9316ebd8-bc16-456d-b70f-415fbe4db1f2",
+    "type": "getAvailableStreams"
+}
+```
+The successful response should be:
+```
+{
+    "streams": [{
+        "id": 1,
+        "type": "live",
+        "description": "Pro Squawk English",
+        "metadata": "Pro Squawk channel for realtime audio updates related to headlines, price movement and rumors as stories develop",
+        "allowedListening": true,
+        "allowedBroadcasting": false
+    }],
+    "id": "9316ebd8-bc16-456d-b70f-415fbe4db1f2",
+    "type": "getAvailableStreamsResponse"
+}
+```
+You can subscribe to one or more stream for listening from the list. Note that, `allowedListening` and `allowedBroadcasting` indicates if this user has listening and broadcasting rights to the channel.
+
+
+### Subscribe to Stream
+Subscribe to a particular stream passing stream id.
+```JSON
+{
+    "id": "fb97854b-1291-467b-b518-e91dfb9d64b1",
+    "streamId": 1,
+    "restart": false,
+    "type": "subscribeToStream"
+}
+```
+Note that `restart` flag is used to indicate if there needs a peer re-negotiation (ICE Restart) for a stream. This should be used in case of peer connection is failing for any reason (e.g. change in network). It is optional if you are creating a new peer connection. A successful response should have SDP offer for subscribed stream:
+```
+{
+    "sdpOffer": "v\u003d0\r\no\u003d- 1598527749225841 1 IN IP4 192.168.2.6\r\ns\u003dMountpoint 1\r\nt\u003d0 0\r\na\u003dgroup:BUNDLE audio\r\na\u003dmsid-semantic: WMS janus\r\nm\u003daudio 9 UDP/TLS/RTP/SAVPF 111\r\nc\u003dIN IP4 192.168.2.6\r\na\u003dsendonly\r\na\u003dmid:audio\r\na\u003drtcp-mux\r\na\u003dice-ufrag://2Y\r\na\u003dice-pwd:zXU9lnCAIhI7S0/zZ5yAJT\r\na\u003dice-options:trickle\r\na\u003dfingerprint:sha-256 DE:29:EE:4D:80:64:2B:45:11:71:BC:9F:D0:68:25:71:4D:08:2D:5E:ED:32:C8:AB:DD:98:CA:AF:B8:6F:2F:94\r\na\u003dsetup:actpass\r\na\u003drtpmap:111 opus/48000/2\r\na\u003dextmap:1 urn:ietf:params:rtp-hdrext:sdes:mid\r\na\u003dmsid:janus janusa0\r\na\u003dssrc:658882346 cname:janus\r\na\u003dssrc:658882346 msid:janus janusa0\r\na\u003dssrc:658882346 mslabel:janus\r\na\u003dssrc:658882346 label:janusa0\r\na\u003dcandidate:1 1 udp 2013266431 192.168.2.6 35278 typ host\r\na\u003dend-of-candidates\r\n",
+    "streamId": 1,
+    "id": "fb97854b-1291-467b-b518-e91dfb9d64b1",
+    "type": "subscribeToStreamResponse"
+}
+```
+
+### Start Stream
+
+Now you have an SDP offer of the subscribed stream. So at this point, process the received SDP offer and send back SDP answer with `startStrea` request to start receiving and listening.
+```
+{
+    "id": "87d4945b-ec7f-4451-8281-cd3d20da7a47",
+    "sdpAnswer": "v=0\r\no=- 7051170108058563345 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE audio\r\na=msid-semantic: WMS\r\nm=audio 9 UDP/TLS/RTP/SAVPF 111\r\nc=IN IP4 0.0.0.0\r\na=rtcp:9 IN IP4 0.0.0.0\r\na=ice-ufrag:bBpg\r\na=ice-pwd:QflT1eESz7K2mIItHDjl8O+2\r\na=ice-options:trickle\r\na=fingerprint:sha-256 ED:9B:96:E5:1A:A0:C3:CA:5D:9D:70:6B:55:41:5D:F1:05:4A:51:DD:AA:81:BC:46:BD:3E:8B:CB:2E:B2:47:64\r\na=setup:active\r\na=mid:audio\r\na=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid\r\na=recvonly\r\na=rtcp-mux\r\na=rtpmap:111 opus/48000/2\r\na=fmtp:111 minptime=10;useinbandfec=1\r\n",
+    "streamId": 1,
+    "type": "startStream"
+}
+```
+On success, the response should have the status of stream and at this point, the user should start receiving the audio stream:
+```
+{
+    "status": "starting",
+    "streamId": 1,
+    "id": "87d4945b-ec7f-4451-8281-cd3d20da7a47",
+    "type": "startStreamResponse"
+}
+```
+
+### Send ICE Candidate
+Typical request/message format to send `iceCandidate` from each stream's peer:
+```JSON
+{
+    "candidate": {
+        "candidate": "candidate:2561942037 1 udp 2113937151 99ac813a-15cb-47b5-8722-0cb0c1659d97.local 50388 typ host generation 0 ufrag c1ss network-cost 999",
+        "sdpMLineIndex": 0,
+        "sdpMid": "audio"
+    },
+    "id": "3f194659-7179-4a66-bb05-b7861063143f",
+    "streamId": 1,
+    "type": "iceCandidate"
+}
+```
+Response: 
+```JSON
+{
+    "id": "3f194659-7179-4a66-bb05-b7861063143f",
+    "streamId": 1,
+    "type": "iceCandidateResponse"
+}
+```
+Also, add an event handler on stream's peer connection's [onicegatheringstatechange](https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/onicegatheringstatechange) event. And on `complete` state (when ICE gathering completed), send the following request to notify same:
+```JSON 
+{
+    "id": "c17601e9-928e-4f7d-ac18-a2de3612f493",
+    "streamId": 1,
+    "type": "listenerIceGatheringCompleted"
+}
+```
+Success response should be:
+
+```JSON 
+{
+    "id": "c17601e9-928e-4f7d-ac18-a2de3612f493",
+    "streamId": 1,
+    "type": "listenerIceGatheringCompletedResponse"
+}
+```
+
+### Stop Stream
+If you want to stop listening and disconnect from all channels/streams, you can send logout request. But in case, if you want to stop listening to a specific stream/channel, you can send `stopStream` request.
+```JSON 
+{
+    "id": "0c346041-d0d7-4321-a0f6-caa45f29495b",
+    "streamId": 1,
+    "type": "stopStream"
+}
+```
+Success response should be:
+```JSON 
+{
+    "id": "0c346041-d0d7-4321-a0f6-caa45f29495b",
+    "streamId": 1,
+    "type": "stopStreamResponse"
+}
+```
+
+Note that, if you are sending `subscribeToStream` on an existing peer connection fail event (meaning you are starting over again), then you must invoke `stopStream` first to dispose of the existing peer connection before a fresh `subscribeToStream`
+
+### Notifications from server
+Add a handler for the following message/notification types, which will be sent by squawk server.
+
+- **mediaOverride**
+
+Meaning this user has started playing the same stream from another session (could be logged in from another browser/client). So Squawk server discards the peer connections associated with that stream. The `mediaOverride` notification will be in the following format:
+```JSON 
+{
+    "streamId": 1,
+    "type": "mediaOverride"
+}
+```
+
+### Ping/Pong mechanism to keep alive the Web Socket
+Implement the regular interval `ping` messages to keep the Web Socket connection alive. Every 25-30 seconds should be good enough. Ping request format:
+```JSON 
+{
+    "type": "ping",
+    "id": "e4809b6b-319a-4fa9-94e0-94ae86a33f13"
+}
+```
+In response, you should just get the same `id`:
+```JSON 
+{
+    "id": "e4809b6b-319a-4fa9-94e0-94ae86a33f13",
+    "type": "pingResponse",
+}
+```
+
+### Logout
+Send the logout message when you want to stop listening or your container application's session ends. The logout request/message should be:
+```JSON 
+{
+    "type": "logout",
+    "id": "9461455c-6f4b-438d-b182-72cc2304521d"
+}
+```
+
+
+## Using RTP
+Squawk also supports RTP streaming, which can be useful if you are looking to re-broadcast from your media server or for any other RTP specific purpose. One can connect to squawk RTP by implementing the following mechanism.
+- [Create a socket connection](#create-a-socket-connection-2)
+- [Authenticate](#authenticate-2)
+- [SDP negotiation](#sdp-negotiation)
+- [Logout](#logout-2)
+- [Media Override Notification](#media-override-notification)
+- [Ping/Pong mechanism](#ping-pong-mechanism-)
+
+For RTP receiver sample implementation, you can refer https://github.com/Benzinga/benzinga-squawk-client. There are chances that more than one broadcaster active at the same time. In such a case, there will be multiple streams from each broadcaster. So keep around 5 ports open for incoming RTP streams and configure them as shown in `rtp-receiver` example. 5 open ports are more than enough.
+
+### Create a socket connection
+Similar to WebRTC, for RTP also, the authentication, joining room, SDP negotiation, and other message exchange happens over WebSocket. So first connect to WebSocket. The Benzinga Squawk RTP service WebSocket address is:
+```
+wss://squawk.benzinga.com/rtp
+```
+
+### Authenticate
+At the moment squawk supports only API key authentication for RTP.
+**Using API key**
+Once the socket connection is created, authenticate with your `apikey`.
+```JSON 
+{
+    "id": "70572814-8ebb-11ea-b9d9-8bb3db575e99",
+    "role": "rtpreceiver",
+    "type": "auth",
+    "apikey": "f5kec5x6gplwdv8o5dcn5aydtyx132u8"
+}
+```
+Response:
+```JSON 
+{
+    "id": "70572814-8ebb-11ea-b9d9-8bb3db575e99",
+    "type": "authResponse"
+}
+```
+**Note:** Please get in touch with the Benzinga licensing team for acquiring `apiKey`. This is a one-time process. Save this API key securely.
+
+**Join Room**
+Once authenticated, send the join room request/message. The room name for benzinga broadcasts is `PRO`. Sample join room request format:
+
+```JSON 
+{
+    "room": "PRO",
+    "type": "joinRoom",
+    "id": "a5fd1a15-17cf-4f66-83a2-0d77704e1870"
+}
+```
+If the join room is successful, you should just get the same message id in response and no error. On success, you should create a room on client side.
+```JSON 
+{
+    "existingPresenters": [{
+        "userId": "c85d0de5-630e-532e-7208-a9e148c93a08:b:071f00f9-8f2f-4479-8cd7-30804d689ca7",
+        "username": "Charles Gross"
+    }, {
+        "userId": "5e7631ab-d88b-ec1c-1f14-55753629f80d:b:3db50b88-4181-4914-abcb-5e9c0624d86b",
+        "username": "Benzinga Newsdesk"
+    }],
+    "id": "a5fd1a15-17cf-4f66-83a2-0d77704e1870",
+    "type": "joinRoomResponse"
+}
+```
+
+`existingPresenters` represents active broadcasters at the moment. So if there are any existing broadcasters, you should start SDP negotiation with each broadcaster to receive the audio stream.
+
+### SDP negotiation
+
+Negotiate the SDP offer with each broadcaster using `userId` received in a presenter object. Sample format as shown below:
+```JSON 
+{
+    "id": "ddd8a81e-8ec0-11ea-96a6-6339b9e47143",
+    "type": "receiveMedia",
+    "sdpOffer": "v=0\nt=0 0\nm=audio 8447 RTP/AVP 98\nc=IN IP4 127.0.0.1\na=recvonly\na=rtpmap:98 opus/48000/2\na=fmtp:98 stereo=0; sprop-stereo=0; useinbandfec=1",
+    "userId": "d26826c0-0ecb-9d68-a429-3e4159f49bab:b:071f00f9-8f2f-4479-8cd7-30804d689ca7"
+}
+```
+Some references for SDP: [Quick overview of SDP fields](https://en.wikipedia.org/wiki/Session_Description_Protocol) [RTP and SDP](https://www.kurento.org/blog/rtp-i-intro-rtp-and-sdp#sdp)
+
+Sample SDP offer:
+```
+v=0
+t=0 0
+m=audio 8449 RTP/AVP 98
+c=IN IP4 127.0.0.1
+a=recvonly
+a=rtpmap:98 opus/48000/2
+a=fmtp:98 stereo=0; sprop-stereo=0; useinbandfec=1
+```
+
+**Please note that to receive RTP stream on your end you must have a publicly accessible IP:Port**. As stated earlier, you should create a pool of 4-5 open ports and use them while you generate SDP offer for a broadcaster. For e.g. in the above SDP offer, the port is 8449. Also when broadcaster left and the streaming session ends, you should return the used IP back to pool fr next time use.
+
+On successful negotiation you should get below response:
+
+```
+{
+    "sdpAnswer": "v\u003d0\r\no\u003d- 3797665759 3797665759 IN IP4 172.17.0.2\r\ns\u003dKurento Media Server\r\nc\u003dIN IP4 172.17.0.2\r\nt\u003d0 0\r\nm\u003daudio 18256 RTP/AVP 98\r\na\u003dsendonly\r\na\u003drtpmap:98 opus/48000/2\r\na\u003dfmtp:98 stereo\u003d0; sprop-stereo\u003d0; useinbandfec\u003d1\r\na\u003dssrc:2434529108 cname:user523588678@host-17c9a160\r\na\u003drtcp:18257\r\n",
+    "id": "ddd8a81e-8ec0-11ea-96a6-6339b9e47143",
+    "type": "receiveMediaResponse"
+}
+```
+
+`sdpAnswer` can be useful if you are aiming to re-broadcast the stream via WebRTC through any media server on your end. If not then simply ignore that. At this point, after successful SDP negotiation, you should start receiving RTP audio stream from Squawk.
+
+### Logout
+Send the logout message when you want to stop receiving RTP stream
+```JSON
+{
+    "type": "logout",
+    "id": "9461455c-6f4b-438d-b182-72cc2304521d"
+}
+```
+Ideally, you should send a logout message to Squawk before closing/shutting down your application.
+
+**Notifications**
+Handle the following message/notification types, which will be sent by squawk server.
+
+- **newPresenterArrived**
+
+Indicates the new presenter/broadcaster has joined.
+```JSON 
+{
+    "user": {
+        "userId": "d26826c0-0ecb-9d68-a429-3e4159f49bab:b:071f00f9-8f2f-4479-8cd7-30804d689ca7",
+        "username": "Charles Gross"
+    },
+    "type": "newPresenterArrived"
+}
+```
+Upon receiving this notification, start [SDP negotiation](#sdp-negotiation) to receive RTP stream from this broadcaster.
+
+- **presenterLeft**
+
+Indicates that the presenter/broadcaster has left and streaming stopped. So should cutoff the RTP stream on receiving this notification and return the associated port to free pool for using on next incoming stream. Typical `presenterLeft` message will be received in below format:
+```JSON 
+{
+    "userId": "d26826c0-0ecb-9d68-a429-3e4159f49bab:b:071f00f9-8f2f-4479-8cd7-30804d689ca7",
+    "type": "presenterLeft"
+}
+```
+
+- **mediaOverride**
+This is the notification that will be sent from Squawk to WebSocket client in a case where you logged in from another session (somewhere else) using the same API key.
+```JSON
+{
+    "type": "mediaOverride"
+}
+```
+Probably, you should close the socket connection in the current session on receiving the media override notification.
+
+### Ping/Pong mechanism
+Similar to WebRTC socket, implement the regular interval `ping` messages to keep the Web Socket connection alive. Every 25-30 seconds should be good enough. Ping request format:
+```JSON 
+{
+    "type": "ping",
+    "id": "e4809b6b-319a-4fa9-94e0-94ae86a33f13"
+}
+```
+In case if you are using a WebSocket library, it may already have this mechanism and in such a case, you don't need to add the ping message sending functionality.
+
+
+
+
+
+
+
+
+
+
+
+
+

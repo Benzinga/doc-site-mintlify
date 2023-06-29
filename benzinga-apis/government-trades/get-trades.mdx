@@ -1,0 +1,36 @@
+---
+title: "GET Trades"
+description: "Returns government trades data"
+openapi: "GET /trades"
+---
+<ResponseExample>
+```JSON Response (200 OK)
+{
+  "data": [
+    {
+      "id": "string",
+      "created": "string (double)",
+      "updated": "string (double)",
+      "ownership": "string",
+      "security": {
+        "name": "string",
+        "ticker": "string",
+        "type": "string"
+      },
+      "transaction_type": "string",
+      "transaction_date": "string",
+      "notification_date": "string",
+      "report_date": "string",
+      "amount": "string",
+      "chamber": "string",
+      "filer_info": {
+        "member_name": "string",
+        "status": "string",
+        "state": "string",
+        "district": "string"
+      }
+    }
+  ]
+}
+```
+</ResponseExample>

@@ -1,0 +1,41 @@
+---
+title: "Newsfeed & Why is it Moving v2 JWT API Reference"
+description: "This REST API returns structured data for news. It supports JWT based authentication."
+---
+## Best Practices
+For optimal performance, we have a few recommendations.
+
+### Limit query, improve performance
+Limiting the scope of the query will directly improve the latency of the API. This can be accomplished by using parameters such as `tickers`, `date`, and `channels`, or (preferably) by using `updatedSince` for deltas.
+
+### Using Deltas
+A common pattern is to use a delta to query for the latest change in a dataset. By reducing the amount of data available in the query, it will produce results with the least amount of latency and limited data an application will have to traverse.
+
+In our case, we recommend tracking and querying by the latest updated timestamp.
+
+One caveat to allow for some latency and second-only timestamps: when querying, set `updatedSince` to a value 5 seconds earlier than you actually want. A query may look like:
+
+`/news?updatedSince=LAGGED_TIMESTAMP` Where `LAGGED_TIMESTAMP` is set to be five seconds less than the maximum value of the `updated` field (converted to a Unix timestamp) in rows already pulled from our API.
+
+<Info>
+### Api Endpoint
+https://jwtapi.benzinga.com/api/v2
+### Response Content-Types
+application/json
+### Schemes
+https, http
+### Version
+2.0.0
+</Info>
+
+## Authentication
+### `Bearer` authentication
+JWT, Refer [Benzinga JWT](https://github.com/Benzinga/jwt) for more information. For JWT, we recommend using RS256. You may generate sample JWT using https://jwt.io/. You need to send us public/private key depending upon which algorithm you are using. We will add that public/private key on our side, so it will verify signature generated. Also, you need to send us the value of **iss** (issuer) value of payload.
+
+**Note:** Prepend **Bearer** to your actual jwt when you authorize here to test.
+
+**Type:** apiKey
+
+**Name:** Authorization
+
+**In:** header

@@ -1,0 +1,27 @@
+---
+title: "GET Offerings"
+description: "Returns Secondary Offering data"
+openapi: "GET /calendar/offerings"
+---
+<ResponseExample>
+```json Response (200 OK)
+[
+  {
+    "id": "string",
+    "date": "string (YYYY-MM-DD, YYYY-QN, YYYY-MM, YYYY-HN, YYYY)",
+    "time": "string (HH:MM:SS)",
+    "ticker": "string",
+    "exchange": "string",
+    "name": "string",
+    "currency": "string",
+    "shelf": "boolean",
+    "price": "string (double)",
+    "proceeds": "string (double)",
+    "number_shares": "integer",
+    "importance": "integer",
+    "notes": "string",
+    "updated": "integer (int64)"
+  }
+]
+```
+</ResponseExample>

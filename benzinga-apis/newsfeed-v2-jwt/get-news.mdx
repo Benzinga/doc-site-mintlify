@@ -1,0 +1,42 @@
+---
+title: "GET News"
+description: "Get the news items"
+openapi: "GET /news"
+---
+
+<ResponseExample>
+```JSON Response (200 OK)
+[
+  {
+    "id": "integer",
+    "author": "string",
+    "created": "string (Wed, 17 May 2017 14:20:15 -0400)",
+    "title": "string",
+    "teaser": "string",
+    "body": "string",
+    "url": "string",
+    "image": [
+      {
+        "size": "string",
+        "url": "string"
+      }
+    ],
+    "channels": [
+      {
+        "name": "string"
+      }
+    ],
+    "stocks": [
+      {
+        "name": "string"
+      }
+    ],
+    "tags": [
+      {
+        "name": "string"
+      }
+    ]
+  }
+]
+```
+</ResponseExample>
