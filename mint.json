@@ -22,7 +22,7 @@
   ],
   "topbarCtaButton": {
     "name": "Get Started",
-    "url": "https://www.benzinga.com/apis/data"
+    "url": "https://www.benzinga.com/apis/?opencontact=true"
   },
   "api": {
     "baseUrl": [
