@@ -196,14 +196,6 @@
         },
         "benzinga-apis/newsfeed-tcp-v1-1",
         {
-          "group": "Newsfeed & Why is it Moving v2 JWT",
-          "pages": [
-            "benzinga-apis/newsfeed-v2-jwt/newsfeed-v2-ref",
-            "benzinga-apis/newsfeed-v2-jwt/get-news",
-            "benzinga-apis/newsfeed-v2-jwt/get-news-removed"
-          ]
-        },
-        {
           "group": "Newsfeed & Why is it Moving v2",
           "pages": [
             "benzinga-apis/newsfeed-v2/newsfeed-v2",
