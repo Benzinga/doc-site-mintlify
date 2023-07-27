@@ -18,3 +18,5 @@ Run the following command at the root of your documentation (where mint.json is)
 ```
 mintlify dev
 ```
+
+See the docs live at: https://benzinga.mintlify.app/
