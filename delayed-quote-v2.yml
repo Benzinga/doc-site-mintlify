@@ -1,0 +1,141 @@
+openapi: 3.0.1
+info:
+  title: Delayed Quote
+  description: Benzinga Delayed Quote REST API
+  version: "1.0"
+servers:
+- url: https://api.benzinga.com/api/v1
+- url: http://api.benzinga.com/api/v1
+security:
+- token: []
+paths:
+  /quoteDelayed:
+    get:
+      summary: Get the delayed quotes.
+      parameters:
+      - name: accept
+        in: header
+        description: Specify return format.
+        schema:
+          type: string
+          enum:
+          - application/json
+          - application/xml (deprecated)
+      - name: symbols
+        in: query
+        description: One or more comma separated symbols to specify companies to get
+          data for.
+        schema:
+          type: string
+          format: csv
+      - name: isin
+        in: query
+        description: One or more comma separated isin symbols to specify companies
+          to get data for.
+        schema:
+          type: string
+          format: csv
+      - name: cik
+        in: query
+        description: One or more comma separated cik identifiers to specify companies
+          to get data for.
+        schema:
+          type: string
+          format: csv
+      responses:
+        200:
+          description: success
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/DelayedQuotesResponse'
+components:
+  schemas:
+    DelayedQuotesResponse:
+      type: object
+      properties:
+        quotes:
+          type: array
+          items:
+            type: object
+            properties:
+              security:
+                type: object
+                properties:
+                  symbol:
+                    type: string
+                    description: Registered symbol of security
+                  cik:
+                    type: string
+                    description: Unique identifier of security
+                  valoren:
+                    type: string
+                    description: Unique identifier of security
+                  name:
+                    type: string
+                    description: Registered name of security
+              quote:
+                type: object
+                properties:
+                  date:
+                    type: string
+                    description: Date and time of current trading day. UTC.
+                  open:
+                    type: number
+                    description: Price at same day market open
+                    format: float
+                  high:
+                    type: number
+                    description: Indicator of highest price of security for same day
+                    format: float
+                  low:
+                    type: number
+                    description: Indicator of lowest price of security for same day
+                    format: float
+                  close:
+                    type: number
+                    description: Price at same day close. Only available after market
+                      close.
+                    format: float
+                  previousClose:
+                    type: number
+                    description: Price at the close of previous trading day
+                    format: float
+                  change:
+                    type: number
+                    description: Change in price of security
+                    format: float
+                  changePercent:
+                    type: number
+                    description: Percentage of change in price of security
+                    format: float
+                  fiftyTwoWeekHigh:
+                    type: number
+                    description: Highest price of security in previous fifty two weeks
+                    format: float
+                  fiftyTwoWeekLow:
+                    type: number
+                    description: Lowest price of security in previous fifty two weeks
+                    format: float
+                  currency:
+                    type: string
+                    description: Type of currency the security is priced
+                  last:
+                    type: number
+                    description: Price of last open
+                    format: float
+                  tradingHalted:
+                    type: boolean
+                    description: Indicator if trade was halted on security
+                  volume:
+                    type: integer
+                    description: Measurement of trading activity
+                    format: int64
+                  previousCloseDate:
+                    type: string
+                    description: Date of previous close for exchange. UTC.
+  securitySchemes:
+    token:
+      type: apiKey
+      name: token
+      in: query
