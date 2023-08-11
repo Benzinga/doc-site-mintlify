@@ -153,8 +153,8 @@
         {
           "group": "Bulls Say, Bears Say",
           "pages": [
-            "benzinga-apis/bull-bear/get-bull-bear",
-            "benzinga-apis/bars/get-bars"
+            "benzinga-apis/bull-bear/bull-bear-ref",
+            "benzinga-apis/bull-bear/get-bull-bear"
           ]
         },
         {
