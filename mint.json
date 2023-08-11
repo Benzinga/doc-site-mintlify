@@ -151,6 +151,13 @@
           ]
         },
         {
+          "group": "Bulls Say, Bears Say",
+          "pages": [
+            "benzinga-apis/bull-bear/get-bull-bear",
+            "benzinga-apis/bars/get-bars"
+          ]
+        },
+        {
           "group": "Government Trades",
           "pages": [
             "benzinga-apis/government-trades/gov-trades-ref",
