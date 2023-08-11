@@ -1,0 +1,177 @@
+openapi: 3.1.0
+info:
+  title: Bull / Bear
+  description: "An API that returns Bullish and Bearish synopses based on a
+    compilation of analyst research reports. "
+  version: 1.0.0
+paths:
+  "/bull-bear/{bull_bear}":
+    get:
+      responses:
+        "200":
+          description: The bull bear object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BullBear"
+          x-role: success
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          x-role: error
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          x-role: error
+        default:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          x-role: error
+      summary: Retrieve a bull_bear
+      tags:
+        - bull_bear
+      x-role: retrieve
+    parameters:
+      - name: bull_bear
+        in: path
+        description: The bull bear object ID.
+        required: true
+        schema:
+          pattern: ^.*$
+          type: string
+components:
+  schemas:
+    Error:
+      title: Problem Details
+      required:
+        - type
+        - status
+      type: object
+      description: Describes the details of an error according to [RFC
+        7807](https://datatracker.ietf.org/doc/html/rfc7807).
+      x-role: error
+      properties:
+        type:
+          pattern: ^.*$
+          type: string
+          description: A URI reference [RFC3986] that identifies the problem type.
+        title:
+          pattern: ^.*$
+          type: string
+          description: A short, human-readable summary of the problem type.
+        status:
+          type: integer
+          description: The HTTP status code
+        detail:
+          pattern: ^.*$
+          type: string
+          description: A human-readable explanation specific to this occurrence of the
+            problem.
+        instance:
+          pattern: ^.*$
+          type: string
+          description: A URI reference that identifies the specific occurrence of the
+            problem.
+      additionalProperties: false
+    BullBear:
+      title: Bull Bear
+      required:
+        - created_at
+        - updated_at
+        - id
+        - bear_case
+        - bull_case
+        - ticker
+        - analyst_firms_referenced
+      type: object
+      description: >-
+        The bull bear object.
+
+
+        This object is a bullish and bearish synopses of analyst ratings on a particular company.
+      x-role: resource_representation
+      summary: The bull bear object
+      examples:
+        - id: 73b2b38d-6e60-0dbb-4f48-c9ffaae04dd9
+          ticker: AAPL
+          exchange: NASDAQ
+          bear_case: Apple is  a well-known brand and its products are popular among
+            consumers. However, the company's stock has been hit hard due to
+            macroeconomic factors, such as the pandemic, and the uncertain
+            global macroeconomic environment. Furthermore, Apple's product
+            portfolio is highly competitive and its services are facing
+            increasing competition from rival companies, which is limiting the
+            potential for Apple to grow its market share. Additionally, Apple's
+            current financials and future guidance suggest that its growth rate
+            will slow and its margins will be impacted by rising costs. All of
+            these factors contribute to our negative outlook on Apple's stock.
+          bull_case: Apple is  a leading global technology company, well known for its
+            innovative products and services. The company is well positioned to
+            benefit from rising demand for its products and services across the
+            world. Apple's diversified product portfolio, advanced technology,
+            and wide distribution network give it an advantage in delivering
+            value to its customers. Additionally, Apple's strong financials and
+            cash position enable it to invest in research and development and
+            capitalize on opportunities for growth. Apple also offers a
+            competitive suite of services, providing customers with access to
+            Apple Music, iCloud, Apple Care, Apple TV+, Apple Arcade, Apple
+            Fitness, Apple Card, and Apple Pay, among others. Finally, Apple's
+            focus on sustainability and corporate social responsibility, along
+            with its strong brand recognition, further enhance its competitive
+            positioning.
+          created_at: 1973-04-04T15:07:01.0Z
+          updated_at: 2007-10-29T07:20:49.0Z
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the undefined object.
+          format: uuid
+        created_at:
+          type: string
+          description: Time at which the undefined object was created.
+          format: date-time
+        updated_at:
+          type: string
+          description: Time at which the undefined object was last updated.
+          format: date-time
+        ticker:
+          pattern: ^.*$
+          type: string
+          description: "The security in which the bull and bear statements are based on. "
+        bull_case:
+          pattern: ^.*$
+          type: string
+          description: "Bullish synopsis of analyst reports. Users can read and decide
+            which statement they associate with as an investor. "
+        bear_case:
+          pattern: ^.*$
+          type: string
+          description: "THe "
+        analyst_firms_referenced:
+          type: number
+          description: The count of analyst research reports that were referenced to
+            compile the statem
+      additionalProperties: false
+  securitySchemes:
+    API Key:
+      type: apiKey
+      description: API Keys in the query parameters are used to authenticate this endpoint
+      name: apiKey
+      in: query
+security:
+  - {}
+tags:
+  - name: bull_bear
+    description: "This endpoint returns bullish and bearish synopses based on a
+      collection of analyst research reports. "
+    x-schema:
+      $ref: "#/components/schemas/BullBear"
