@@ -1,67 +1,67 @@
----
-openapi: 3.0.1
+openapi: 3.0.3
 info:
   title: Movers
   description: This REST API returns structured data for market movers.
   version: 1.0.0
 servers:
-- url: https://api.benzinga.com/api/v1/market
+  - url: https://api.benzinga.com/api/v1/market
 paths:
   /movers:
     get:
       summary: Returns market movers
       parameters:
-      - name: maxResults
-        in: query
-        description: Max numbers of gainers/losers to return.  Limit 1000.
-        schema:
-          type: integer
-      - name: from
-        in: query
-        description: |-
-          From session or timestamp.
-          * yyyy-mm-dd
-          * yyyy-mm-ddThh:mm:ii:ss
-          * 1d, -1w, -1y, YTD
-        schema:
-          type: string
-          format: YYYY-MM-DD
-      - name: to
-        in: query
-        description: |-
-          To session or timestamp.
-          * yyyy-mm-dd
-          * yyyy-mm-ddThh:mm:ii:ss
-        schema:
-          type: string
-          format: YYYY-MM-DD
-      - name: session
-        in: query
-        description: |-
-          The market session to report for. PRE_MARKET and AFTER_MARKET will return movers only for the one session. Multi-day movers always use offical regular session closing prices.
-          REGULAR is default.
-        schema:
-          type: string
-          format: REGULAR | PRE_MARKET | AFTER_MARKET
-      - name: screenerQuery
-        in: query
-        description: |-
-          Filters movers by screener query. A screener query is a list of conditions separated by a semicolon. Some examples
-          * marketcap_gt_1b
-          * close_gt_5
-          * sector_in_technology,healthcare
-          * marketcap_gt_300m;marketcap_lt_2b
-        schema:
-          type: string
+        - name: maxResults
+          in: query
+          description: Max numbers of gainers/losers to return. Limit 1000.
+          schema:
+            type: integer
+        - name: from
+          in: query
+          description: |
+            From session or timestamp.
+            * yyyy-mm-dd
+            * yyyy-mm-ddThh:mm:ii:ss
+            * 1d, -1w, -1y, YTD
+          schema:
+            type: string
+            format: date-time
+        - name: to
+          in: query
+          description: |
+            To session or timestamp.
+            * yyyy-mm-dd
+            * yyyy-mm-ddThh:mm:ii:ss
+          schema:
+            type: string
+            format: date-time
+        - name: session
+          in: query
+          description: |
+            The market session to report for. PRE_MARKET and AFTER_MARKET will return movers only for the one session. Multi-day movers always use official regular session closing prices.
+            REGULAR is default.
+          schema:
+            type: string
+            enum: [REGULAR, PRE_MARKET, AFTER_MARKET]
+        - name: screenerQuery
+          in: query
+          description: |
+            Filters movers by screener query. A screener query is a list of conditions separated by a semicolon. Some examples
+            * marketcap_gt_1b
+            * close_gt_5
+            * sector_in_technology,healthcare
+            * marketcap_gt_300m;marketcap_lt_2b
+          schema:
+            type: string
       responses:
-        200:
-          description: success
+        '200':
+          description: Success
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/movers'
       security:
-      - token: []
+        - token: []
+
 components:
   schemas:
     movers:
@@ -69,27 +69,24 @@ components:
       properties:
         processingTimeMillis:
           type: integer
-          description: Informational. The number of milliseconds processing time took
-            on the server.
+          description: Informational. The number of milliseconds processing time took on the server.
         result:
           type: object
           properties:
             fromDate:
               type: string
               description: Datetime of the start of the period used to calculate movers.
-              format: 2020-06-22T16:00:00.000-04:00
+              format: date-time
             toDate:
               type: string
               description: Datetime of the end of the period used to calculate movers.
-              format: 2020-06-22T16:00:00.000-04:00
+              format: date-time
             snapTo:
               type: string
-              description: null
-              format: ""
+              description: Not available
             usePreviousClose:
               type: boolean
-              description: True if the previous regular session close is being used
-                to calcuated price change fields.
+              description: True if the previous regular session close is being used to calculate price change fields.
             gainers:
               type: array
               items:
@@ -118,8 +115,7 @@ components:
           format: double
         close:
           type: number
-          description: The last known price (up to a  minute delayed if in an active
-            session) of the instrument.
+          description: The last known price (up to a minute delayed if in an active session) of the instrument.
           format: double
         companyName:
           type: string
@@ -135,43 +131,43 @@ components:
     maxResults:
       name: maxResults
       in: query
-      description: Max numbers of gainers/losers to return.  Limit 1000.
+      description: Max numbers of gainers/losers to return. Limit 1000.
       schema:
         type: integer
     from:
       name: from
       in: query
-      description: |-
+      description: |
         From session or timestamp.
         * yyyy-mm-dd
         * yyyy-mm-ddThh:mm:ii:ss
         * 1d, -1w, -1y, YTD
       schema:
         type: string
-        format: YYYY-MM-DD
+        format: date-time
     to:
       name: to
       in: query
-      description: |-
+      description: |
         To session or timestamp.
         * yyyy-mm-dd
         * yyyy-mm-ddThh:mm:ii:ss
       schema:
         type: string
-        format: YYYY-MM-DD
+        format: date-time
     session:
       name: session
       in: query
-      description: |-
-        The market session to report for. PRE_MARKET and AFTER_MARKET will return movers only for the one session. Multi-day movers always use offical regular session closing prices.
+      description: |
+        The market session to report for. PRE_MARKET and AFTER_MARKET will return movers only for the one session. Multi-day movers always use official regular session closing prices.
         REGULAR is default.
       schema:
         type: string
-        format: REGULAR | PRE_MARKET | AFTER_MARKET
+        enum: [REGULAR, PRE_MARKET, AFTER_MARKET]
     screenerQuery:
       name: screenerQuery
       in: query
-      description: |-
+      description: |
         Filters movers by screener query. A screener query is a list of conditions separated by a semicolon. Some examples
         * marketcap_gt_1b
         * close_gt_5
