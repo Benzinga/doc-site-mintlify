@@ -1,4 +1,4 @@
-openapi: 3.0.3
+openapi: 3.0.1
 info:
   title: Newsfeed (Streaming) v1
   description: >-
@@ -6,7 +6,8 @@ info:
 
     An always-on connection delivers news the instant it becomes available.
 
-    Example client implementation is available at https://github.com/Benzinga/websocket-feed-examples.
+    Example client implementation available at
+    https://github.com/Benzinga/websocket-feed-examples.
 
     You may find tools like https://websocketking.com helpful for testing.
   version: 1.0.0
@@ -19,17 +20,17 @@ paths:
     get:
       summary: Stream Newsfeed
       description: >-
-        The server will automatically send PING control frames to connected clients,
+        Server will automatically send PING control frames to connected clients,
         but does not require a response. Many client libraries will automatically
         respond with PONG control frames; this is desirable but not required.
-        Sending any message over the WebSocket server other than PING/PONG
+        Sending any message over WebSocket to the server other than PING/PONG
         control frames will result in immediate disconnection.
       responses:
         '101':
           description: >-
-            OK, WebSocket connection established and ready. Note that messages are
-            sent as individual messages, not an array. The documentation spec does
-            not have support for WebSocket message types.
+            OK, WebSocket connection established and ready. *Note messages are
+            sent as single messages, not an array, but the documentation spec does
+            not have support for WebSocket message type.
           content:
             '*/*':
               schema:
@@ -47,9 +48,9 @@ paths:
                     type: story
                     created_at: 2012-02-17T21:01:39.000Z
                     updated_at: 2020-02-05T11:31:08.000Z
-                    title: Company A Reports Record Earnings in Q1
+                    title: Company A reports record earnings in Q1
                     body: >-
-                      During a Pre-Market earnings announcement, Company A
+                      During a Pre-Market earnings announcement Company A
                       reported ...
                     authors:
                       - Scott Rubin
@@ -89,7 +90,7 @@ components:
           description: Indicates the message API version. Currently `websocket/v1`.
         kind:
           type: string
-          description: Indicates the message data kind. Currently `News/v1`.
+          description: Indicates the message data Kind. Currently `News/v1`.
         data:
           $ref: '#/components/schemas/StreamMessageData'
     StreamMessageData:
@@ -104,14 +105,15 @@ components:
           description: The unique identifier of the event that triggered the action.
         action:
           type: string
-          description: Indicates what type of status change occurred for this news item.
+          description: Indicates what type of status change has occurred for this news item.
           enum:
             - Created
             - Updated
             - Removed
         timestamp:
           type: string
-          description: Indicates event time in RFC3339 format with milliseconds.
+          description: Indicates event time. (RFC3339Milli)
+          format: string
         content:
           $ref: '#/components/schemas/NewsContent'
       description: Message payload
@@ -122,7 +124,7 @@ components:
           type: integer
           description: >-
             The unique identifier of the article. This identifier is also found
-            in the URL on Benzinga.com. It does not change when the story is
+            in the path of the URL on Benzinga.com. Does not change when the story is
             updated.
         revision_id:
           type: integer
@@ -131,21 +133,65 @@ components:
             updated.
         type:
           type: string
-          description: >-
-            Article type/source. Example: 'story'.
+          description: Article type/source. e.g., 'story'.
         created_at:
           type: string
           description: >-
             The moment the article is first published. This timestamp will not
             change on revisions. (RFC3339Milli)
+          format: string
         updated_at:
           type: string
           description: >-
             The timestamp of the last update to the article. This timestamp is
             updated for each revision. (RFC3339Milli)
+          format: string
         title:
           type: string
-          description: The headline of the article.
+          description: >-
+            The headline of the article. This will only be plain text. May be
+            updated with revisions.
         body:
           type: string
-          description: The article content
+          description: >-
+            The article content. This field can contain HTML and HTML encoded
+            characters such as `&amp` or `&#46` etc. You may request plaintext
+            only with HTML removed, but this may impact formatting/style and
+            produce results different from what the source intended.
+        authors:
+          type: object
+          properties: {}
+          description: >-
+            The authors of the article. This could be a Benzinga journalist,
+            news desk analyst, or contributor on Benzinga.com.
+        teaser:
+          type: string
+          description: >-
+            Depending on where the content is originated from (Benzinga.com or
+            Benzinga Pro terminal) the teaser functions in different ways. If
+            the article is a full-length article from Benzinga.com, where the
+            body field is filled out, this will be the first sentence of the
+            article up to 256 characters. If this is a Benzinga Pro headline,
+            this will function like the body of an article and provide
+            additional context to the headline, usually no more than a few
+            paragraphs.
+        url:
+          type: string
+          description: >-
+            The URL where the article lives on Benzinga.com. If this is a pro
+            headline, it will take the user to a shortened headline with a
+            paywall to purchase the Benzinga Pro terminal, so use with caution.
+        channels:
+          type: array
+          description: >-
+            The topic(s) or categories that relate to the article. Channels can
+            have sub-channels, but they will all be listed as their own item and
+            not as a sub-level of the array. Why Is It Moving (WIIM) data will
+            be labeled with the `WIIM` channel.
+          items:
+            type: string
+        securities:
+          type: array
+          description: >-
+            The securities that are listed within the article body. This will
+            not display competitor symbols unless they are specifically
