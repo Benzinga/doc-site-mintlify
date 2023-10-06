@@ -25,18 +25,6 @@
     "url": "https://www.benzinga.com/apis/?opencontact=true"
   },
   "api": {
-    "baseUrl": [
-      "https://api.benzinga.com/api/v1",
-      "https://api.benzinga.com/api/v1/sec",
-      "https://api.benzinga.com/api/v1/gov/usa/congress",
-      "https://api.benzinga.com/api/v1/market",
-      "wss://api.benzinga.com/api/v1/news", 
-      "https://api.benzinga.com/api/v1.1", 
-      "https://api.benzinga.com/api/v2",
-      "https://api.benzinga.com/api/v2/logos",
-      "https://api.benzinga.com/api/v2.1",
-      "https://api.benzinga.io/v4.1/fxstreet"
-    ],
     "playground": {
         "mode": "show"
     }

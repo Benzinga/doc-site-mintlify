@@ -169,7 +169,7 @@ components:
             raw_signature:
               type: string
               description: Signature of reporting person.
-          description: null
+          description: not available
         transactions:
           type: array
           description: All derivative and non-derivative transactions associated with
