@@ -25,6 +25,10 @@
     "url": "https://www.benzinga.com/apis/?opencontact=true"
   },
   "api": {
+    "auth": {
+      "method": "key" // Options: bearer, basic, key.
+      // Do not set method if OpenAPI spec includes security field
+    },
     "playground": {
         "mode": "show"
     }
