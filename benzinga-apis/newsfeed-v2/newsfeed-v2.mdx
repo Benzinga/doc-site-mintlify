@@ -20,9 +20,28 @@ In our case, we recommend tracking and querying by the latest updated timestamp.
 One caveat to allow for some latency and second-only timestamps: when querying, set `updatedSince` to a value 5 seconds earlier than you actually want. A query may look like: `/news?updatedSince=LAGGED_TIMESTAMP Where LAGGED_TIMESTAMP` is set to be five seconds less than the maximum value of the `updated` field (converted to a Unix timestamp) in rows already pulled from our API.
 
 <Info>
-  ### API Endpoint https://api.benzinga.com/api/v2 ### Schemes https, http ###
-  Version 2.0.0
+  ### API Endpoint: https://api.benzinga.com/api/v2 
+
 </Info>
+
+### FAQs
+<AccordionGroup>
+  <Accordion title="How many News items can I recieve in one response?">
+    You can put other components inside Accordions.
+
+    ```java HelloWorld.java
+    class HelloWorld {
+        public static void main(String[] args) {
+            System.out.println("Hello, World!");
+        }
+    }
+    ```
+  </Accordion>
+  <Accordion title="Can I request News for a particular ticker?">
+    Check out the [Accordion](/content/components/accordion) docs for all the supported props.
+  </Accordion>
+</AccordionGroup>
+
 
 ## Authentication
 
