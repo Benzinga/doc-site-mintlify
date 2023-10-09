@@ -39,16 +39,6 @@
       "url": "https://www.benzinga.com/apis/data"
     },
     {
-      "name": "New Features", 
-      "icon": "sparkles",
-      "url": "https://www.benzinga.com/apis/new-features"
-    },
-    {
-      "name": "Advertising", 
-      "icon": "megaphone",
-      "url": "https://www.benzinga.com/apis/advertising/"
-    },
-    {
       "name": "Blog", 
       "icon": "newspaper",
       "url": "https://medium.com/benzinga-apis"
