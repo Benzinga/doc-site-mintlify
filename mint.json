@@ -26,8 +26,7 @@
   },
   "api": {
     "auth": {
-      "method": "key" // Options: bearer, basic, key.
-      // Do not set method if OpenAPI spec includes security field
+      "method": "key"
     },
     "playground": {
         "mode": "show"
