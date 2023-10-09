@@ -153,14 +153,6 @@
           ]
         },
         {
-          "group": "Corporate Logos v2.0 JWT",
-          "pages": [
-            "benzinga-apis/corporate-logos-v2.0JWT/corporate-logos-ref",
-            "benzinga-apis/corporate-logos-v2.0JWT/get-search", 
-            "benzinga-apis/corporate-logos-v2.0JWT/get-sync"
-          ]
-        },
-        {
           "group": "Corporate Logos v2.0", 
           "pages": [
             "benzinga-apis/corporate-logos-v2/corporate-logos-ref",
