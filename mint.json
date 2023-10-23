@@ -147,15 +147,10 @@
           ]
         },
         {
-          "group": "Corporate Logos v1.1",
+          "group": "Corporate Logos",
           "pages": [
             "benzinga-apis/corporate-logos-v1/corporate-logos-ref",
-            "benzinga-apis/corporate-logos-v1/get-logos"
-          ]
-        },
-        {
-          "group": "Corporate Logos v2.0",
-          "pages": [
+            "benzinga-apis/corporate-logos-v1/get-logos",
             "benzinga-apis/corporate-logos-v2/corporate-logos-ref",
             "benzinga-apis/corporate-logos-v2/get-search",
             "benzinga-apis/corporate-logos-v2/get-sync"
