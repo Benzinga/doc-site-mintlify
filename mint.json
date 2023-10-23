@@ -210,7 +210,7 @@
             "benzinga-apis/test-trigger-webhook/get-webhook-test",
             "benzinga-apis/webhook-v1"
           ]
-        },
+        }
       ]
     }
   ],
