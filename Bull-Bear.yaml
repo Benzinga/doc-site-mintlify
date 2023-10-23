@@ -4,6 +4,8 @@ info:
   description: >
     An API that provides Bullish and Bearish synopses based on a compilation of analyst research reports.
   version: 1.0.0
+servers:
+- url: https://api.benzinga.com/api/v1
 paths:
   "/bull-bear":
     get:
