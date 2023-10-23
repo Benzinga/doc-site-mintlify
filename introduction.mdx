@@ -1,0 +1,45 @@
+---
+title: 'Introduction'
+---
+
+## Benzinga APIs
+
+From earnings reports to options activity, Benzinga focuses on information that moves the market. We offer a suite of channels that concentrates on breaking news so that your firm can be the first to lock in a trade. We offer two ways to receive our news, through a pull based Rest API or a push based TCP. Both offer unprecedented access to the markets.
+
+One of the foundations of Benzinga is to "obsess over our clients, not our competition."
+
+Quality relationships are the driving force behind successful business, and our commitment to this is always coming first.
+
+To get started with Benzinga's APIs please email us directly at licensing@benzinga.com or give us a call: 877-440-9464. We will respond within a business day.
+
+## Authentication
+
+Include your API key/token as the token parameter in the request query string.
+
+## Best Practices
+
+We suggest that customers use our Benzinga-provided clients when possible. Many endpoints are available in our [Python library](/python-client). We provide reference implementations and client libraries via our public [Github](https://github.com/benzinga).
+
+Finally, we highly recommend employing deltas while using the Calendar, Signals, and News APIs -- particularly while using them for real-time ingestion (as opposed to ingestion of historical data). This can be done by employing the `parameters[updated]` query parameter for the Calendar and Signals APIs, and the `updatedSince` query parameter for the News API. Use of these parameters ensures minimal latency.
+
+## Max Offset
+
+Pagination for the News, Calendar, and Signals APIs cannot return result sets with more than 10,000 items. That is, if your page size is 1,000, you cannot request page 10.
+
+To work around this limitation, you should adjust the query size. For instance, you can restrict to a specific date range or ticker set that includes fewer than 10,000 items. After doing so, you can adjust your query to include another date range or ticker set that includes fewer than 10,000 items, combine the sets, and repeat until you obtain the entire result set that you seek.
+
+## Return Format
+
+The default format for Benzinga APIs is specified in individual API specs, but will be `JSON` unless otherwise specified.
+
+You can request `JSON` by setting the `accept` header to `application/json` or `XML` using `application/xml` where this is not deprecated.
+
+**New integrations using `XML` output format are not recommended.**
+
+### Example
+
+```JSON
+curl -X GET \
+'http://api.benzinga.com/api/v2/calendar/ratings?token=YOUR_TOKEN_HERE&ratings=Upgrades' \
+-H 'accept: application/json'
+```
