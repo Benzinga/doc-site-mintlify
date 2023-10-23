@@ -174,7 +174,6 @@
             "benzinga-apis/newsfeed-stream-v1/get-stream"
           ]
         },
-        "benzinga-apis/newsfeed-tcp-v1-1",
         {
           "group": "Newsfeed & Why is it Moving v2",
           "pages": [
@@ -197,16 +196,21 @@
             "benzinga-apis/signals/get-options-activity"
           ]
         },
-        "benzinga-apis/squawk-v3",
-        "benzinga-apis/squawk-v4",
+        {
+          "group": "Squawk",
+          "pages": [
+            "benzinga-apis/squawk-v3",
+            "benzinga-apis/squawk-v4"
+          ]
+        },
         {
           "group": "Webhook v1 Test Trigger",
           "pages": [
             "benzinga-apis/test-trigger-webhook/webhook-v1-ref",
-            "benzinga-apis/test-trigger-webhook/get-webhook-test"
+            "benzinga-apis/test-trigger-webhook/get-webhook-test",
+            "benzinga-apis/webhook-v1"
           ]
         },
-        "benzinga-apis/webhook-v1"
       ]
     }
   ],
