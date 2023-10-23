@@ -5,7 +5,7 @@ info:
     An API that provides Bullish and Bearish synopses based on a compilation of analyst research reports.
   version: 1.0.0
 paths:
-  "/bulls_bears_say":
+  "/bull-bear":
     get:
       summary: Retrieve a Bull/Bear synopsis
       tags:
