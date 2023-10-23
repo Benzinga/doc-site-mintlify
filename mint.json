@@ -54,7 +54,8 @@
       "group": "Introduction",
       "pages": [
         "home",
-        "python-client"
+        "python-client",
+        "introduction"
       ]
     },
     {
