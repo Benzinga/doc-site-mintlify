@@ -8,7 +8,7 @@ servers:
 security:
 - token: []
 paths:
-  /bull-bear:
+  /bulls_bears_say:
     get:
       summary: Get the delayed quotes.
       parameters:
