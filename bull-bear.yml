@@ -1,11 +1,10 @@
 openapi: 3.0.1
 info:
   title: Bulls Say / Bears Say
-  description: Benzinga Historical Bar Rest API
+  description: Get the bullish and bearish statements
   version: "1.0"
 servers:
-- url: https://api.benzinga.com/api/v2
-- url: http://api.benzinga.com/api/v2
+- url: https://api.benzinga.com/api/v1
 security:
 - token: []
 paths:
