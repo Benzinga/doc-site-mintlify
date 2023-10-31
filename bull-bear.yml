@@ -29,10 +29,7 @@ paths:
           format: csv
       - name: from
         in: query
-        description: 'Date to query from point in time. Sorted by published date.
-          If "YTD" Sets from to the first trading day of the current year.  Some other
-          valid values: "1MONTH", "1m", "1M" (all meaning "1 month  from today"),
-          "1d", "1D" (both meaning "1 day from today").'
+        description: 'Date to query from point in time. Sorted by published date.'
         schema:
           type: string
           format: YYYY-MM-DD, or any of YTD, iMONTH, iM, iD
