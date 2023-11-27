@@ -207,12 +207,12 @@
             "benzinga-apis/webhook-v1"
           ]
         },
+      ]
+    },
     {
       "group": "Libraries",
       "pages": [
         "python-client"
-      ]
-    }
       ]
     }
   ],
