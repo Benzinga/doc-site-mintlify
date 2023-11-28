@@ -211,7 +211,8 @@
     {
       "group": "Libraries",
       "pages": [
-        "python-client"
+        "python-client",
+        "javascript-client"
       ]
     }
   ],
