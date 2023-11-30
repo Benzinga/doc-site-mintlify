@@ -2,11 +2,22 @@
 title: 'SEC Filings API Reference'
 description: 'SEC filings data'
 ---
+The U.S. Securities and Exchange Commission (SEC) is a federal government watchdog formed during the Great Depression. Its mission is to protect investors, markets, and anyone who has a stake in securities by fostering transparency and the creation of reliable information.
 
-<Info>
-  ### API Endpoint https://api.benzinga.com/api/v1/sec ### Response
-  Content-Types application/json ### Schemes https ### Version 1.0.0
-</Info>
+The SEC also enforces securities laws and pursues insider trading, dishonesty, and fraud cases. SEC filings are just one part of their strategy for more transparent markets. They require certain parties to prepare and return financial statements and other documents to the agency.
+
+The documents, with the exception of a handful of forms,  are then published on EDGAR - the Electronic Data Gathering, Analysis, and Retrieval System -  for the public to view. The goal is to empower investors and shareholders with information so they can make the best possible decisions.
+
+### FAQs
+
+<AccordionGroup>
+  <Accordion title="What types of filngs does Benzinga APIs offer">
+    At the moment, we ingest insider transactions and beneficial ownership interest (Form 3, 4, and 5).
+  </Accordion>
+  <Accordion title="Can I request News for a particular ticker?">
+    Yes, you can request one or more ticker symbols separated by a comma. Maximum of 50 ticker symbols can be passed in the request. 
+  </Accordion>
+</AccordionGroup>
 
 ## Authentication
 
