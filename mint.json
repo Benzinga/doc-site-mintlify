@@ -11,6 +11,11 @@
     "light": "#5489C4",
     "dark": "#093451"
   },
+  "feedback": {
+    "thumbsRating": true,
+    "suggestEdit": true,
+    "raiseIssue": true
+  },
   "modeToggle": {
     "default": "light"
   },
