@@ -217,7 +217,7 @@
     }
   ],
   "footerSocials": {
-    "twitter": "https://twitter.com/Benzinga",
+    "x-twitter": "https://twitter.com/Benzinga",
     "facebook": "https://www.facebook.com/Benzinga/",
     "website": "https://www.benzinga.com/apis/",
     "github": "https://github.com/benzinga",
