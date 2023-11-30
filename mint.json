@@ -62,13 +62,6 @@
       "pages": [
         "benzinga-apis/introduction",
         {
-          "group": "Historical Bar Data",
-          "pages": [
-            "benzinga-apis/bars/bars-v2",
-            "benzinga-apis/bars/get-bars"
-          ]
-        },
-        {
           "group": "Calendar",
           "pages": [
             "benzinga-apis/calendar/calendar-v2",
@@ -86,6 +79,13 @@
             "benzinga-apis/calendar/get-removed",
             "benzinga-apis/calendar/get-analysts",
             "benzinga-apis/calendar/get-firms"
+          ]
+        },
+        {
+          "group": "Historical Bar Data",
+          "pages": [
+            "benzinga-apis/bars/bars-v2",
+            "benzinga-apis/bars/get-bars"
           ]
         },
         {
