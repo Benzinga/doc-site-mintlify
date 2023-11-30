@@ -62,6 +62,14 @@
       "pages": [
         "benzinga-apis/introduction",
         {
+          "group": "Newsfeed & Why is it Moving v2",
+          "pages": [
+            "benzinga-apis/newsfeed-v2/newsfeed-v2",
+            "benzinga-apis/newsfeed-v2/newsService-get",
+            "benzinga-apis/newsfeed-v2/newsServiceRemoved-get"
+          ]
+        },
+        {
           "group": "Calendar",
           "pages": [
             "benzinga-apis/calendar/calendar-v2",
@@ -167,14 +175,6 @@
           "pages": [
             "benzinga-apis/newsfeed-stream-v1/newsfeed-stream-v1",
             "benzinga-apis/newsfeed-stream-v1/get-stream"
-          ]
-        },
-        {
-          "group": "Newsfeed & Why is it Moving v2",
-          "pages": [
-            "benzinga-apis/newsfeed-v2/newsfeed-v2",
-            "benzinga-apis/newsfeed-v2/newsService-get",
-            "benzinga-apis/newsfeed-v2/newsServiceRemoved-get"
           ]
         },
         {
