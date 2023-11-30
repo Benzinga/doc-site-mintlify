@@ -2,8 +2,7 @@
 openapi: 3.0.1
 info:
   title: Webhook v1 Test Trigger
-  description: Trigger API that initiates webhook payload delivery to your endpoint
-    for testing.
+  description: Trigger API that initiates webhook payload delivery to your endpoint for testing.
   version: "1.0"
 servers:
 - url: https://api.benzinga.com/api/v1
@@ -11,7 +10,7 @@ servers:
 paths:
   /webhook/test:
     get:
-      summary: this endpoint will send data to your endpoint so you may test.
+      summary: This endpoint will send data to your endpoint so you may test.
       parameters:
       - name: accept
         in: header
