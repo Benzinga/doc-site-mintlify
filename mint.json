@@ -127,17 +127,6 @@
           ]
         },
         {
-          "group": "Fundamentals v2 (Deprecated)",
-          "pages": [
-            "benzinga-apis/fundamentals-deprecated/fundamentals-v2",
-            "benzinga-apis/fundamentals-deprecated/get-fundamentals",
-            "benzinga-apis/fundamentals-deprecated/get-valuationRatios",
-            "benzinga-apis/fundamentals-deprecated/get-earningRatios",
-            "benzinga-apis/fundamentals-deprecated/get-operationRatios",
-            "benzinga-apis/fundamentals-deprecated/get-financials"
-          ]
-        },
-        {
           "group": "Fxstreet Economic Calendar",
           "pages": [
             "benzinga-apis/fxstreet-econ/get-econ"
