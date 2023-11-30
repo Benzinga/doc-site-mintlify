@@ -135,7 +135,6 @@
         {
           "group": "Fxstreet Economic Calendar",
           "pages": [
-            "benzinga-apis/fxstreet-econ/fxstreet-econ-ref",
             "benzinga-apis/fxstreet-econ/get-econ"
           ]
         },

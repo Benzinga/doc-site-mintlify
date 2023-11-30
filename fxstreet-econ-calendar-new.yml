@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: Fxstreet Economic Calendar
-  description: macroeconomic data of the most revelant events
+  description: Macroeconomic data of the most revelant events
   version: 4.1.0
 servers:
 - url: https://api.benzinga.io/v4.1/fxstreet
