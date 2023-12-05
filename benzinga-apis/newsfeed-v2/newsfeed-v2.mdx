@@ -11,6 +11,10 @@ For optimal performance, we have a few recommendations.
 
 Limiting the scope of the query will directly improve the latency of the API. This can be accomplished by using parameters such as `tickers`, `date`, and `channels`, or (preferably) by using `updatedSince` for deltas.
 
+<Info>
+The full list of News `channels` can be found in this endpoint: https://www.benzinga.com/api/v2/channels
+</Info>
+
 ### Using Deltas
 
 A common pattern is to use a delta to query for the latest change in a dataset. By reducing the amount of data available in the query, it will produce results with the least amount of latency and limited data an application will have to traverse.
