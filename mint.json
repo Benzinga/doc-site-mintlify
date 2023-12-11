@@ -213,4 +213,9 @@
     "github": "https://github.com/benzinga",
     "linkedin": "https://www.linkedin.com/company/benzinga/"
   }
+},
+"analytics": {
+    "ga4": {
+        "measurementId": "G-V7ZK73W7N0"
+    }
 }
