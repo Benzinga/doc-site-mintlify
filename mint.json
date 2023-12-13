@@ -32,7 +32,7 @@
   ],
   "topbarCtaButton": {
     "name": "Get Started",
-    "url": "https://www.benzinga.com/apis/?opencontact=true"
+    "url": "https://www.benzinga.com/apis/licensing/register"
   },
   "api": {
     "auth": {
