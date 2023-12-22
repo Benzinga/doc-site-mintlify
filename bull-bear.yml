@@ -1,93 +1,66 @@
 openapi: 3.0.1
 info:
-  title: Bulls Say / Bears Say
-  description: Get the bullish and bearish statements
-  version: "1.0"
+  title: Bulls Say / Bears Say API
+  version: '1.0'
 servers:
-- url: https://api.benzinga.com/api/v1
-security:
-- token: []
+  - url: https://api.benzinga.com/api/v1
 paths:
   /bulls_bears_say:
     get:
-      summary: Get the bullish and bearish cases of a particular security based on analysis of sell side analyst research reports.
+      summary: Get the latest bull and bear cases for a given ticker symbol.
+      operationId: getBullsBearsSay
       parameters:
-      - name: accept
-        in: header
-        description: Specify return format.
-        schema:
-          type: string
-          default: application/json
-          enum:
-          - application/json
-      - name: symbols
-        in: query
-        description: One or more comma separated symbols to specify companies to get
-          data for.
-        schema:
-          type: string
-          format: csv
-      - name: from
-        in: query
-        description: 'Date to query from point in time. Sorted by published date.'
-        schema:
-          type: string
-          format: YYYY-MM-DD, or any of YTD, iMONTH, iM, iD
-      - name: to
-        in: query
-        description: Date to query to point in time. Sorted by published date.
-        schema:
-          type: string
-          format: YYYY-MM-DD, or any of iMONTH, iW, iD, iH, iM
-      - name: interval
-        in: query
-        description: 'The candle intervals to use, i.e., 5 minute bars, daily bars,
-          etc. Some valid values: 1MONTH, 1W, 1D, 1H (1 hour), 2H, 3H, 4H, 5M (5 minutes),
-          10M, 15M, 30M. Defaults to an appropriate value based on the period of data
-          requested: i.e., 5 minutes bars if less than 5 days, daily bars if greater.'
-        schema:
-          type: string
+        - name: symbols
+          in: query
+          required: true
+          description: Stock ticker symbol to query for bull/bear cases.
+          schema:
+            type: string
+        - name: token
+          in: query
+          required: true
+          description: Authentication token for the API access.
+          schema:
+            type: string
       responses:
-        200:
-          description: Successful response
+        '200':
+          description: An array of bull and bear cases for the requested ticker symbol.
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/BullBear'
+                  $ref: '#/components/schemas/BullBearCase'
+        '401':
+          description: Authentication information is missing or invalid.
+        '404':
+          description: A bull/bear case for the provided ticker symbol was not found.
 components:
   schemas:
-    BullBear:
+    BullBearCase:
       type: object
-        bulls_say_bears_say:
-          type: array
-          description: An array of bullish and bearish cases.
-          items:
-            type: object
-            properties:
-              bear_case:
-                type: string
-                description: The bearish case for a particular security. 
-                format: float
-              bull_case:
-                type: number
-                description: The bullish case for a particular security. 
-                format: float
-              id:
-                type: number
-                description: The unique identifier for the object 
-                format: float
-              ticker:
-                type: number
-                description: The security being mentioned. 
-                format: float
-              updated:
-                type: timestamp
-                description: The unix timestamp of the last update to the record. 
-                format: float    
+      properties:
+        bear_case:
+          type: string
+          description: Description of the bear case scenario.
+        bull_case:
+          type: string
+          description: Description of the bull case scenario.
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the bull/bear case.
+        ticker:
+          type: string
+          description: Stock ticker symbol related to the bull/bear case.
+        updated:
+          type: integer
+          format: int64
+          description: Timestamp of when the case was last updated.
   securitySchemes:
-    token:
+    ApiKeyAuth:
       type: apiKey
-      name: token
       in: query
+      name: token
+security:
+  - ApiKeyAuth: []
