@@ -45,6 +45,7 @@ paths:
           - symbol
           - cik
           - cusip
+          - isin
       - name: fields
         in: query
         description: |
