@@ -60,7 +60,7 @@ paths:
           or headline + full body (full) text
         schema:
           type: string
-          default: full
+          default: headline
           enum:
           - full
           - abstract
