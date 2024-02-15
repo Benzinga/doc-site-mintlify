@@ -145,6 +145,12 @@
           ]
         },
         {
+          "group": "Analyst Insights",
+          "pages": [
+            "benzinga-apis/analyst-insights/get-analyst-insights"
+          ]
+        },
+        {
           "group": "Government Trades",
           "pages": [
             "benzinga-apis/government-trades/gov-trades-ref",
