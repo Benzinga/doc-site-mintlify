@@ -6,7 +6,7 @@ info:
 servers:
   - url: https://api.benzinga.com/api/v1
 paths:
-  /analyst/insights:
+  /analysts/insights:
     get:
       summary: Get analyst insights for a given ticker symbol.
       operationId: getAnalystInsights
