@@ -31,12 +31,6 @@ paths:
           schema:
             type: integer
             default: 10
-        - name: token
-          in: query
-          required: true
-          description: Authentication token for the API access.
-          schema:
-            type: string
       responses:
         '200':
           description: An array of analyst insights for the requested ticker symbol.
