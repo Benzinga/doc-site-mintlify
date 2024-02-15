@@ -1,3 +1,4 @@
+
 openapi: 3.0.1
 info:
   title: Analyst Insights API
@@ -5,95 +6,106 @@ info:
 servers:
   - url: https://api.benzinga.com/api/v1
 paths:
-  /analysts/insights:
+  /analyst/insights:
     get:
-      summary: Get analyst insights
+      summary: Get analyst insights for a given ticker symbol.
       operationId: getAnalystInsights
       parameters:
-        - name: token
-          in: query
-          required: true
-          schema:
-            type: string
-          description: Authentication token required to access the API.
         - name: ticker
           in: query
           required: true
+          description: Stock ticker symbol to query for analyst insights.
           schema:
             type: string
-          description: The ticker symbol of the security to get insights for.
         - name: page
           in: query
           required: false
+          description: Page number for pagination.
           schema:
             type: integer
             default: 1
-          description: Page number of the insights pagination.
         - name: pageSize
           in: query
           required: false
+          description: Number of items per page.
           schema:
             type: integer
             default: 10
-          description: Number of insights per page.
+        - name: token
+          in: query
+          required: true
+          description: Authentication token for the API access.
+          schema:
+            type: string
       responses:
         '200':
-          description: A list of analyst insights
+          description: An array of analyst insights for the requested ticker symbol.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AnalystInsightsResponse'
-        '400':
-          description: Bad request
+                type: array
+                items:
+                  $ref: '#/components/schemas/AnalystInsight'
         '401':
-          description: Unauthorized
+          description: Authentication information is missing or invalid.
         '404':
-          description: Not found
+          description: Analyst insights for the provided ticker symbol were not found.
 components:
   schemas:
-    AnalystInsightsResponse:
-      type: object
-      properties:
-        analyst-insights:
-          type: array
-          items:
-            $ref: '#/components/schemas/AnalystInsight'
     AnalystInsight:
       type: object
       properties:
         action:
           type: string
+          description: Analyst's action on the stock (e.g., Maintains, Upgrades).
         analyst_insights:
           type: string
+          description: Detailed insights from the analyst.
         date:
           type: string
           format: date
+          description: Date of the analyst insight.
         firm:
           type: string
+          description: Name of the firm providing the insight.
         firm_id:
           type: string
+          description: Unique identifier for the firm.
         id:
           type: string
+          format: uuid
+          description: Unique identifier for the analyst insight.
         pt:
           type: string
+          description: Price target given by the analyst.
         rating:
           type: string
+          description: Rating provided by the analyst.
         rating_id:
           type: string
+          description: Unique identifier for the rating.
         security:
-          $ref: '#/components/schemas/Security'
+          type: object
+          properties:
+            cik:
+              type: string
+            exchange:
+              type: string
+            isin:
+              type: string
+            name:
+              type: string
+            symbol:
+              type: string
+          description: Security details for which the insight is provided.
         updated:
           type: integer
-    Security:
-      type: object
-      properties:
-        cik:
-          type: string
-        exchange:
-          type: string
-        isin:
-          type: string
-        name:
-          type: string
-        symbol:
-          type: string
+          format: int64
+          description: Timestamp of when the insight was last updated.
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: query
+      name: token
+security:
+  - ApiKeyAuth: []
