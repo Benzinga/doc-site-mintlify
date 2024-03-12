@@ -31,6 +31,20 @@ paths:
           schema:
             type: integer
             default: 10
+        - name: symbols
+          in: query
+          required: false
+          description: One or more security identifiers separated by a comma.
+          schema:
+            type: string
+            format: csv
+        - name: analyst
+          in: query
+          required: false
+          description: One or more analyst ids separated by a comma.
+          schema:
+            type: string
+            format: csv
       responses:
         '200':
           description: An array of analyst insights for the requested ticker symbol.
