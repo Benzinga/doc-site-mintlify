@@ -1,6 +1,7 @@
 openapi: 3.0.3
 info:
   title: Benzinga - Fundamental Data
+  description: Get balance sheet, income statement, cash flow, derived figures and ratios, share price and share price ratio
   version: 1.0.0
   contact: {}
 servers:
