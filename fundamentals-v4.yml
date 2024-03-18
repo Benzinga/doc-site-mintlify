@@ -37,6 +37,10 @@ paths:
       responses:
         '200':
           description: An object including a response containing an array of objects containing company data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Fundamental'
 
   /fundamentals/balance-sheet:
     get:
@@ -69,6 +73,10 @@ paths:
       responses:
         '200':
           description: An object including a response that includes balance sheet data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BalanceSheet'
 
   /fundamentals/derived:
     get:
@@ -101,6 +109,10 @@ paths:
       responses:
         '200':
           description: An object including a response that includes balance sheet data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DerivedFiguresRatiose'
   /fundamentals/cash-flow:
     get:
       summary: Cashflow
@@ -132,7 +144,10 @@ paths:
       responses:
         '200':
           description: An object including a response that includes cash flow data
-
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CashFlow'
   /fundamentals/income-statement:
     get:
       summary: Income statement
@@ -164,6 +179,10 @@ paths:
       responses:
         '200':
           description: An object including a response that includes income statement data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IncomeStatement'
   /fundamentals/share-price:
     get:
       summary: Share price
@@ -195,6 +214,10 @@ paths:
       responses:
         '200':
           description: An object including a response that includes share price data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SharePrice'
   /fundamentals/share-price-ratios:
     get:
       summary: Share price ratios
@@ -226,4 +249,968 @@ paths:
       responses:
         '200':
           description: An object including a response that includes share price ratios data
-
+components:
+  schemas:
+    Fundamental:
+      type: object
+      properties:
+          ok: 
+              type: string
+          data: 
+            type: array
+            items: 
+              type: object
+              properties:
+                  balancesheet:
+                      $ref: '#/components/schemas/BalanceSheet'
+                  income_statement:
+                      $ref: '#/components/schemas/IncomeStatement'
+                  derived_ratios:
+                      $ref: '#/components/schemas/DerivedFiguresRatiose'
+                  cashflow:
+                      $ref: '#/components/schemas/CashFlow'
+    BalanceSheet:
+        type: object
+        properties:
+            ok: 
+                type: string
+            data: 
+              type: array
+              items: 
+                type: object
+                properties:
+                  balancesheet: 
+                    type: object
+                    properties:
+                        type: 
+                            type: string
+                        data: 
+                            type: array
+                            items:
+                                type: object
+                                properties:
+                                    id: 
+                                        type: integer
+                                        format: int32
+                                    symbol: 
+                                        type: string
+                                    timeperiod: 
+                                        type: string
+                                    fiscal_year: 
+                                        type: integer
+                                        format: int32
+                                    fiscal_period: 
+                                        type: string
+                                    report_date: 
+                                        type: string
+                                    currency: 
+                                        type: string
+                                    publish_date: 
+                                        type: string
+                                    restated_date: 
+                                        type: string
+                                    shares_basic: 
+                                        type: integer
+                                        format: int32
+                                    shares_diluted: 
+                                        type: integer
+                                        format: int32
+                                    cash_cash_equivalents_and_short_term_investments: 
+                                        type: integer
+                                        format: int32
+                                    cash_and_cash_equivalents: 
+                                        type: integer
+                                        format: int32
+                                    short_term_investments: 
+                                        type: integer
+                                        format: int32
+                                    accounts_and_notes_receivable: 
+                                        type: integer
+                                        format: int32
+                                    accounts_receivable_net: 
+                                        type: integer
+                                        format: int32
+                                    notes_receivable_net: 
+                                        type: integer
+                                        format: int32
+                                    unbilled_revenues: 
+                                        type: integer
+                                        format: int32
+                                    inventories: 
+                                        type: integer
+                                        format: int32
+                                    raw_materials: 
+                                        type: integer
+                                        format: int32
+                                    work_in_process: 
+                                        type: integer
+                                        format: int32
+                                    finished_goods: 
+                                        type: integer
+                                        format: int32
+                                    other_inventory: 
+                                        type: integer
+                                        format: int32
+                                    other_short_term_assets: 
+                                        type: integer
+                                        format: int32
+                                    prepaid_expenses: 
+                                        type: integer
+                                        format: int32
+                                    derivative_and_hedging_assets_short_term: 
+                                        type: integer
+                                        format: int32
+                                    assets_held_for_sale: 
+                                        type: integer
+                                        format: int32
+                                    deferred_tax_assets_short_term: 
+                                        type: integer
+                                        format: int32
+                                    income_taxes_receivable: 
+                                        type: integer
+                                        format: int32
+                                    discontinued_operations_short_term: 
+                                        type: integer
+                                        format: int32
+                                    misc_short_term_assets: 
+                                        type: integer
+                                        format: int32
+                                    total_current_assets: 
+                                        type: integer
+                                        format: int64
+                                    property_plant_and_equipment_net: 
+                                        type: integer
+                                        format: int32
+                                    property_plant_and_equipment: 
+                                        type: integer
+                                        format: int32
+                                    accumulated_depreciation: 
+                                        type: integer
+                                        format: int32
+                                    long_term_investments_and_receivables: 
+                                        type: integer
+                                        format: int32
+                                    long_term_investments: 
+                                        type: integer
+                                        format: int32
+                                    long_term_marketable_securities: 
+                                        type: integer
+                                        format: int32
+                                    long_term_receivables: 
+                                        type: integer
+                                        format: int32
+                                    other_long_term_assets: 
+                                        type: integer
+                                        format: int64
+                                    intangible_assets: 
+                                        type: integer
+                                        format: int32
+                                    goodwill: 
+                                        type: integer
+                                        format: int64
+                                    other_intangible_assets: 
+                                        type: integer
+                                        format: int32
+                                    prepaid_expense: 
+                                        type: integer
+                                        format: int32
+                                    deferred_tax_assets_long_term: 
+                                        type: integer
+                                        format: int32
+                                    derivative_and_hedging_assets_long_term: 
+                                        type: integer
+                                        format: int32
+                                    prepaid_pension_costs: 
+                                        type: integer
+                                        format: int32
+                                    discontinued_operations_long_term: 
+                                        type: integer
+                                        format: int32
+                                    investments_in_affiliates: 
+                                        type: integer
+                                        format: int32
+                                    misc_long_term_assets: 
+                                        type: integer
+                                        format: int32
+                                    total_noncurrent_assets: 
+                                        type: integer
+                                        format: int64
+                                    total_assets: 
+                                        type: integer
+                                        format: int64
+                                    payables_and_accruals: 
+                                        type: integer
+                                        format: int32
+                                    accounts_payable: 
+                                        type: integer
+                                        format: int32
+                                    accrued_taxes: 
+                                        type: integer
+                                        format: int32
+                                    interest_and_dividends_payable: 
+                                        type: integer
+                                        format: int32
+                                    other_payables_and_accruals: 
+                                        type: integer
+                                        format: int32
+                                    short_term_debt: 
+                                        type: integer
+                                        format: int32
+                                    short_term_borrowings: 
+                                        type: integer
+                                        format: int32
+                                    short_term_capital_leases: 
+                                        type: integer
+                                        format: int32
+                                    current_portion_of_long_term_debt: 
+                                        type: integer
+                                        format: int32
+                                    other_short_term_liabilities: 
+                                        type: integer
+                                        format: int32
+                                    deferred_revenue_short_term: 
+                                        type: integer
+                                        format: int32
+                                    liabilities_from_derivatives_and_hedging_short_term: 
+                                        type: integer
+                                        format: int32
+                                    deferred_tax_liabilities_short_term: 
+                                        type: integer
+                                        format: int32
+                                    liabilities_from_discontinued_operations_short_term: 
+                                        type: integer
+                                        format: int32
+                                    misc_short_term_liabilities: 
+                                        type: integer
+                                        format: int32
+                                    total_current_liabilities: 
+                                        type: integer
+                                        format: int32
+                                    long_term_debt: 
+                                        type: integer
+                                        format: int64
+                                    long_term_borrowings: 
+                                        type: integer
+                                        format: int32
+                                    long_term_capital_leases: 
+                                        type: integer
+                                        format: int32
+                                    other_long_term_liabilities: 
+                                        type: integer
+                                        format: int32
+                                    accrued_liabilities: 
+                                        type: integer
+                                        format: int32
+                                    pension_liabilities: 
+                                        type: integer
+                                        format: int32
+                                    pensions: 
+                                        type: integer
+                                        format: int32
+                                    other_post_retirement_benefits: 
+                                        type: integer
+                                        format: int32
+                                    deferred_compensation: 
+                                        type: integer
+                                        format: int32
+                                    deferred_revenue_long_term: 
+                                        type: integer
+                                        format: int32
+                                    deferred_tax_liabilities_long_term: 
+                                        type: integer
+                                        format: int32
+                                    liabilities_from_derivatives_and_hedging_long_term: 
+                                        type: integer
+                                        format: int32
+                                    liabilities_from_discontinued_operations_long_term: 
+                                        type: integer
+                                        format: int32
+                                    misc_long_term_liabilities: 
+                                        type: integer
+                                        format: int32
+                                    total_noncurrent_liabilities: 
+                                        type: integer
+                                        format: int64
+                                    total_liabilities: 
+                                        type: integer
+                                        format: int64
+                                    preferred_equity: 
+                                        type: integer
+                                        format: int32
+                                    share_capital_and_additional_paid_in_capital: 
+                                        type: integer
+                                        format: int64
+                                    common_stock: 
+                                        type: integer
+                                        format: int32
+                                    additional_paid_in_capital: 
+                                        type: integer
+                                        format: int32
+                                    other_share_capital: 
+                                        type: integer
+                                        format: int32
+                                    treasury_stock: 
+                                        type: integer
+                                        format: int32
+                                    retained_earnings: 
+                                        type: integer
+                                        format: int32
+                                    other_equity: 
+                                        type: integer
+                                        format: int32
+                                    equity_before_minority_interest: 
+                                        type: integer
+                                        format: int64
+                                    minority_interest: 
+                                        type: integer
+                                        format: int32
+                                    total_equity: 
+                                        type: integer
+                                        format: int64
+                                    total_liabilities_and_equity: 
+                                        type: integer
+                                        format: int64
+                                        
+    DerivedFiguresRatiose:
+        type: object
+        properties:
+            ok: 
+                type: string
+            data: 
+              type: array
+              items: 
+                type: object
+                properties:
+                    derived_ratios: 
+                        type: object
+                        properties: 
+                            type: 
+                                type: string
+                            data: 
+                                type: array
+                                items: 
+                                    type: object
+                                    properties: 
+                                        id: 
+                                            type: integer
+                                            format: int32
+                                        symbol: 
+                                            type: string
+                                        timeperiod: 
+                                            type: string
+                                        fiscal_year: 
+                                            type: integer
+                                            format: int32
+                                        fiscal_period: 
+                                            type: string
+                                        report_date: 
+                                            type: string
+                                        currency: 
+                                            type: string
+                                        publish_date: 
+                                            type: string
+                                        restated_date: 
+                                            type: string
+                                        ebitda: 
+                                            type: integer
+                                            format: int32
+                                        total_debt: 
+                                            type: integer
+                                            format: int32
+                                        free_cash_flow: 
+                                            type: integer
+                                            format: int32
+                                        gross_profit_margin: 
+                                            type: number
+                                        operating_margin: 
+                                            type: number
+                                        net_profit_margin: 
+                                            type: number
+                                        return_on_equity: 
+                                            type: number
+                                        return_on_assets: 
+                                            type: number
+                                        free_cash_flow_to_net_income: 
+                                            type: number
+                                        current_ratio: 
+                                            type: number
+                                        liabilities_to_equity_ratio: 
+                                            type: number
+                                        debt_ratio: 
+                                            type: number
+                                        earnings_per_share_basic: 
+                                            type: number
+                                        earnings_per_share_diluted: 
+                                            type: number
+                                        sales_per_share: 
+                                            type: number
+                                        equity_per_share: 
+                                            type: number
+                                        free_cash_flow_per_share: 
+                                            type: number
+                                        dividends_per_share: 
+                                            type: integer
+                                            format: int32
+                                        piotroski_f_score: 
+                                            type: integer
+                                            format: int32
+                                        return_on_invested_capital: 
+                                            type: number
+                                        cash_return_on_invested_capital: 
+                                            type: number
+                                        dividend_payout_ratio: 
+                                            type: integer
+                                            format: int32
+                                        net_debt_ebitda: 
+                                            type: number
+                                        net_debt_ebit: 
+                                            type: number
+    CashFlow:
+        type: object
+        properties:
+            ok: 
+                type: string
+            data: 
+              type: array
+              items: 
+                type: object
+                properties:
+                  cashflow: 
+                    type: object
+                    properties: 
+                      type: 
+                        type: string
+                      data: 
+                        type: array
+                        items: 
+                          type: object
+                          properties: 
+                            id: 
+                              type: integer
+                              format: int32
+                            symbol: 
+                              type: string
+                            timeperiod: 
+                              type: string
+                            fiscal_year: 
+                              type: integer
+                              format: int32
+                            fiscal_period: 
+                              type: string
+                            report_date: 
+                              type: string
+                            currency: 
+                              type: string
+                            publish_date: 
+                              type: string
+                            restated_date: 
+                              type: string
+                            shares_basic: 
+                              type: integer
+                              format: int32
+                            shares_diluted: 
+                              type: integer
+                              format: int32
+                            net_income_starting_line: 
+                              type: integer
+                              format: int32
+                            net_income: 
+                              type: integer
+                              format: int32
+                            net_income_from_discontinued_operations: 
+                              type: integer
+                              format: int32
+                            other_adjustments: 
+                              type: integer
+                              format: int32
+                            depreciation_and_amortization: 
+                              type: integer
+                              format: int32
+                            non_cash_items: 
+                              type: integer
+                              format: int32
+                            stock_based_compensation: 
+                              type: integer
+                              format: int32
+                            deferred_income_taxes: 
+                              type: integer
+                              format: int32
+                            other_non_cash_adjustments: 
+                              type: integer
+                              format: int32
+                            change_in_working_capital: 
+                              type: integer
+                              format: int32
+                            change_in_accounts_receivable: 
+                              type: integer
+                              format: int32
+                            change_in_inventories: 
+                              type: integer
+                              format: int32
+                            change_in_accounts_payable: 
+                              type: integer
+                              format: int32
+                            change_in_other: 
+                              type: integer
+                              format: int32
+                            net_cash_from_discontinued_operations_operating: 
+                              type: integer
+                              format: int32
+                            net_cash_from_operating_activities: 
+                              type: integer
+                              format: int32
+                            change_in_fixed_assets_and_intangibles: 
+                              type: integer
+                              format: int32
+                            disposition_of_fixed_assets_and_intangibles: 
+                              type: integer
+                              format: int32
+                            disposition_of_fixed_assets: 
+                              type: integer
+                              format: int32
+                            disposition_of_intangible_assets: 
+                              type: integer
+                              format: int32
+                            acquisition_of_fixed_assets_and_intangibles: 
+                              type: integer
+                              format: int32
+                            purchase_of_fixed_assets: 
+                              type: integer
+                              format: int32
+                            acquisition_of_intangible_assets: 
+                              type: integer
+                              format: int32
+                            other_change_in_fixed_assets_and_intangibles: 
+                              type: integer
+                              format: int32
+                            net_change_in_long_term_investment: 
+                              type: integer
+                              format: int32
+                            decrease_in_long_term_investment: 
+                              type: integer
+                              format: int32
+                            increase_in_long_term_investment: 
+                              type: integer
+                              format: int32
+                            net_cash_from_acquisitions_and_divestitures: 
+                              type: integer
+                              format: int32
+                            net_cash_from_divestitures: 
+                              type: integer
+                              format: int32
+                            cash_for_acquisition_of_subsidiaries: 
+                              type: integer
+                              format: int32
+                            cash_for_joint_ventures: 
+                              type: integer
+                              format: int32
+                            net_cash_from_other_acquisitions: 
+                              type: integer
+                              format: int32
+                            other_investing_activities: 
+                              type: integer
+                              format: int32
+                            net_cash_from_discontinued_operations_investing: 
+                              type: integer
+                              format: int32
+                            net_cash_from_investing_activities: 
+                              type: integer
+                              format: int32
+                            dividends_paid: 
+                              type: integer
+                              format: int32
+                            cash_from_repayment_of_debt: 
+                              type: integer
+                              format: int32
+                            cash_from_repayment_of_short_term_debt_net: 
+                              type: integer
+                              format: int32
+                            cash_from_repayment_of_long_term_debt_net: 
+                              type: integer
+                              format: int32
+                            repayments_of_long_term_debt: 
+                              type: integer
+                              format: int32
+                            cash_from_long_term_debt: 
+                              type: integer
+                              format: int32
+                            cash_from_repurchase_of_equity: 
+                              type: integer
+                              format: int32
+                            increase_in_capital_stock: 
+                              type: integer
+                              format: int32
+                            decrease_in_capital_stock: 
+                              type: integer
+                              format: int32
+                            other_financing_activities: 
+                              type: integer
+                              format: int32
+                            net_cash_from_discontinued_operations_financing: 
+                              type: integer
+                              format: int32
+                            net_cash_from_financing_activities: 
+                              type: integer
+                              format: int32
+                            net_cash_before_disc_operations_and_fx: 
+                              type: integer
+                              format: int32
+                            change_in_cash_from_disc_operations_and_other: 
+                              type: integer
+                              format: int32
+                            net_cash_before_fx: 
+                              type: integer
+                              format: int32
+                            effect_of_foreign_exchange_rates: 
+                              type: integer
+                              format: int32
+                            net_change_in_cash: 
+                              type: integer
+                              format: int32
+    IncomeStatement:
+        type: object
+        properties:
+            ok: 
+                type: string
+            data: 
+              type: array
+              items: 
+                type: object
+                properties:
+                  income_statement: 
+                    type: object
+                    properties:
+                      type: 
+                        type: string
+                      data: 
+                        type: array
+                        items: 
+                          type: object
+                          properties: 
+                            id: 
+                              type: integer
+                              format: int32
+                            symbol: 
+                              type: string
+                            timeperiod: 
+                              type: string
+                            fiscal_year: 
+                              type: integer
+                              format: int32
+                            fiscal_period: 
+                              type: string
+                            report_date: 
+                              type: string
+                            currency: 
+                              type: string
+                            publish_date: 
+                              type: string
+                            restated_date: 
+                              type: string
+                            shares_basic: 
+                              type: integer
+                              format: int32
+                            shares_diluted: 
+                              type: integer
+                              format: int32
+                            revenue: 
+                              type: integer
+                              format: int32
+                            sales_and_services_revenue: 
+                              type: integer
+                              format: int32
+                            financing_revenue: 
+                              type: integer
+                              format: int32
+                            other_revenue: 
+                              type: integer
+                              format: int32
+                            cost_of_revenue: 
+                              type: integer
+                              format: int32
+                            cost_of_goods_and_services: 
+                              type: integer
+                              format: int32
+                            cost_of_financing_revenue: 
+                              type: integer
+                              format: int32
+                            cost_of_other_revenue: 
+                              type: integer
+                              format: int32
+                            gross_profit: 
+                              type: integer
+                              format: int32
+                            other_operating_income: 
+                              type: integer
+                              format: int32
+                            operating_expenses: 
+                              type: integer
+                              format: int32
+                            selling_general_and_administrative: 
+                              type: integer
+                              format: int32
+                            selling_and_marketing: 
+                              type: integer
+                              format: int32
+                            general_and_administrative: 
+                              type: integer
+                              format: int32
+                            research_and_development: 
+                              type: integer
+                              format: int32
+                            depreciation_and_amortization: 
+                              type: integer
+                              format: int32
+                            provision_for_doubtful_accounts: 
+                              type: integer
+                              format: int32
+                            other_operating_expenses: 
+                              type: integer
+                              format: int32
+                            operating_income_loss: 
+                              type: integer
+                              format: int32
+                            non_operating_income_loss: 
+                              type: integer
+                              format: int32
+                            interest_expense_net: 
+                              type: integer
+                              format: int32
+                            interest_expense: 
+                              type: integer
+                              format: int32
+                            interest_income: 
+                              type: integer
+                              format: int32
+                            other_investment_income_loss: 
+                              type: integer
+                              format: int32
+                            foreign_exchange_gain_loss: 
+                              type: integer
+                              format: int32
+                            income_loss_from_affiliates: 
+                              type: integer
+                              format: int32
+                            other_non_operating_income_loss: 
+                              type: integer
+                              format: int32
+                            pretax_income_loss_adj: 
+                              type: integer
+                              format: int32
+                            abnormal_gains_losses: 
+                              type: integer
+                              format: int32
+                            acquired_in_process_randd: 
+                              type: integer
+                              format: int32
+                            merger_and_acquisition_expense: 
+                              type: integer
+                              format: int32
+                            abnormal_derivatives: 
+                              type: integer
+                              format: int32
+                            disposal_of_assets: 
+                              type: integer
+                              format: int32
+                            early_extinguishment_of_debt: 
+                              type: integer
+                              format: int32
+                            asset_write_down: 
+                              type: integer
+                              format: int32
+                            impairment_of_goodwill_and_intangibles: 
+                              type: integer
+                              format: int32
+                            sale_of_business: 
+                              type: integer
+                              format: int32
+                            legal_settlement: 
+                              type: integer
+                              format: int32
+                            restructuring_charges: 
+                              type: integer
+                              format: int32
+                            sale_of_investments_and_unrealized_investments: 
+                              type: integer
+                              format: int32
+                            insurance_settlement: 
+                              type: integer
+                              format: int32
+                            other_abnormal_items: 
+                              type: integer
+                              format: int32
+                            pretax_income_loss: 
+                              type: integer
+                              format: int32
+                            income_tax_expense_benefit_net: 
+                              type: integer
+                              format: int32
+                            current_income_tax: 
+                              type: integer
+                              format: int32
+                            deferred_income_tax: 
+                              type: integer
+                              format: int32
+                            tax_allowance_credit: 
+                              type: integer
+                              format: int32
+                            income_loss_from_affiliates_net_of_taxes: 
+                              type: integer
+                              format: int32
+                            income_loss_from_continuing_operations: 
+                              type: integer
+                              format: int32
+                            net_extraordinary_gains_losses: 
+                              type: integer
+                              format: int32
+                            discontinued_operations: 
+                              type: integer
+                              format: int32
+                            accounting_charges_and_other: 
+                              type: integer
+                              format: int32
+                            income_loss_incl_minority_interest: 
+                              type: integer
+                              format: int32
+                            minority_interest: 
+                              type: integer
+                              format: int32
+                            net_income: 
+                              type: integer
+                              format: int32
+                            preferred_dividends: 
+                              type: integer
+                              format: int32
+                            other_adjustments: 
+                              type: integer
+                              format: int32
+                            net_income_common: 
+                              type: integer
+                              format: int32
+    SharePrice:
+        type: object
+        properties:
+            ok: 
+                type: string
+            data: 
+              type: array
+              items: 
+                type: object
+                properties:
+                  share_price: 
+                    type: object
+                    properties: 
+                      type: 
+                        type: string
+                      data: 
+                        type: array
+                        items: 
+                          type: object
+                          properties: 
+                            id: 
+                              type: integer
+                              format: int32
+                            symbol: 
+                              type: string
+                            date: 
+                              type: string
+                            open: 
+                              type: number
+                            high: 
+                              type: number
+                            low: 
+                              type: number
+                            close: 
+                              type: number
+                            adj_close: 
+                              type: number
+                            volume: 
+                              type: integer
+                              format: int32
+                            dividend: 
+                              type: integer
+                              format: int32
+                            shares_outstanding: 
+                              type: integer
+                              format: int64
+    SharePriceRatio:
+        type: object
+        properties:
+            ok: 
+                type: string
+            data: 
+              type: array
+              items: 
+                type: object
+                properties:
+                  share_price_ratios: 
+                    type: object
+                    properties: 
+                      type: 
+                        type: string
+                      data: 
+                        type: array
+                        items: 
+                          type: object
+                          properties: 
+                            id: 
+                              type: integer
+                              format: int32
+                            symbol: 
+                              type: string
+                            date: 
+                              type: string
+                            open: 
+                              type: number
+                            high: 
+                              type: number
+                            low: 
+                              type: number
+                            close: 
+                              type: number
+                            adj_close: 
+                              type: number
+                            volume: 
+                              type: integer
+                              format: int32
+                            dividend: 
+                              type: integer
+                              format: int32
+                            shares_outstanding: 
+                              type: integer
+                              format: int64
+                            market_cap: 
+                              type: integer
+                              format: int64
+                            price_to_earnings_ratio_quarterly: 
+                              type: number
+                            price_to_earnings_ratio_ttm: 
+                              type: number
+                            price_to_sales_ratio_quarterly: 
+                              type: number
+                            price_to_sales_ratio_ttm: 
+                              type: number
+                            price_to_book_value: 
+                              type: number
+                            price_to_free_cash_flow_quarterly: 
+                              type: number
+                            price_to_free_cash_flow_ttm: 
+                              type: number
+                            enterprise_value: 
+                              type: integer
+                              format: int64
+                            ev_ebitda: 
+                              type: number
+                            ev_sales: 
+                              type: number
+                            ev_fcf: 
+                              type: number
+                            book_to_market_value: 
+                              type: number
+                            operating_income_ev: 
+                              type: number
+                            altman_z_score: 
+                              type: number
+                            dividend_yield: 
+                              type: integer
+                              format: int32
