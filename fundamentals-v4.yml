@@ -112,7 +112,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/DerivedFiguresRatioseResponse"
+                $ref: "#/components/schemas/DerivedFiguresRatiosResponse"
   /fundamentals/cash-flow:
     get:
       summary: Cashflow
@@ -283,7 +283,7 @@ components:
                     type: array
                     items:
                       $ref: "#/components/schemas/IncomeStatement"
-              derived_ratios:
+              figures_and_ratios:
                 type: object
                 properties:
                   type:
@@ -291,7 +291,7 @@ components:
                   data:
                     type: array
                     items:
-                      $ref: "#/components/schemas/DerivedFiguresRatiose"
+                      $ref: "#/components/schemas/DerivedFiguresRatios"
               cashflow:
                 type: object
                 properties:
@@ -515,7 +515,7 @@ components:
           type: number
         total_liabilities_and_equity:
           type: number
-    DerivedFiguresRatioseResponse:
+    DerivedFiguresRatiosResponse:
       type: object
       properties:
         ok:
@@ -525,7 +525,7 @@ components:
           items:
             type: object
             properties:
-              derived_ratios:
+              figures_and_ratios:
                 type: object
                 properties:
                   type:
@@ -533,8 +533,8 @@ components:
                   data:
                     type: array
                     items:
-                      $ref: "#/components/schemas/DerivedFiguresRatiose"
-    DerivedFiguresRatiose:
+                      $ref: "#/components/schemas/DerivedFiguresRatios"
+    DerivedFiguresRatios:
       type: object
       properties:
         id:
