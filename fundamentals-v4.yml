@@ -1,0 +1,229 @@
+openapi: 3.0.3
+info:
+  title: Benzinga - Fundamental Data
+  version: 1.0.0
+  contact: {}
+servers:
+  - url: https://api.benzinga.com/api/v4
+paths:  
+  /fundamentals:
+    get:
+      summary: Fundamental data
+      parameters:
+        - name: symbols
+          in: query
+          description: One or more stock ticker symbol in comma separated list specifies company data to return. (Max. 5)
+          schema:
+            type: string
+            example: A,AAPL
+        - name: date
+          in: query
+          description: Return results for dates greater than or equal date specified in this parameter. `latest` for most recent report.
+          schema:
+            type: string
+            example: '2023-09-30'
+        - name: from
+          in: query
+          description: Date to query from point in time.
+          schema:
+            type: string
+            example: '2010-07-01'
+        - name: to
+          in: query
+          description: Date to query to point in time.
+          schema:
+            type: string
+            example: '2020-07-30'
+      responses:
+        '200':
+          description: An object including a response containing an array of objects containing company data
+
+  /fundamentals/balance-sheet:
+    get:
+      summary: Balance sheet
+      parameters:
+        - name: symbols
+          in: query
+          description: One or more stock ticker symbol in comma separated list specifies company data to return.
+          schema:
+            type: string
+            example: A,AAPL
+        - name: date
+          in: query
+          description: Return results for dates greater than or equal date specified in this parameter. `latest` for most recent report.
+          schema:
+            type: string
+            example: latest
+        - name: from
+          in: query
+          description: Date to query from point in time.
+          schema:
+            type: string
+            example: '2010-07-30'
+        - name: to
+          in: query
+          description: Date to query to point in time.
+          schema:
+            type: string
+            example: '2012-07-30'
+      responses:
+        '200':
+          description: An object including a response that includes balance sheet data
+
+  /fundamentals/derived:
+    get:
+      summary: Derived figures & ratios
+      parameters:
+        - name: symbols
+          in: query
+          description: One or more stock ticker symbol in comma separated list specifies company data to return.
+          schema:
+            type: string
+            example: A,AAPL
+        - name: date
+          in: query
+          description: Return results for dates greater than or equal date specified in this parameter. `latest` for most recent report.
+          schema:
+            type: string
+            example: '2023-09-30'
+        - name: from
+          in: query
+          description: Date to query from point in time.
+          schema:
+            type: string
+            example: '2010-07-01'
+        - name: to
+          in: query
+          description: Date to query to point in time.
+          schema:
+            type: string
+            example: '2020-07-30'
+      responses:
+        '200':
+          description: An object including a response that includes balance sheet data
+  /fundamentals/cash-flow:
+    get:
+      summary: Cashflow
+      parameters:
+        - name: symbols
+          in: query
+          description: One or more stock ticker symbol in comma separated list specifies company data to return.
+          schema:
+            type: string
+            example: A,AAPL
+        - name: date
+          in: query
+          description: Return results for dates greater than or equal date specified in this parameter. `latest` for most recent report.
+          schema:
+            type: string
+            example: '2023-09-30'
+        - name: from
+          in: query
+          description: Date to query from point in time.
+          schema:
+            type: string
+            example: '2010-07-01'
+        - name: to
+          in: query
+          description: Date to query to point in time.
+          schema:
+            type: string
+            example: '2020-07-30'
+      responses:
+        '200':
+          description: An object including a response that includes cash flow data
+
+  /fundamentals/income-statement:
+    get:
+      summary: Income statement
+      parameters:
+        - name: symbols
+          in: query
+          description: One or more stock ticker symbol in comma separated list specifies company data to return.
+          schema:
+            type: string
+            example: A,AAPL
+        - name: date
+          in: query
+          description: Return results for dates greater than or equal date specified in this parameter. `latest` for most recent report.
+          schema:
+            type: string
+            example: '2023-09-30'
+        - name: from
+          in: query
+          description: Date to query from point in time.
+          schema:
+            type: string
+            example: '2010-07-01'
+        - name: to
+          in: query
+          description: Date to query to point in time.
+          schema:
+            type: string
+            example: '2020-07-30'
+      responses:
+        '200':
+          description: An object including a response that includes income statement data
+  /fundamentals/share-price:
+    get:
+      summary: Share price
+      parameters:
+        - name: symbols
+          in: query
+          description: One or more stock ticker symbol in comma separated list specifies company data to return.
+          schema:
+            type: string
+            example: A,AAPL
+        - name: date
+          in: query
+          description: Return results for dates greater than or equal date specified in this parameter. `latest` for most recent report.
+          schema:
+            type: string
+            example: '2023-09-30'
+        - name: from
+          in: query
+          description: Date to query from point in time.
+          schema:
+            type: string
+            example: '2010-07-01'
+        - name: to
+          in: query
+          description: Date to query to point in time.
+          schema:
+            type: string
+            example: '2020-07-30'
+      responses:
+        '200':
+          description: An object including a response that includes share price data
+  /fundamentals/share-price-ratios:
+    get:
+      summary: Share price ratios
+      parameters:
+        - name: symbols
+          in: query
+          description: One or more stock ticker symbol in comma separated list specifies company data to return.
+          schema:
+            type: string
+            example: A,AAPL
+        - name: date
+          in: query
+          description: Return results for dates greater than or equal date specified in this parameter. `latest` for most recent report.
+          schema:
+            type: string
+            example: '2023-09-30'
+        - name: from
+          in: query
+          description: Date to query from point in time.
+          schema:
+            type: string
+            example: '2010-07-01'
+        - name: to
+          in: query
+          description: Date to query to point in time.
+          schema:
+            type: string
+            example: '2020-07-30'
+      responses:
+        '200':
+          description: An object including a response that includes share price ratios data
+
