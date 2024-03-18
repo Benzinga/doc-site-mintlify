@@ -249,6 +249,10 @@ paths:
       responses:
         '200':
           description: An object including a response that includes share price ratios data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SharePriceRatio'
 components:
   schemas:
     Fundamental:
