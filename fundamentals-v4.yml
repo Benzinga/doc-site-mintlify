@@ -1,0 +1,1034 @@
+openapi: 3.0.3
+info:
+  title: Benzinga - Fundamental Data
+  description: Get balance sheet, income statement, cash flow, derived figures and ratios, share price and share price ratio
+  version: 1.0.0
+  contact: {}
+servers:
+  - url: https://api.benzinga.com/api/v4
+paths:
+  /fundamentals:
+    get:
+      summary: Fundamental data
+      parameters:
+        - name: symbols
+          in: query
+          description: One or more stock ticker symbol in comma separated list specifies company data to return. (Max. 5)
+          schema:
+            type: string
+            example: A,AAPL
+        - name: date
+          in: query
+          description: Return results for dates greater than or equal date specified in this parameter. `latest` for most recent report.
+          schema:
+            type: string
+            example: "2023-09-30"
+        - name: from
+          in: query
+          description: Date to query from point in time.
+          schema:
+            type: string
+            example: "2010-07-01"
+        - name: to
+          in: query
+          description: Date to query to point in time.
+          schema:
+            type: string
+            example: "2020-07-30"
+      responses:
+        "200":
+          description: An object including a response containing an array of objects containing company data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Fundamental"
+
+  /fundamentals/balance-sheet:
+    get:
+      summary: Balance sheet
+      parameters:
+        - name: symbols
+          in: query
+          description: One or more stock ticker symbol in comma separated list specifies company data to return.
+          schema:
+            type: string
+            example: A,AAPL
+        - name: date
+          in: query
+          description: Return results for dates greater than or equal date specified in this parameter. `latest` for most recent report.
+          schema:
+            type: string
+            example: latest
+        - name: from
+          in: query
+          description: Date to query from point in time.
+          schema:
+            type: string
+            example: "2010-07-30"
+        - name: to
+          in: query
+          description: Date to query to point in time.
+          schema:
+            type: string
+            example: "2012-07-30"
+      responses:
+        "200":
+          description: An object including a response that includes balance sheet data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BalanceSheetResponse"
+
+  /fundamentals/derived:
+    get:
+      summary: Derived figures & ratios
+      parameters:
+        - name: symbols
+          in: query
+          description: One or more stock ticker symbol in comma separated list specifies company data to return.
+          schema:
+            type: string
+            example: A,AAPL
+        - name: date
+          in: query
+          description: Return results for dates greater than or equal date specified in this parameter. `latest` for most recent report.
+          schema:
+            type: string
+            example: "2023-09-30"
+        - name: from
+          in: query
+          description: Date to query from point in time.
+          schema:
+            type: string
+            example: "2010-07-01"
+        - name: to
+          in: query
+          description: Date to query to point in time.
+          schema:
+            type: string
+            example: "2020-07-30"
+      responses:
+        "200":
+          description: An object including a response that includes balance sheet data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DerivedFiguresRatiosResponse"
+  /fundamentals/cash-flow:
+    get:
+      summary: Cashflow
+      parameters:
+        - name: symbols
+          in: query
+          description: One or more stock ticker symbol in comma separated list specifies company data to return.
+          schema:
+            type: string
+            example: A,AAPL
+        - name: date
+          in: query
+          description: Return results for dates greater than or equal date specified in this parameter. `latest` for most recent report.
+          schema:
+            type: string
+            example: "2023-09-30"
+        - name: from
+          in: query
+          description: Date to query from point in time.
+          schema:
+            type: string
+            example: "2010-07-01"
+        - name: to
+          in: query
+          description: Date to query to point in time.
+          schema:
+            type: string
+            example: "2020-07-30"
+      responses:
+        "200":
+          description: An object including a response that includes cash flow data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CashFlowResponse"
+  /fundamentals/income-statement:
+    get:
+      summary: Income statement
+      parameters:
+        - name: symbols
+          in: query
+          description: One or more stock ticker symbol in comma separated list specifies company data to return.
+          schema:
+            type: string
+            example: A,AAPL
+        - name: date
+          in: query
+          description: Return results for dates greater than or equal date specified in this parameter. `latest` for most recent report.
+          schema:
+            type: string
+            example: "2023-09-30"
+        - name: from
+          in: query
+          description: Date to query from point in time.
+          schema:
+            type: string
+            example: "2010-07-01"
+        - name: to
+          in: query
+          description: Date to query to point in time.
+          schema:
+            type: string
+            example: "2020-07-30"
+      responses:
+        "200":
+          description: An object including a response that includes income statement data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IncomeStatementResponse"
+  /fundamentals/share-price:
+    get:
+      summary: Share price
+      parameters:
+        - name: symbols
+          in: query
+          description: One or more stock ticker symbol in comma separated list specifies company data to return.
+          schema:
+            type: string
+            example: A,AAPL
+        - name: date
+          in: query
+          description: Return results for dates greater than or equal date specified in this parameter. `latest` for most recent report.
+          schema:
+            type: string
+            example: "2023-09-30"
+        - name: from
+          in: query
+          description: Date to query from point in time.
+          schema:
+            type: string
+            example: "2010-07-01"
+        - name: to
+          in: query
+          description: Date to query to point in time.
+          schema:
+            type: string
+            example: "2020-07-30"
+      responses:
+        "200":
+          description: An object including a response that includes share price data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SharePriceResponse"
+  /fundamentals/share-price-ratios:
+    get:
+      summary: Share price ratios
+      parameters:
+        - name: symbols
+          in: query
+          description: One or more stock ticker symbol in comma separated list specifies company data to return.
+          schema:
+            type: string
+            example: A,AAPL
+        - name: date
+          in: query
+          description: Return results for dates greater than or equal date specified in this parameter. `latest` for most recent report.
+          schema:
+            type: string
+            example: "2023-09-30"
+        - name: from
+          in: query
+          description: Date to query from point in time.
+          schema:
+            type: string
+            example: "2010-07-01"
+        - name: to
+          in: query
+          description: Date to query to point in time.
+          schema:
+            type: string
+            example: "2020-07-30"
+      responses:
+        "200":
+          description: An object including a response that includes share price ratios data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SharePriceRatioResponse"
+components:
+  schemas:
+    Fundamental:
+      type: object
+      properties:
+        ok:
+          type: string
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              balancesheet:
+                type: object
+                properties:
+                  type:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/BalanceSheet"
+              income_statement:
+                type: object
+                properties:
+                  type:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/IncomeStatement"
+              figures_and_ratios:
+                type: object
+                properties:
+                  type:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/DerivedFiguresRatios"
+              cashflow:
+                type: object
+                properties:
+                  type:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/CashFlow"
+    BalanceSheetResponse:
+      type: object
+      properties:
+        ok:
+          type: string
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              balancesheet:
+                type: object
+                properties:
+                  type:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/BalanceSheet"
+    BalanceSheet:
+      type: object
+      properties:
+        id:
+          type: number
+        symbol:
+          type: string
+        timeperiod:
+          type: string
+        fiscal_year:
+          type: number
+        fiscal_period:
+          type: string
+        report_date:
+          type: string
+        currency:
+          type: string
+        publish_date:
+          type: string
+        restated_date:
+          type: string
+        shares_basic:
+          type: number
+        shares_diluted:
+          type: number
+        cash_cash_equivalents_and_short_term_investments:
+          type: number
+        cash_and_cash_equivalents:
+          type: number
+        short_term_investments:
+          type: number
+        accounts_and_notes_receivable:
+          type: number
+        accounts_receivable_net:
+          type: number
+        notes_receivable_net:
+          type: number
+        unbilled_revenues:
+          type: number
+        inventories:
+          type: number
+        raw_materials:
+          type: number
+        work_in_process:
+          type: number
+        finished_goods:
+          type: number
+        other_inventory:
+          type: number
+        other_short_term_assets:
+          type: number
+        prepaid_expenses:
+          type: number
+        derivative_and_hedging_assets_short_term:
+          type: number
+        assets_held_for_sale:
+          type: number
+        deferred_tax_assets_short_term:
+          type: number
+        income_taxes_receivable:
+          type: number
+        discontinued_operations_short_term:
+          type: number
+        misc_short_term_assets:
+          type: number
+        total_current_assets:
+          type: number
+        property_plant_and_equipment_net:
+          type: number
+        property_plant_and_equipment:
+          type: number
+        accumulated_depreciation:
+          type: number
+        long_term_investments_and_receivables:
+          type: number
+        long_term_investments:
+          type: number
+        long_term_marketable_securities:
+          type: number
+        long_term_receivables:
+          type: number
+        other_long_term_assets:
+          type: number
+        intangible_assets:
+          type: number
+        goodwill:
+          type: number
+        other_intangible_assets:
+          type: number
+        prepaid_expense:
+          type: number
+        deferred_tax_assets_long_term:
+          type: number
+        derivative_and_hedging_assets_long_term:
+          type: number
+        prepaid_pension_costs:
+          type: number
+        discontinued_operations_long_term:
+          type: number
+        investments_in_affiliates:
+          type: number
+        misc_long_term_assets:
+          type: number
+        total_noncurrent_assets:
+          type: number
+        total_assets:
+          type: number
+        payables_and_accruals:
+          type: number
+        accounts_payable:
+          type: number
+        accrued_taxes:
+          type: number
+        interest_and_dividends_payable:
+          type: number
+        other_payables_and_accruals:
+          type: number
+        short_term_debt:
+          type: number
+        short_term_borrowings:
+          type: number
+        short_term_capital_leases:
+          type: number
+        current_portion_of_long_term_debt:
+          type: number
+        other_short_term_liabilities:
+          type: number
+        deferred_revenue_short_term:
+          type: number
+        liabilities_from_derivatives_and_hedging_short_term:
+          type: number
+        deferred_tax_liabilities_short_term:
+          type: number
+        liabilities_from_discontinued_operations_short_term:
+          type: number
+        misc_short_term_liabilities:
+          type: number
+        total_current_liabilities:
+          type: number
+        long_term_debt:
+          type: number
+        long_term_borrowings:
+          type: number
+        long_term_capital_leases:
+          type: number
+        other_long_term_liabilities:
+          type: number
+        accrued_liabilities:
+          type: number
+        pension_liabilities:
+          type: number
+        pensions:
+          type: number
+        other_post_retirement_benefits:
+          type: number
+        deferred_compensation:
+          type: number
+        deferred_revenue_long_term:
+          type: number
+        deferred_tax_liabilities_long_term:
+          type: number
+        liabilities_from_derivatives_and_hedging_long_term:
+          type: number
+        liabilities_from_discontinued_operations_long_term:
+          type: number
+        misc_long_term_liabilities:
+          type: number
+        total_noncurrent_liabilities:
+          type: number
+        total_liabilities:
+          type: number
+        preferred_equity:
+          type: number
+        share_capital_and_additional_paid_in_capital:
+          type: number
+        common_stock:
+          type: number
+        additional_paid_in_capital:
+          type: number
+        other_share_capital:
+          type: number
+        treasury_stock:
+          type: number
+        retained_earnings:
+          type: number
+        other_equity:
+          type: number
+        equity_before_minority_interest:
+          type: number
+        minority_interest:
+          type: number
+        total_equity:
+          type: number
+        total_liabilities_and_equity:
+          type: number
+    DerivedFiguresRatiosResponse:
+      type: object
+      properties:
+        ok:
+          type: string
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              figures_and_ratios:
+                type: object
+                properties:
+                  type:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/DerivedFiguresRatios"
+    DerivedFiguresRatios:
+      type: object
+      properties:
+        id:
+          type: number
+        symbol:
+          type: string
+        timeperiod:
+          type: string
+        fiscal_year:
+          type: number
+        fiscal_period:
+          type: string
+        report_date:
+          type: string
+        currency:
+          type: string
+        publish_date:
+          type: string
+        restated_date:
+          type: string
+        ebitda:
+          type: number
+        total_debt:
+          type: number
+        free_cash_flow:
+          type: number
+        gross_profit_margin:
+          type: number
+        operating_margin:
+          type: number
+        net_profit_margin:
+          type: number
+        return_on_equity:
+          type: number
+        return_on_assets:
+          type: number
+        free_cash_flow_to_net_income:
+          type: number
+        current_ratio:
+          type: number
+        liabilities_to_equity_ratio:
+          type: number
+        debt_ratio:
+          type: number
+        earnings_per_share_basic:
+          type: number
+        earnings_per_share_diluted:
+          type: number
+        sales_per_share:
+          type: number
+        equity_per_share:
+          type: number
+        free_cash_flow_per_share:
+          type: number
+        dividends_per_share:
+          type: number
+        piotroski_f_score:
+          type: number
+        return_on_invested_capital:
+          type: number
+        cash_return_on_invested_capital:
+          type: number
+        dividend_payout_ratio:
+          type: number
+        net_debt_ebitda:
+          type: number
+        net_debt_ebit:
+          type: number
+    CashFlowResponse:
+      type: object
+      properties:
+        ok:
+          type: string
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              cashflow:
+                type: object
+                properties:
+                  type:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/CashFlow"
+    CashFlow:
+      type: object
+      properties:
+        id:
+          type: number
+        symbol:
+          type: string
+        timeperiod:
+          type: string
+        fiscal_year:
+          type: number
+        fiscal_period:
+          type: string
+        report_date:
+          type: string
+        currency:
+          type: string
+        publish_date:
+          type: string
+        restated_date:
+          type: string
+        shares_basic:
+          type: number
+        shares_diluted:
+          type: number
+        net_income_starting_line:
+          type: number
+        net_income:
+          type: number
+        net_income_from_discontinued_operations:
+          type: number
+        other_adjustments:
+          type: number
+        depreciation_and_amortization:
+          type: number
+        non_cash_items:
+          type: number
+        stock_based_compensation:
+          type: number
+        deferred_income_taxes:
+          type: number
+        other_non_cash_adjustments:
+          type: number
+        change_in_working_capital:
+          type: number
+        change_in_accounts_receivable:
+          type: number
+        change_in_inventories:
+          type: number
+        change_in_accounts_payable:
+          type: number
+        change_in_other:
+          type: number
+        net_cash_from_discontinued_operations_operating:
+          type: number
+        net_cash_from_operating_activities:
+          type: number
+        change_in_fixed_assets_and_intangibles:
+          type: number
+        disposition_of_fixed_assets_and_intangibles:
+          type: number
+        disposition_of_fixed_assets:
+          type: number
+        disposition_of_intangible_assets:
+          type: number
+        acquisition_of_fixed_assets_and_intangibles:
+          type: number
+        purchase_of_fixed_assets:
+          type: number
+        acquisition_of_intangible_assets:
+          type: number
+        other_change_in_fixed_assets_and_intangibles:
+          type: number
+        net_change_in_long_term_investment:
+          type: number
+        decrease_in_long_term_investment:
+          type: number
+        increase_in_long_term_investment:
+          type: number
+        net_cash_from_acquisitions_and_divestitures:
+          type: number
+        net_cash_from_divestitures:
+          type: number
+        cash_for_acquisition_of_subsidiaries:
+          type: number
+        cash_for_joint_ventures:
+          type: number
+        net_cash_from_other_acquisitions:
+          type: number
+        other_investing_activities:
+          type: number
+        net_cash_from_discontinued_operations_investing:
+          type: number
+        net_cash_from_investing_activities:
+          type: number
+        dividends_paid:
+          type: number
+        cash_from_repayment_of_debt:
+          type: number
+        cash_from_repayment_of_short_term_debt_net:
+          type: number
+        cash_from_repayment_of_long_term_debt_net:
+          type: number
+        repayments_of_long_term_debt:
+          type: number
+        cash_from_long_term_debt:
+          type: number
+        cash_from_repurchase_of_equity:
+          type: number
+        increase_in_capital_stock:
+          type: number
+        decrease_in_capital_stock:
+          type: number
+        other_financing_activities:
+          type: number
+        net_cash_from_discontinued_operations_financing:
+          type: number
+        net_cash_from_financing_activities:
+          type: number
+        net_cash_before_disc_operations_and_fx:
+          type: number
+        change_in_cash_from_disc_operations_and_other:
+          type: number
+        net_cash_before_fx:
+          type: number
+        effect_of_foreign_exchange_rates:
+          type: number
+        net_change_in_cash:
+          type: number
+    IncomeStatementResponse:
+      type: object
+      properties:
+        ok:
+          type: string
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              income_statement:
+                type: object
+                properties:
+                  type:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/IncomeStatement"
+    IncomeStatement:
+      type: object
+      properties:
+        id:
+          type: number
+        symbol:
+          type: string
+        timeperiod:
+          type: string
+        fiscal_year:
+          type: number
+        fiscal_period:
+          type: string
+        report_date:
+          type: string
+        currency:
+          type: string
+        publish_date:
+          type: string
+        restated_date:
+          type: string
+        shares_basic:
+          type: number
+        shares_diluted:
+          type: number
+        revenue:
+          type: number
+        sales_and_services_revenue:
+          type: number
+        financing_revenue:
+          type: number
+        other_revenue:
+          type: number
+        cost_of_revenue:
+          type: number
+        cost_of_goods_and_services:
+          type: number
+        cost_of_financing_revenue:
+          type: number
+        cost_of_other_revenue:
+          type: number
+        gross_profit:
+          type: number
+        other_operating_income:
+          type: number
+        operating_expenses:
+          type: number
+        selling_general_and_administrative:
+          type: number
+        selling_and_marketing:
+          type: number
+        general_and_administrative:
+          type: number
+        research_and_development:
+          type: number
+        depreciation_and_amortization:
+          type: number
+        provision_for_doubtful_accounts:
+          type: number
+        other_operating_expenses:
+          type: number
+        operating_income_loss:
+          type: number
+        non_operating_income_loss:
+          type: number
+        interest_expense_net:
+          type: number
+        interest_expense:
+          type: number
+        interest_income:
+          type: number
+        other_investment_income_loss:
+          type: number
+        foreign_exchange_gain_loss:
+          type: number
+        income_loss_from_affiliates:
+          type: number
+        other_non_operating_income_loss:
+          type: number
+        pretax_income_loss_adj:
+          type: number
+        abnormal_gains_losses:
+          type: number
+        acquired_in_process_randd:
+          type: number
+        merger_and_acquisition_expense:
+          type: number
+        abnormal_derivatives:
+          type: number
+        disposal_of_assets:
+          type: number
+        early_extinguishment_of_debt:
+          type: number
+        asset_write_down:
+          type: number
+        impairment_of_goodwill_and_intangibles:
+          type: number
+        sale_of_business:
+          type: number
+        legal_settlement:
+          type: number
+        restructuring_charges:
+          type: number
+        sale_of_investments_and_unrealized_investments:
+          type: number
+        insurance_settlement:
+          type: number
+        other_abnormal_items:
+          type: number
+        pretax_income_loss:
+          type: number
+        income_tax_expense_benefit_net:
+          type: number
+        current_income_tax:
+          type: number
+        deferred_income_tax:
+          type: number
+        tax_allowance_credit:
+          type: number
+        income_loss_from_affiliates_net_of_taxes:
+          type: number
+        income_loss_from_continuing_operations:
+          type: number
+        net_extraordinary_gains_losses:
+          type: number
+        discontinued_operations:
+          type: number
+        accounting_charges_and_other:
+          type: number
+        income_loss_incl_minority_interest:
+          type: number
+        minority_interest:
+          type: number
+        net_income:
+          type: number
+        preferred_dividends:
+          type: number
+        other_adjustments:
+          type: number
+        net_income_common:
+          type: number
+    SharePriceResponse:
+      type: object
+      properties:
+        ok:
+          type: string
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              share_price:
+                type: object
+                properties:
+                  type:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/SharePrice"
+    SharePrice:
+      type: object
+      properties:
+        id:
+          type: number
+        symbol:
+          type: string
+        date:
+          type: string
+        open:
+          type: number
+        high:
+          type: number
+        low:
+          type: number
+        close:
+          type: number
+        adj_close:
+          type: number
+        volume:
+          type: number
+        dividend:
+          type: number
+        shares_outstanding:
+          type: number
+    SharePriceRatioResponse:
+      type: object
+      properties:
+        ok:
+          type: string
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              share_price_ratios:
+                type: object
+                properties:
+                  type:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/SharePriceRatio"
+    SharePriceRatio:
+      type: object
+      properties:
+        id:
+          type: number
+        symbol:
+          type: string
+        date:
+          type: string
+        open:
+          type: number
+        high:
+          type: number
+        low:
+          type: number
+        close:
+          type: number
+        adj_close:
+          type: number
+        volume:
+          type: number
+        dividend:
+          type: number
+        shares_outstanding:
+          type: number
+        market_cap:
+          type: number
+        price_to_earnings_ratio_quarterly:
+          type: number
+        price_to_earnings_ratio_ttm:
+          type: number
+        price_to_sales_ratio_quarterly:
+          type: number
+        price_to_sales_ratio_ttm:
+          type: number
+        price_to_book_value:
+          type: number
+        price_to_free_cash_flow_quarterly:
+          type: number
+        price_to_free_cash_flow_ttm:
+          type: number
+        enterprise_value:
+          type: number
+        ev_ebitda:
+          type: number
+        ev_sales:
+          type: number
+        ev_fcf:
+          type: number
+        book_to_market_value:
+          type: number
+        operating_income_ev:
+          type: number
+        altman_z_score:
+          type: number
+        dividend_yield:
+          type: number
