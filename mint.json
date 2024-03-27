@@ -114,24 +114,6 @@
           ]
         },
         {
-          "group": "Fundamentals v2.1",
-          "pages": [
-            "benzinga-apis/fundamentals/fundamentals-v2.1",
-            "benzinga-apis/fundamentals/get-fundamentals",
-            "benzinga-apis/fundamentals/get-valuationRatios",
-            "benzinga-apis/fundamentals/get-earningRatios",
-            "benzinga-apis/fundamentals/get-operationRatios",
-            "benzinga-apis/fundamentals/get-financials",
-            "benzinga-apis/fundamentals/get-shareClass",
-            "benzinga-apis/fundamentals/get-earningsReports",
-            "benzinga-apis/fundamentals/get-alphaBeta",
-            "benzinga-apis/fundamentals/get-company",
-            "benzinga-apis/fundamentals/get-companyProfile",
-            "benzinga-apis/fundamentals/get-shareClassProfile",
-            "benzinga-apis/fundamentals/get-assetClassification"
-          ]
-        },
-        {
           "group": "Fxstreet Economic Calendar",
           "pages": [
             "benzinga-apis/fxstreet-econ/get-econ"
