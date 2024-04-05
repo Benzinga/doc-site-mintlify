@@ -45,6 +45,13 @@ paths:
           schema:
             type: string
             format: csv
+        - name: rating_id
+          in: query
+          required: false
+          description: One or more rating ids separated by a comma.
+          schema:
+            type: string
+            format: csv
       responses:
         '200':
           description: An array of analyst insights for the requested ticker symbol.
