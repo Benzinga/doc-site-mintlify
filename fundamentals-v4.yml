@@ -19,7 +19,7 @@ paths:
             example: A,AAPL
         - name: date
           in: query
-          description: Return results for dates greater than or equal date specified in this parameter. `latest` for most recent report.
+          description: Returns the most recent results for dates less than or equal to the date specified in this parameter. Use `latest` to retrieve the most recent results. The default setting is `latest`.
           schema:
             type: string
             example: "2023-09-30"
@@ -55,7 +55,7 @@ paths:
             example: A,AAPL
         - name: date
           in: query
-          description: Return results for dates greater than or equal date specified in this parameter. `latest` for most recent report.
+          description: Returns the most recent results for dates less than or equal to the date specified in this parameter. Use `latest` to retrieve the most recent results. The default setting is `latest`.
           schema:
             type: string
             example: latest
@@ -91,7 +91,7 @@ paths:
             example: A,AAPL
         - name: date
           in: query
-          description: Return results for dates greater than or equal date specified in this parameter. `latest` for most recent report.
+          description: Returns the most recent results for dates less than or equal to the date specified in this parameter. Use `latest` to retrieve the most recent results. The default setting is `latest`.
           schema:
             type: string
             example: "2023-09-30"
@@ -126,7 +126,7 @@ paths:
             example: A,AAPL
         - name: date
           in: query
-          description: Return results for dates greater than or equal date specified in this parameter. `latest` for most recent report.
+          description: Returns the most recent results for dates less than or equal to the date specified in this parameter. Use `latest` to retrieve the most recent results. The default setting is `latest`.
           schema:
             type: string
             example: "2023-09-30"
@@ -161,7 +161,7 @@ paths:
             example: A,AAPL
         - name: date
           in: query
-          description: Return results for dates greater than or equal date specified in this parameter. `latest` for most recent report.
+          description: Returns the most recent results for dates less than or equal to the date specified in this parameter. Use `latest` to retrieve the most recent results. The default setting is `latest`.
           schema:
             type: string
             example: "2023-09-30"
@@ -184,41 +184,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/IncomeStatementResponse"
-  /fundamentals/share-price:
-    get:
-      summary: Share price
-      parameters:
-        - name: symbols
-          in: query
-          description: One or more stock ticker symbol in comma separated list specifies company data to return.
-          schema:
-            type: string
-            example: A,AAPL
-        - name: date
-          in: query
-          description: Return results for dates greater than or equal date specified in this parameter. `latest` for most recent report.
-          schema:
-            type: string
-            example: "2023-09-30"
-        - name: from
-          in: query
-          description: Date to query from point in time.
-          schema:
-            type: string
-            example: "2010-07-01"
-        - name: to
-          in: query
-          description: Date to query to point in time.
-          schema:
-            type: string
-            example: "2020-07-30"
-      responses:
-        "200":
-          description: An object including a response that includes share price data
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SharePriceResponse"
+  
   /fundamentals/share-price-ratios:
     get:
       summary: Share price ratios
@@ -231,7 +197,7 @@ paths:
             example: A,AAPL
         - name: date
           in: query
-          description: Return results for dates greater than or equal date specified in this parameter. `latest` for most recent report.
+          description: Returns the most recent results for dates less than or equal to the date specified in this parameter. Use `latest` to retrieve the most recent results. The default setting is `latest`.
           schema:
             type: string
             example: "2023-09-30"
@@ -911,50 +877,6 @@ components:
         other_adjustments:
           type: number
         net_income_common:
-          type: number
-    SharePriceResponse:
-      type: object
-      properties:
-        ok:
-          type: string
-        data:
-          type: array
-          items:
-            type: object
-            properties:
-              share_price:
-                type: object
-                properties:
-                  type:
-                    type: string
-                  data:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/SharePrice"
-    SharePrice:
-      type: object
-      properties:
-        id:
-          type: number
-        symbol:
-          type: string
-        date:
-          type: string
-        open:
-          type: number
-        high:
-          type: number
-        low:
-          type: number
-        close:
-          type: number
-        adj_close:
-          type: number
-        volume:
-          type: number
-        dividend:
-          type: number
-        shares_outstanding:
           type: number
     SharePriceRatioResponse:
       type: object
