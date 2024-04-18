@@ -157,7 +157,6 @@
         {
           "group": "Movers",
           "pages": [
-            "benzinga-apis/movers/movers-v1",
             "benzinga-apis/movers/get-movers"
           ]
         },
