@@ -114,6 +114,12 @@
           ]
         },
         {
+          "group": "Company Fundamentals",
+          "pages": [
+            "benzinga-apis/fundamentals/get-company"
+          ]
+        },
+        {
           "group": "Fxstreet Economic Calendar",
           "pages": [
             "benzinga-apis/fxstreet-econ/get-econ"
