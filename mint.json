@@ -176,7 +176,6 @@
         {
           "group": "Signals",
           "pages": [
-            "benzinga-apis/signals/signals-ref",
             "benzinga-apis/signals/get-options-activity"
           ]
         },
