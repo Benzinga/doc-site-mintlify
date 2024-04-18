@@ -135,7 +135,6 @@
         {
           "group": "Analyst Insights",
           "pages": [
-            "benzinga-apis/analyst-insights/analyst-insights-ref",
             "benzinga-apis/analyst-insights/get-analyst-insights"
           ]
         },
