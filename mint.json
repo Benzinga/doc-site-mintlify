@@ -163,7 +163,6 @@
         {
           "group": "Newsfeed (Streaming) v1",
           "pages": [
-            "benzinga-apis/newsfeed-stream-v1/newsfeed-stream-v1",
             "benzinga-apis/newsfeed-stream-v1/get-stream"
           ]
         },
