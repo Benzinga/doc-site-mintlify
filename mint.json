@@ -142,7 +142,6 @@
         {
           "group": "Government Trades",
           "pages": [
-            "benzinga-apis/government-trades/gov-trades-ref",
             "benzinga-apis/government-trades/get-trades"
           ]
         },
