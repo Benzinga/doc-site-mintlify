@@ -25,6 +25,8 @@ paths:
           A comma (,) separated list of search identifiers.  Identifiers are based on the `search_type` field.  Limit 100 per request.
 
           Example: F,AAPL
+
+          Logos shoul be queried with format <EXCHANGE>:<SYMBOL> i.e. NYSE:ARI
         required: true
         style: form
         explode: false
