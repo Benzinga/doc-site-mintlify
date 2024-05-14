@@ -422,6 +422,12 @@ paths:
         schema:
           type: string
           format: A-Z:3
+      - name: event_category
+        in: query
+        description: One or more categories separated by a comma.
+        schema:
+          type: string
+          format: csv
       responses:
         200:
           description: success
