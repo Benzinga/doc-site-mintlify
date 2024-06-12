@@ -126,7 +126,7 @@
           ]
         },
         {
-          "group": "Bulls Say, Bears Say",
+          "group": "Bull vs. Bear",
           "pages": [
             "benzinga-apis/bull-bear/bull-bear-ref",
             "benzinga-apis/bull-bear/get-bull-bear"
