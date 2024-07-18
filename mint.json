@@ -139,6 +139,12 @@
           ]
         },
         {
+          "group": "Conferenc Call Transcripts",
+          "pages": [
+            "benzinga-apis/conference-call-transcripts/get-conference-call-transcripts"
+          ]
+        },
+        {
           "group": "Government Trades",
           "pages": [
             "benzinga-apis/government-trades/get-trades"
