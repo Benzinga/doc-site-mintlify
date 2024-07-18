@@ -139,7 +139,7 @@
           ]
         },
         {
-          "group": "Conferenc Call Transcripts",
+          "group": "Conference Call Transcripts",
           "pages": [
             "benzinga-apis/conference-call-transcripts/get-conference-call-transcripts"
           ]
