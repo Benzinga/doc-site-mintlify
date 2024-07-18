@@ -1,0 +1,87 @@
+openapi: 3.0.1
+info:
+  title: Conference Call Transcripts API
+  version: '1.0'
+servers:
+  - url: https://api.benzinga.com/api/v1
+paths:
+  /earnings-call-transcripts:
+    get:
+      summary: Get earnings call transcripts for a given ticker symbol.
+      operationId: getEarningsCallTranscripts
+      parameters:
+        - name: token
+          in: query
+          required: true
+          description: Authentication token for API access.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A conference call transcript and its related data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TranscriptResponse'
+        '401':
+          description: Authentication information is missing or invalid.
+        '404':
+          description: A transcript for the provided ticker symbol was not found.
+components:
+  schemas:
+    TranscriptResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the transcript.
+        security:
+          type: object
+          properties:
+            ticker:
+              type: string
+              description: Stock ticker symbol.
+            exchange:
+              type: string
+              description: Exchange where the stock is listed.
+            company_name:
+              type: string
+              description: Name of the company.
+            cik:
+              type: string
+              description: Central Index Key (CIK) of the company.
+            isin:
+              type: string
+              description: International Securities Identification Number (ISIN).
+        transcript_full:
+          type: string
+          description: Full transcript of the conference call.
+        m3u8_url:
+          type: string
+          description: URL to the audio recording of the conference call.
+        summaries:
+          type: array
+          description: Summaries of the conference call.
+          items:
+            type: string
+        summary_full:
+          type: string
+          description: Full summary of the conference call.
+        call_id:
+          type: string
+          description: Unique identifier for the call.
+        start_time:
+          type: string
+          format: time
+          description: Start time of the conference call.
+        date:
+          type: string
+          format: date
+          description: Date of the conference call.
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: query
+      name: token
+security:
+  - ApiKeyAuth: []
