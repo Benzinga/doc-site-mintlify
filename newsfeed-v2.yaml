@@ -200,6 +200,14 @@ paths:
           maximum: 100
           type: integer
           default: 15
+      - name: updatedSince
+        in: query
+        description: |-
+          Filters the results to only include items that have been updated since the specified timestamp.
+        schema:
+          type: integer
+          format: int64
+          description: UNIX timestamp representing the update time.
       responses:
         200:
           description: success
