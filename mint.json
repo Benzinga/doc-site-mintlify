@@ -85,6 +85,7 @@
             "benzinga-apis/calendar/calendar-v2",
             "benzinga-apis/calendar/get-conferenceCalls",
             "benzinga-apis/calendar/get-dividends",
+            "benzinga-apis/calendar/get-dividends-v2-2",
             "benzinga-apis/calendar/get-earnings",
             "benzinga-apis/calendar/get-economics",
             "benzinga-apis/calendar/get-fda",
