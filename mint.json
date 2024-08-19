@@ -120,12 +120,6 @@
           ]
         },
         {
-          "group": "Fxstreet Economic Calendar",
-          "pages": [
-            "benzinga-apis/fxstreet-econ/get-econ"
-          ]
-        },
-        {
           "group": "Bull vs. Bear",
           "pages": [
             "benzinga-apis/bull-bear/bull-bear-ref",
