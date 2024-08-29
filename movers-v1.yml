@@ -169,10 +169,10 @@ components:
       in: query
       description: |
         Filters movers by screener query. A screener query is a list of conditions separated by a semicolon. Some examples
-        * marketcap_gt_1b
+        * marketCap_gt_1b
         * close_gt_5
         * sector_in_technology,healthcare
-        * marketcap_gt_300m;marketcap_lt_2b
+        * marketCap_gt_300m;marketCap_lt_2b
       schema:
         type: string
   securitySchemes:
