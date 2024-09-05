@@ -11,12 +11,6 @@ paths:
       summary: Get analyst insights for a given ticker symbol.
       operationId: getAnalystInsights
       parameters:
-        - name: ticker
-          in: query
-          required: true
-          description: Stock ticker symbol to query for analyst insights.
-          schema:
-            type: string
         - name: page
           in: query
           required: false
@@ -34,7 +28,7 @@ paths:
         - name: symbols
           in: query
           required: false
-          description: One or more security identifiers separated by a comma.
+          description: Stock ticker symbols separated by commas to query for analyst insights.
           schema:
             type: string
             format: csv
