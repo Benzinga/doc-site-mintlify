@@ -72,7 +72,7 @@ paths:
         schema:
           type: string
           format: csv
-      - name: parameters[ids]
+      - name: parameters[id]
         in: query
         description: One or more ids separated by a comma.
         schema:
