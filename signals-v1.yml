@@ -72,6 +72,12 @@ paths:
         schema:
           type: string
           format: csv
+      - name: parameters[ids]
+        in: query
+        description: One or more ids separated by a comma.
+        schema:
+          type: string
+          format: csv
       - name: parameters[updated]
         in: query
         description: Records last Updated Unix timestamp (UTC). This will force the
