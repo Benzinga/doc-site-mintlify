@@ -193,6 +193,12 @@
             "benzinga-apis/webhook-v1",
             "benzinga-apis/test-trigger-webhook/get-webhook-test"
           ]
+        },
+        {
+          "group": "Short Interest",
+          "pages": [
+            "benzinga-apis/short-interest/short-interest"
+          ]
         }
       ]
     },
