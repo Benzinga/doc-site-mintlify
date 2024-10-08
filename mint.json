@@ -103,6 +103,15 @@
           ]
         },
         {
+          "group": "Data Websocket",
+          "pages": [
+            "benzinga-apis/data-websocket/get-analyst-insights-stream",
+            "benzinga-apis/data-websocket/get-bulls-bears-say-stream",
+            "benzinga-apis/data-websocket/get-calendar-earnings-stream",
+            "benzinga-apis/data-websocket/get-calendar-ratings-stream"
+          ]
+        },
+        {
           "group": "Historical Bar Data",
           "pages": [
             "benzinga-apis/bars/bars-v2",

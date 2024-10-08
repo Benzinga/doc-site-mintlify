@@ -1,0 +1,922 @@
+---
+openapi: 3.0.1
+info:
+  title: Webhook v1 Test Trigger
+  description: Trigger API that initiates webhook payload delivery to your endpoint for testing.
+  version: "websocket/v1"
+servers:
+  - url: https://api.benzinga.com/api/v1
+    description: v1 group is used for option_activity, bull_say_bear_say, analyst_insights.
+  - url: https://api.benzinga.com/api/v2.1
+    description: v2.1 is used for calendar types like ratings and earnings.
+
+paths:
+  /bulls_bears_say/stream:
+    get:
+      summary: Get the latest bull and bear cases for a given ticker symbol.
+      operationId: getBullsBearsSayStream
+      servers:
+        - url: https://api.benzinga.com/api/v1
+      parameters:
+        - name: symbols
+          in: query
+          required: true
+          description: Stock ticker symbol to query for bull/bear cases.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: An array of bull and bear cases for the requested ticker symbol.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BullBearWSResp'
+        '401':
+          description: Authentication information is missing or invalid.
+        '404':
+          description: A bull/bear case for the provided ticker symbol was not found.
+  /analyst/insights/stream:
+    get:
+      summary: Get analyst insights for a given ticker symbol.
+      operationId: getAnalystInsightsStream
+      servers:
+        - url: https://api.benzinga.com/api/v1
+      parameters:
+        - name: page
+          in: query
+          required: false
+          description: Page number for pagination.
+          schema:
+            type: integer
+            default: 1
+        - name: pageSize
+          in: query
+          required: false
+          description: Number of items per page.
+          schema:
+            type: integer
+            default: 10
+        - name: symbols
+          in: query
+          required: false
+          description: Stock ticker symbols separated by commas to query for analyst insights.
+          schema:
+            type: string
+            format: csv
+        - name: analyst
+          in: query
+          required: false
+          description: One or more analyst ids separated by a comma.
+          schema:
+            type: string
+            format: csv
+        - name: rating_id
+          in: query
+          required: false
+          description: One or more rating ids separated by a comma.
+          schema:
+            type: string
+            format: csv
+      responses:
+        '200':
+          description: An array of analyst insights for the requested ticker symbol.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalystInsightWSResp'
+        '401':
+          description: Authentication information is missing or invalid.
+        '404':
+          description: Analyst insights for the provided ticker symbol were not found.
+  /calendar/earnings/stream:
+    get:
+      summary: Returns the earnings data
+      operationId: getCalendarEarningsStream
+      servers:
+        - url: https://api.benzinga.com/api/v2.1
+      parameters:
+        - name: page
+          in: query
+          description: |-
+            Page offset.
+            For optimization, performance and technical reasons, page offsets are limited from 0 - 100000.  Limit the query results by other parameters such as date.
+          schema:
+            type: integer
+            default: 0
+        - name: pagesize
+          in: query
+          description: Number of results returned. Limit 1000
+          schema:
+            type: integer
+        - name: parameters[date]
+          in: query
+          description: Date to query for calendar data. Shorthand for date_from and
+            date_to if they are the same. Defaults for latest.
+          schema:
+            type: string
+            format: YYYY-MM-DD
+        - name: parameters[date_from]
+          in: query
+          description: Date to query from point in time.
+          schema:
+            type: string
+            format: YYYY-MM-DD
+        - name: parameters[date_to]
+          in: query
+          description: Date to query to point in time.
+          schema:
+            type: string
+            format: YYYY-MM-DD
+        - name: parameters[date_sort]
+          in: query
+          description: Field sort option for earnings calendar. Apply `:desc`, `:asc`
+            for sort order.
+          schema:
+            type: string
+            enum:
+              - date
+        - name: parameters[tickers]
+          in: query
+          description: One or more ticker symbols separated by a comma. All calendars
+            accept this parameter (not including the FDA endpoint; for the FDA endpoint,
+            please use  "parameters[securities]" instead). Ignored by the Economics
+            endpoint.   Maximum 50 tickers. Note that for the IPOs endpoint, new tickers
+            may not return  results right away as we do not automatically link them
+            to the underlying company's  data. Thus, to obtain the most recent rows
+            from the IPOs endpoint, send queries  without this parameter specified.
+          schema:
+            type: string
+            format: csv
+        - name: parameters[importance]
+          in: query
+          description: The importance level to filter by. Uses Greater Than or Equal
+            To the importance indicated
+          schema:
+            type: integer
+            enum:
+              - 0
+              - 1
+              - 2
+              - 3
+              - 4
+              - 5
+        - name: parameters[updated]
+          in: query
+          description: Records last Updated Unix timestamp (UTC). This will force the
+            sort order to be Greater Than or Equal to the timestamp indicated.
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EarningsWSResp'
+  /calendar/ratings/stream:
+    get:
+      summary: Returns analyst ratings data
+      operationId: getCalendarRatingsStream
+      servers:
+        - url: https://api.benzinga.com/api/v2.1
+      parameters:
+        - name: fields
+          in: query
+          style: form
+          explode: false
+          description: |
+            Select fields to return. Default fields are shown below.
+            Default fields:
+            - id
+            - date
+            - time
+            - ticker
+            - exchange
+            - name
+            - currency
+            - action_pt
+            - action_company
+            - rating_current
+            - pt_current
+            - rating_prior
+            - pt_prior
+            - url
+            - url_calendar
+            - url_news
+            - analyst
+            - analyst_name
+            - importance
+            - notes
+            - updated
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - id
+                - date
+                - time
+        - name: page
+          in: query
+          description: |-
+            Page offset.
+            For optimization, performance and technical reasons, page offsets are limited from 0 - 100000.  Limit the query results by other parameters such as date.
+          schema:
+            type: integer
+            default: 0
+        - name: pagesize
+          in: query
+          description: Number of results returned. Limit 1000
+          schema:
+            type: integer
+        - name: parameters[date]
+          in: query
+          description: Date to query for calendar data. Shorthand for date_from and
+            date_to if they are the same. Defaults for latest.
+          schema:
+            type: string
+            format: YYYY-MM-DD
+        - name: parameters[date_from]
+          in: query
+          description: Date to query from point in time.
+          schema:
+            type: string
+            format: YYYY-MM-DD
+        - name: parameters[date_to]
+          in: query
+          description: Date to query to point in time.
+          schema:
+            type: string
+            format: YYYY-MM-DD
+        - name: parameters[tickers]
+          in: query
+          description: One or more ticker symbols separated by a comma. All calendars
+            accept this parameter (not including the FDA endpoint; for the FDA endpoint,
+            please use  "parameters[securities]" instead). Ignored by the Economics
+            endpoint.   Maximum 50 tickers. Note that for the IPOs endpoint, new tickers
+            may not return  results right away as we do not automatically link them
+            to the underlying company's  data. Thus, to obtain the most recent rows
+            from the IPOs endpoint, send queries  without this parameter specified.
+          schema:
+            type: string
+            format: csv
+        - name: parameters[importance]
+          in: query
+          description: The importance level to filter by. Uses Greater Than or Equal
+            To the importance indicated
+          schema:
+            type: integer
+            enum:
+              - 0
+              - 1
+              - 2
+              - 3
+              - 4
+              - 5
+        - name: parameters[updated]
+          in: query
+          description: Records last Updated Unix timestamp (UTC). This will force the
+            sort order to be Greater Than or Equal to the timestamp indicated.
+          schema:
+            type: integer
+            format: int64
+        - name: parameters[action]
+          in: query
+          description: Filter by a specific action_company (action for rating). Note
+            that all of these terms are precisely defined.
+          schema:
+            type: string
+            enum:
+              - Downgrades
+              - Maintains
+              - Reinstates
+              - Reiterates
+              - Upgrades
+              - Assumes
+              - Initiates Coverage On
+              - Terminates Coverage On
+              - Removes
+              - Suspends
+              - Firm Dissolved
+        - name: parameters[analyst_id]
+          in: query
+          description: One or more analyst ids (analyst_id) separated by a comma.
+          schema:
+            type: string
+            format: csv
+        - name: parameters[firm_id]
+          in: query
+          description: One or more firm ids (firm_id) separated by a comma.
+          schema:
+            type: string
+            format: csv
+        - name: analyst
+          in: query
+          description: A comma separated list of analyst (person) ID's to bring back.  Omitting
+            will bring back all available analysts.
+          schema:
+            type: string
+            format: csv
+        - name: firm
+          in: query
+          description: A comma separated list of analyst firm ID's to bring back.  Omitting
+            will bring back all available firms.
+          schema:
+            type: string
+            format: csv
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RatingsWSResp'
+
+components:
+  schemas:
+    BullBearWSResp:
+      type : object
+      properties:
+        id:
+          type: string
+          description: unique uuid for the websocket response
+        api_version:
+          type: string
+          description: Websocket api version
+          default: websocket/v1
+        kind:
+          type: string
+          description: Websocket connection stream type
+        data:
+          type: object
+          properties:
+            action:
+              type: string
+              description: Websocket data action i.e., created, updated, deleted
+            id:
+              type: string
+              description: data id for the bull/bear case
+            content:
+              $ref: '#/components/schemas/BullBearCase'
+            timestamp:
+              type: string
+              description: timestamp of the data
+    BullBearCase:
+      type: object
+      properties:
+        bear_case:
+          type: string
+          description: Description of the bear case scenario.
+        bull_case:
+          type: string
+          description: Description of the bull case scenario.
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the bull/bear case.
+        ticker:
+          type: string
+          description: Stock ticker symbol related to the bull/bear case.
+        updated:
+          type: integer
+          format: int64
+          description: Timestamp of when the case was last updated.
+
+    AnalystInsightWSResp:
+      type : object
+      properties:
+        id:
+          type: string
+          description: unique uuid for the websocket response
+        api_version:
+          type: string
+          description: Websocket api version
+          default: websocket/v1
+        kind:
+          type: string
+          description: Websocket connection stream type
+        data:
+          type: object
+          properties:
+            action:
+              type: string
+              description: Websocket data action i.e., created, updated, deleted
+            id:
+              type: string
+              description: data id for the analyst insight
+            content:
+              $ref: '#/components/schemas/AnalystInsight'
+            timestamp:
+              type: string
+              description: timestamp of the data
+    AnalystInsight:
+      type: object
+      properties:
+        action:
+          type: string
+          description: Analyst's action on the stock (e.g., Maintains, Upgrades).
+        analyst_insights:
+          type: string
+          description: Detailed insights from the analyst.
+        date:
+          type: string
+          format: date
+          description: Date of the analyst insight.
+        firm:
+          type: string
+          description: Name of the firm providing the insight.
+        firm_id:
+          type: string
+          description: Unique identifier for the firm.
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the analyst insight.
+        pt:
+          type: string
+          description: Price target given by the analyst.
+        rating:
+          type: string
+          description: Rating provided by the analyst.
+        rating_id:
+          type: string
+          description: Unique identifier for the rating.
+        security:
+          type: object
+          properties:
+            cik:
+              type: string
+            exchange:
+              type: string
+            isin:
+              type: string
+            name:
+              type: string
+            symbol:
+              type: string
+          description: Security details for which the insight is provided.
+        updated:
+          type: integer
+          format: int64
+          description: Timestamp of when the insight was last updated.
+
+    EarningsWSResp:
+      type : object
+      properties:
+        id:
+          type: string
+          description: unique uuid for the websocket response
+        api_version:
+          type: string
+          description: Websocket api version
+          default: websocket/v1
+        kind:
+          type: string
+          description: Websocket connection stream type
+        data:
+          type: object
+          properties:
+            action:
+              type: string
+              description: Websocket data action i.e., created, updated, deleted
+            id:
+              type: string
+              description: data id for the earning
+            content:
+              $ref: '#/components/schemas/earnings'
+            timestamp:
+              type: string
+              description: timestamp of the data
+    earnings:
+      type: object
+      properties:
+        id:
+          type: string
+        date:
+          type: string
+          description: Announced Date on Calendar
+          format: YYYY-DD-MM
+        date_confirmed:
+          type: string
+          description: If the report date was confirmed (vs est)
+          format: 1/0
+        time:
+          type: string
+          description: Announced Time on Calendar, 24hr format
+          format: HH:MM:SS
+        ticker:
+          type: string
+          description: Ticker Symbol (F, MSFT, etc...)
+        exchange:
+          type: string
+          description: Exchange (NYSE, NASDAQ, etc...)
+        name:
+          type: string
+          description: Name of security
+        currency:
+          type: string
+          description: Currency the data is denominated in
+        period:
+          type: string
+          description: Period of the earnings actual
+          enum:
+            - Q1
+            - Q2
+            - Q3
+            - Q4
+            - FY
+            - H1
+            - H2
+        period_year:
+          type: integer
+          description: Period Year of the earnings actual
+        eps_type:
+          type: string
+          description: EPS Type
+          enum:
+            - Adj
+            - GAAP
+            - FFO
+        eps:
+          type: string
+          description: Comparable and Adjusted Earnings Per Share
+          format: double
+        eps_est:
+          type: string
+          description: Adjusted EPS Consensus Aggregate Analyst Estimate
+          format: double
+        eps_prior:
+          type: string
+          description: Adjusted EPS from Prior Period
+          format: double
+        eps_surprise:
+          type: string
+          description: EPS deviation from estimate
+          format: double
+        eps_surprise_percent:
+          type: string
+          description: Deviation from estimate as percentage
+          format: double
+        revenue_type:
+          type: string
+          description: Revenue Type
+          enum:
+            - Adj
+            - GAAP
+            - FFO
+        revenue:
+          type: string
+          description: Revenue
+          format: integer
+        revenue_est:
+          type: string
+          description: Revenue estimate
+          format: integer
+        revenue_prior:
+          type: string
+          description: Revenue value for previous period
+          format: integer
+        revenue_surprise:
+          type: string
+          description: Revenue deviation from estimate
+          format: integer
+        revenue_surprise_percent:
+          type: string
+          description: Deviation from estimate as percentage
+          format: double
+        importance:
+          type: integer
+          description: Subjective basis of how important event is to market. 5 = high
+        notes:
+          type: string
+          description: Additional notes provided by the Benzinga Newsdesk where applicable.
+            Notes may include HTML.
+        updated:
+          type: integer
+          description: Last updated timestamp, UTC
+
+    RatingsWSResp:
+      type : object
+      properties:
+        id:
+          type: string
+          description: unique uuid for the websocket response
+        api_version:
+          type: string
+          description: Websocket api version
+          default: websocket/v1
+        kind:
+          type: string
+          description: Websocket connection stream type
+        data:
+          type: object
+          properties:
+            action:
+              type: string
+              description: Websocket data action i.e., created, updated, deleted
+            id:
+              type: string
+              description: data id for the rating
+            content:
+              $ref: '#/components/schemas/ratings'
+            timestamp:
+              type: string
+              description: timestamp of the data
+    ratings:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique ID of this entry
+        date:
+          type: string
+          description: Date for rating
+          format: YYYY-MM-DD
+        time:
+          type: string
+          description: Time for rating
+          format: HH:MM:SS
+        ticker:
+          type: string
+          description: Ticker symbol of company that is subject of rating
+        exchange:
+          type: string
+          description: Exchange (NYSE, NASDAQ, etc...)
+        name:
+          type: string
+          description: Name of company that is subject of rating
+        currency:
+          type: string
+          description: Currency the data is denominated in
+        action_pt:
+          type: string
+          description: Description of the change in price target from firm's last
+            price target
+          enum:
+            - Announces
+            - Maintains
+            - Lowers
+            - Raises
+            - Removes
+        action_company:
+          type: string
+          description: Description of the change in rating from firm's last rating.
+            Note that all of these terms are precisely defined.
+          enum:
+            - Downgrades
+            - Maintains
+            - Reinstates
+            - Reiterates
+            - Upgrades
+            - Assumes
+            - Initiates Coverage On
+            - Terminates Coverage On
+            - Removes
+            - Suspends
+            - Firm Dissolved
+        rating_current:
+          type: string
+          description: The analyst's rating for the company
+        pt_current:
+          type: string
+          description: Analyst's current price target
+          format: float
+        adjusted_pt_current:
+          type: string
+          description: Analyst's current price target, adjusted to account for stock
+            splits and stock dividends. If none are applicable, the pt_current value
+            is used.
+          format: float
+        rating_prior:
+          type: string
+          description: Prior analyst rating for the company
+        pt_prior:
+          type: string
+          description: Analyst's prior price target
+          format: float
+        adjusted_pt_prior:
+          type: string
+          description: Analyst's prior price target, adjusted to account for stock
+            splits and stock dividends. If none are applicable, the pt_prior value
+            is used.
+          format: float
+        url:
+          type: string
+          description: URL for analyst ratings page for this ticker on Benzinga.com
+          format: URL
+        url_calendar:
+          type: string
+          description: URL for analyst ratings page for this ticker on Benzinga.com
+          format: URL
+        url_news:
+          type: string
+          description: URL for analyst ratings news articles for this ticker on Benzinga.com
+          format: URL
+        analyst:
+          type: string
+          description: Name of the analyst firm that published the rating
+        analyst_id:
+          type: string
+          description: Id of the analyst
+        analyst_name:
+          type: string
+          description: Name of the analyst (person) that published the rating
+        ratings_accuracy:
+          $ref: '#/components/schemas/ratings_accuracy'
+        importance:
+          type: string
+          description: Subjective Basis of How Important Event is to Market. 5 = High
+          enum:
+            - "0"
+            - "1"
+            - "2"
+            - "3"
+            - "4"
+            - "5"
+        notes:
+          type: string
+          description: Additional notes provided by the Benzinga Newsdesk where applicable.
+            Notes may include HTML.
+        updated:
+          type: integer
+          description: Last updated timestamp, UTC
+          format: int64
+    ratings_accuracy:
+      type: object
+      properties:
+        smart_score:
+          type: string
+          description: A weighted average of the total_ratings_percentile, overall_avg_return_percentile,
+            and overall_success_rate
+          format: double
+        overall_success_rate:
+          type: string
+          description: The percentage of gain/loss ratings that resulted in a gain
+            overall
+          format: double
+        overall_avg_return_percentile:
+          type: string
+          description: The percentile of this analyst’s overall average return per
+            rating in comparison to other analysts' overall average returns per rating
+          format: double
+        total_ratings_percentile:
+          type: string
+          description: The percentile of this analyst’s total number of ratings in
+            comparison to the total number of ratings published by all other analysts
+          format: double
+        total_ratings:
+          type: integer
+          description: Number of recommendations made by this analyst
+          format: int64
+        overall_gain_count:
+          type: integer
+          description: The number of ratings that have gained value since the date
+            of recommendation
+          format: int64
+        overall_loss_count:
+          type: integer
+          description: The number of ratings that have lost value since the date of
+            recommendation
+          format: int64
+        overall_average_return:
+          type: string
+          description: The average percent price difference per rating since the date
+            of recommendation
+          format: double
+        overall_stdev:
+          type: string
+          description: The standard deviation in percent price difference in the analyst’s
+            ratings since the date of recommendation
+          format: double
+        1m_gain_count:
+          type: string
+          description: The number of ratings that have gained value over the last
+            month
+          format: double
+        1m_loss_count:
+          type: string
+          description: The number of ratings that have lost value over the last month
+          format: double
+        1m_average_return:
+          type: string
+          description: The average percent price difference per rating over the last
+            month
+          format: double
+        1m_stdev:
+          type: string
+          description: The standard deviation in percent price difference in the analyst’s
+            ratings over the last month
+          format: double
+        3m_gain_count:
+          type: string
+          description: The number of ratings that have gained value over the last
+            three months
+          format: double
+        3m_loss_count:
+          type: string
+          description: The number of ratings that have lost value over the last three
+            months
+          format: double
+        3m_average_return:
+          type: string
+          description: The average percent price difference per rating over the last
+            three months
+          format: double
+        3m_stdev:
+          type: string
+          description: The standard deviation in percent price difference in the analyst’s
+            ratings over the last three months
+          format: double
+        9m_gain_count:
+          type: string
+          description: The number of ratings that have gained value over the last
+            nine months
+          format: double
+        9m_loss_count:
+          type: string
+          description: The number of ratings that have lost value over the last nine
+            months
+          format: double
+        9m_average_return:
+          type: string
+          description: The average percent price difference per rating over the last
+            nine months
+          format: double
+        9m_stdev:
+          type: string
+          description: The standard deviation in percent price difference in the analyst’s
+            ratings over the last nine months
+          format: double
+        1y_gain_count:
+          type: string
+          description: The number of ratings that have gained value over the last
+            year (TTM)
+          format: double
+        1y_loss_count:
+          type: string
+          description: The number of ratings that have lost value over the last year
+            (TTM)
+          format: double
+        1y_average_return:
+          type: string
+          description: The average percent price difference per rating over the last
+            year (TTM)
+          format: double
+        1y_stdev:
+          type: string
+          description: The standard deviation in percent price difference in the analyst’s
+            ratings over the last year (TTM)
+          format: double
+        2y_gain_count:
+          type: string
+          description: The number of ratings that have gained value over the last
+            two years
+          format: double
+        2y_loss_count:
+          type: string
+          description: The number of ratings that have lost value over the last two
+            years
+          format: double
+        2y_average_return:
+          type: string
+          description: The average percent price difference per rating over the last
+            two years
+          format: double
+        2y_stdev:
+          type: string
+          description: The standard deviation in percent price difference in the analyst’s
+            ratings over the last two years
+          format: double
+        3y_gain_count:
+          type: string
+          description: The number of ratings that have gained value over the last
+            three years
+          format: double
+        3y_loss_count:
+          type: string
+          description: The number of ratings that have lost value over the last three
+            years
+          format: double
+        3y_average_return:
+          type: string
+          description: The average percent price difference per rating over the last
+            three years
+          format: double
+        3y_stdev:
+          type: string
+          description: The standard deviation in percent price difference in the analyst’s
+            ratings over the last three years
+          format: double
+        updated:
+          type: integer
+          description: Last update timstamp in UTC Unix epoch timestamp (seconds)
+          format: int64
+      description: Analyst accuracy scores
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: query
+      name: token
+security:
+  - ApiKeyAuth: []

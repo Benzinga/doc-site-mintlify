@@ -1,0 +1,214 @@
+---
+title: "Analyst Insights Stream"
+description: "This WebSocket endpoint allows you to subscribe to real-time analyst insights for specific ticker symbols."
+---
+
+## WebSocket `websocket/v1`:
+
+```txt
+wss://api.benzinga.com/api/v1/analyst/insights/stream
+```
+
+### Parameters:
+
+| Name       | Location |  Type   | Required | Description                                          |
+| :--------- | :-----:  | :-----: | -------: | ---------------------------------------------------: |
+| `token`    | query    | string  |      Yes | Benzinga websocket token (bz.production***).         |
+| `page`     | query    | integer |       No | Page number for pagination. Default is `1`.          |
+| `pageSize` | query    | integer |       No | Number of items per page. Default is `10`.           |
+| `symbols`  | query    | string  |       No | Comma-separated stock ticker symbols.                |
+| `analyst`  | query    | string  |       No | Comma-separated list of analyst IDs.                 |
+| `rating_id`| query    | string  |       No | Comma-separated list of rating IDs.                  |
+
+### Stream Response:
+When you subscribe to the stream, you'll receive updates about analyst insights in the following format:
+
+```json
+{
+  "id": "unique-uuid-for-response",
+  "api_version": "websocket/v1",
+  "kind": "stream_type",
+  "data": {
+    "action": "created/updated/deleted",
+    "id": "insight-id",
+    "content": {
+      "action": "Upgrades",
+      "analyst_insights": "The analyst has upgraded the stock...",
+      "date": "2024-10-08",
+      "firm": "Goldman Sachs",
+      "firm_id": "firm-uuid",
+      "id": "insight-uuid",
+      "pt": "150.00",
+      "rating": "Buy",
+      "rating_id": "rating-uuid",
+      "security": {
+        "cik": "0000320193",
+        "exchange": "NASDAQ",
+        "isin": "US0378331005",
+        "name": "Apple Inc.",
+        "symbol": "AAPL"
+      },
+      "updated": 1696790400000
+    },
+    "timestamp": "2024-10-08T10:00:00Z"
+  }
+}
+```
+
+#### Responses
+
+- **200 OK**
+  - **Description**: Success
+  - **Content Type**: `application/json`
+  - **Schema**: [AnalystInsightsWSResp](#analystinsightwsresp)
+
+### AnalystInsightWSResp
+
+| Property      | Type   | Description                                                     |
+|---------------|--------|-----------------------------------------------------------------|
+| id            | string | Unique UUID for the websocket response.                        |
+| api_version   | string | Websocket API version. Defaults to `websocket/v1`.            |
+| kind          | string | Websocket connection stream type.                              |
+| data          | object | Contains details about the websocket data.                    |
+| - action      | string | Websocket data action (e.g., created, updated, deleted).      |
+| - id         | string | Data ID for the analyst insight.                               |
+| - content     | object | Reference to `AnalystInsight` schema.                         |
+| - timestamp   | string | Timestamp of the data.                                         |
+
+### AnalystInsight
+
+| Property           | Type    | Description                                                     |
+|--------------------|---------|-----------------------------------------------------------------|
+| action             | string  | Analyst's action on the stock (e.g., Maintains, Upgrades).    |
+| analyst_insights   | string  | Detailed insights from the analyst.                            |
+| date               | string  | Date of the analyst insight (formatted as date).              |
+| firm               | string  | Name of the firm providing the insight.                        |
+| firm_id            | string  | Unique identifier for the firm.                               |
+| id                 | string  | Unique identifier for the analyst insight (formatted as UUID). |
+| pt                 | string  | Price target given by the analyst.                            |
+| rating             | string  | Rating provided by the analyst.                               |
+| rating_id          | string  | Unique identifier for the rating.                             |
+| security           | object  | Contains security details for which the insight is provided.  |
+| - cik              | string  | Central Index Key of the security.                            |
+| - exchange         | string  | Exchange where the security is listed.                        |
+| - isin             | string  | International Securities Identification Number.               |
+| - name             | string  | Name of the security.                                        |
+| - symbol           | string  | Ticker symbol of the security.                               |
+| updated            | integer | Timestamp of when the insight was last updated (formatted as int64). |
+
+## Success Response
+
+- Success `101` - Websocket connection established successfully.
+
+<div style={{
+  border: '1px solid #ddd',
+  borderRadius: '8px',
+  padding: '16px',
+  fontSize: '14px',
+  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+  backgroundColor: '#f9f9f9',
+  maxWidth: '700px',
+}}>
+  <div style={{
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  }}>
+    <div style={{ color: '#000000'}}>
+      ✅ Connected to wss://api.benzinga.com/api/v1/analyst/insights/stream?token=bz.p***
+    </div>
+  </div>
+
+  <div style={{ color: 'grey', fontWeight: 'bold', marginBottom: '-4px' }}>
+    Handshake Details
+  </div>
+
+<div style={{ marginBottom: '4px' }}>
+  <span><strong>Request URL:</strong> </span>
+  <p style={{ color: 'blue' }}>
+    "https://api.benzinga.com/api/v1/analyst/insights/stream?token=bz"
+  </p>
+</div>
+  <div style={{ marginBottom: '4px' }}>
+   <span> <strong>Request Method:</strong> </span><span style={{ color: 'blue' }}>"GET"</span>
+  </div>
+  <div style={{ marginBottom: '4px' }}>
+    <span> <strong>Status Code:</strong> </span><span style={{ color: 'blue' }}>"101 Switching Protocols"</span>
+  </div>
+</div>
+
+## Error Response
+
+- Unauthorized `401` - Invalid token, check the token provided.
+
+<div style={{
+  border: '1px solid #ddd',
+  borderRadius: '8px',
+  padding: '16px',
+  fontSize: '14px',
+  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+  backgroundColor: '#f9f9f9',
+  maxWidth: '500px',
+}}>
+  <div style={{
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  }}>
+    <div style={{ color: '#000000'}}>
+      ❗ Could not connect to wss://api.benzinga.com/api/v1/analyst/insights/stream?token=bz.p***
+    </div>
+  </div>
+
+  <div style={{ fontWeight: 'bold', marginBottom: '8px' }}>
+    Error: Unexpected server response: 401
+  </div>
+
+  <div style={{ color: 'grey', fontWeight: 'bold', marginBottom: '-4px' }}>
+    Handshake Details
+  </div>
+
+  <div style={{ marginBottom: '4px' }}>
+   <span> <strong>Request Method:</strong> </span><span style={{ color: 'blue' }}>"GET"</span>
+  </div>
+  <div style={{ marginBottom: '4px' }}>
+    <span> <strong>Status Code:</strong> </span><span style={{ color: 'blue' }}>"401 Unauthorized"</span>
+  </div>
+</div>
+
+- Bad Gateway `502` - Either invalid route or server error.
+
+<div style={{
+  border: '1px solid #ddd',
+  borderRadius: '8px',
+  padding: '16px',
+  fontSize: '14px',
+  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+  backgroundColor: '#f9f9f9',
+  maxWidth: '500px',
+}}>
+  <div style={{
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  }}>
+    <div style={{ color: '#000000'}}>
+      ❗ Could not connect to wss://api.benzinga.com/api/v1/analyst/insights/stream?token=bz.p***
+    </div>
+  </div>
+
+  <div style={{ fontWeight: 'bold', marginBottom: '8px' }}>
+    Error: Unexpected server response: 502
+  </div>
+
+  <div style={{ color: 'grey', fontWeight: 'bold', marginBottom: '-4px' }}>
+    Handshake Details
+  </div>
+
+  <div style={{ marginBottom: '4px' }}>
+   <span> <strong>Request Method:</strong> </span><span style={{ color: 'blue' }}>"GET"</span>
+  </div>
+  <div style={{ marginBottom: '4px' }}>
+    <span> <strong>Status Code:</strong> </span><span style={{ color: 'blue' }}>"502 Bad Gateway"</span>
+  </div>
+</div>
