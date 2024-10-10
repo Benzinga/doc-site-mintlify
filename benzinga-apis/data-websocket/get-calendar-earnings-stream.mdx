@@ -1,0 +1,247 @@
+---
+title: "[Calendar] Earnings Stream"
+description: "Get calendar earnings stream."
+---
+
+## WebSocket `websocket/v1`:
+
+```txt
+wss://api.benzinga.com/api/v2.1/calendar/earnings/stream
+```
+
+### Parameters
+
+| Parameter                     | Type      | Location | Description                                                                                                                                              |
+|-------------------------------|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `token`                       | string    | query    | Benzinga websocket token (bz.production***).         |
+| page                          | integer   | query    | Page offset (0 - 100000). Limit the query results by other parameters such as date.                                                                      |
+| pagesize                      | integer   | query    | Number of results returned (Limit 1000).                                                                                                                |
+| parameters[date]              | string    | query    | Date to query for calendar data (Defaults to latest).                                                                                                   |
+| parameters[date_from]         | string    | query    | Date to query from a point in time.                                                                                                                    |
+| parameters[date_to]           | string    | query    | Date to query to a point in time.                                                                                                                      |
+| parameters[date_sort]         | string    | query    | Field sort option for earnings calendar (Apply `:desc`, `:asc` for sort order).                                                                          |
+| parameters[tickers]           | string    | query    | One or more ticker symbols separated by a comma (Maximum 50 tickers).                                                                                   |
+| parameters[importance]        | integer   | query    | The importance level to filter by (0 - 5).                                                                                                              |
+| parameters[updated]           | integer   | query    | Records last updated Unix timestamp (UTC).                                                                                                             |
+
+### Stream Response
+When you subscribe to the stream, you'll receive updates about analyst insights in the following format:
+
+```json
+{
+    "id": "839f1f45-fffe-4801-9284-11dae5c5dae4",
+    "api_version": "websocket/v1",
+    "kind": "data/v2.1/calendar/earnings",
+    "data": {
+        "action": "created",
+        "id": "66fffe978f3f630001a2ea56",
+        "content": {
+            "currency": "USD",
+            "cusip": "00401G109",
+            "date": "2024-10-04",
+            "date_confirmed": 0,
+            "eps": "",
+            "eps_est": "",
+            "eps_prior": "",
+            "eps_surprise": "",
+            "eps_surprise_percent": "",
+            "eps_type": "",
+            "exchange": "TSXV",
+            "id": "66fffe978f3f630001a2ea56",
+            "importance": 0,
+            "isin": "CA00401G1099",
+            "name": "ACADEMY METALS INC",
+            "notes": "",
+            "period": "Q3",
+            "period_year": 2023,
+            "revenue": "",
+            "revenue_est": "",
+            "revenue_prior": "",
+            "revenue_surprise": "",
+            "revenue_surprise_percent": "",
+            "revenue_type": "",
+            "ticker": "AM",
+            "time": "10:41:27",
+            "updated": 1728052946
+        },
+        "timestamp": "2024-10-04T14:42:27.167526889Z"
+    }
+}
+```
+
+#### Responses
+
+- **200 OK**
+  - **Description**: Success
+  - **Content Type**: `application/json`
+  - **Schema**: [EarningsWSResp](#earningswsresp)
+
+## Data Structures
+
+### EarningsWSResp
+
+The main response structure for earnings data.
+
+| Parameter      | Type   | Description                                               |
+|----------------|--------|-----------------------------------------------------------|
+| id             | string | Unique UUID for the WebSocket response                    |
+| api_version    | string | WebSocket API version                                     |
+| kind           | string | WebSocket connection stream type                           |
+| data           | object | Contains the action and details of the earnings data      |
+
+### Data Object (inside EarningsWSResp)
+
+| Parameter      | Type   | Description                                               |
+|----------------|--------|-----------------------------------------------------------|
+| action         | string | WebSocket data action (e.g., created, updated, deleted)  |
+| id             | string | Data ID for the earnings                                  |
+| content        | object | The earnings details (see below)                          |
+| timestamp      | string | Timestamp of the data                                      |
+
+### Earnings Schema (inside data content)
+
+| Parameter               | Type     | Description                                               |
+|-------------------------|----------|-----------------------------------------------------------|
+| id                      | string   | Unique identifier for the earnings                        |
+| date                    | string   | Announced Date on Calendar                                |
+| date_confirmed          | string   | If the report date was confirmed (1/0)                   |
+| time                    | string   | Announced Time on Calendar (24hr format)                 |
+| ticker                  | string   | Ticker Symbol (F, MSFT, etc...)                          |
+| exchange                | string   | Exchange (NYSE, NASDAQ, etc...)                          |
+| name                    | string   | Name of the security                                      |
+| currency                | string   | Currency the data is denominated in                      |
+| period                  | string   | Period of the earnings actual (Q1, Q2, Q3, Q4, FY, H1, H2) |
+| period_year             | integer  | Period Year of the earnings actual                       |
+| eps_type                | string   | EPS Type (Adj, GAAP, FFO)                                |
+| eps                     | string   | Comparable and Adjusted Earnings Per Share                |
+| eps_est                 | string   | Adjusted EPS Consensus Aggregate Analyst Estimate         |
+| eps_prior               | string   | Adjusted EPS from Prior Period                           |
+| eps_surprise            | string   | EPS deviation from estimate                               |
+| eps_surprise_percent    | string   | Deviation from estimate as a percentage                  |
+| revenue_type            | string   | Revenue Type (Adj, GAAP, FFO)                            |
+| revenue                 | string   | Revenue                                                 |
+| revenue_est             | string   | Revenue estimate                                         |
+| revenue_prior           | string   | Revenue value for previous period                        |
+| revenue_surprise        | string   | Revenue deviation from estimate                          |
+| revenue_surprise_percent | string   | Deviation from estimate as a percentage                  |
+| importance              | integer  | Importance of the event to the market (0-5)             |
+| notes                   | string   | Additional notes provided by the Benzinga Newsdesk       |
+| updated                 | integer  | Last updated timestamp (UTC)                             |
+
+
+## Success Response
+
+- Success `101` - Websocket connection established successfully.
+
+<div style={{
+  border: '1px solid #ddd',
+  borderRadius: '8px',
+  padding: '16px',
+  fontSize: '14px',
+  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+  backgroundColor: '#f9f9f9',
+  maxWidth: '700px',
+}}>
+  <div style={{
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  }}>
+    <div style={{ color: '#000000'}}>
+      ✅ Connected to wss://api.benzinga.com/api/v2.1/calendar/earnings?token=bz.p***
+    </div>
+  </div>
+
+  <div style={{ color: 'grey', fontWeight: 'bold', marginBottom: '-4px' }}>
+    Handshake Details
+  </div>
+
+<div style={{ marginBottom: '4px' }}>
+  <span><strong>Request URL:</strong> </span>
+  <p style={{ color: 'blue' }}>
+    "https://api.benzinga.com/api/v2.1/calendar/earnings/stream?token=bz"
+  </p>
+</div>
+  <div style={{ marginBottom: '4px' }}>
+   <span> <strong>Request Method:</strong> </span><span style={{ color: 'blue' }}>"GET"</span>
+  </div>
+  <div style={{ marginBottom: '4px' }}>
+    <span> <strong>Status Code:</strong> </span><span style={{ color: 'blue' }}>"101 Switching Protocols"</span>
+  </div>
+</div>
+
+## Error Response
+
+- Unauthorized `401` - Invalid token, check the token provided.
+
+<div style={{
+  border: '1px solid #ddd',
+  borderRadius: '8px',
+  padding: '16px',
+  fontSize: '14px',
+  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+  backgroundColor: '#f9f9f9',
+  maxWidth: '500px',
+}}>
+  <div style={{
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  }}>
+    <div style={{ color: '#000000'}}>
+      ❗ Could not connect to wss://api.benzinga.com/api/v2.1/calendar/earnings/stream?token=bz.p***
+    </div>
+  </div>
+
+  <div style={{ fontWeight: 'bold', marginBottom: '8px' }}>
+    Error: Unexpected server response: 401
+  </div>
+
+  <div style={{ color: 'grey', fontWeight: 'bold', marginBottom: '-4px' }}>
+    Handshake Details
+  </div>
+
+  <div style={{ marginBottom: '4px' }}>
+   <span> <strong>Request Method:</strong> </span><span style={{ color: 'blue' }}>"GET"</span>
+  </div>
+  <div style={{ marginBottom: '4px' }}>
+    <span> <strong>Status Code:</strong> </span><span style={{ color: 'blue' }}>"401 Unauthorized"</span>
+  </div>
+</div>
+
+- Bad Gateway `502` - Either invalid route or server error.
+
+<div style={{
+  border: '1px solid #ddd',
+  borderRadius: '8px',
+  padding: '16px',
+  fontSize: '14px',
+  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+  backgroundColor: '#f9f9f9',
+  maxWidth: '500px',
+}}>
+  <div style={{
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  }}>
+    <div style={{ color: '#000000'}}>
+      ❗ Could not connect to wss://api.benzinga.com/api/v2.1/calendar/earnings/stream?token=bz.p***
+    </div>
+  </div>
+
+  <div style={{ fontWeight: 'bold', marginBottom: '8px' }}>
+    Error: Unexpected server response: 502
+  </div>
+
+  <div style={{ color: 'grey', fontWeight: 'bold', marginBottom: '-4px' }}>
+    Handshake Details
+  </div>
+
+  <div style={{ marginBottom: '4px' }}>
+   <span> <strong>Request Method:</strong> </span><span style={{ color: 'blue' }}>"GET"</span>
+  </div>
+  <div style={{ marginBottom: '4px' }}>
+    <span> <strong>Status Code:</strong> </span><span style={{ color: 'blue' }}>"502 Bad Gateway"</span>
+  </div>
+</div>

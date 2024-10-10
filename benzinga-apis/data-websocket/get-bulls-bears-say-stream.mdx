@@ -1,0 +1,193 @@
+---
+title: "Bulls/Bears Stream"
+description: "Get bull say bear say stream."
+---
+
+## WebSocket `websocket/v1`:
+
+```txt
+wss://api.benzinga.com/api/v1/analyst/insights/stream
+```
+
+#### Parameters
+
+| Name    | In     | Required | Type   | Description                                               |
+|---------|--------|----------|--------|-----------------------------------------------------------|
+| `token` | query  | string   |    Yes | Benzinga websocket token (bz.production***).              |
+| `symbols` | query  | true     | string | Stock ticker symbol to query for bull/bear cases.         |
+
+### Stream Response:
+When you subscribe to the stream, you'll receive updates about analyst insights in the following format:
+
+```json
+{
+  "id": "websocket123",
+  "api_version": "websocket/v1",
+  "kind": "bull_bear_case",
+  "data": {
+    "action": "created",
+    "id": "case123",
+    "content": {
+      "bear_case": "Market downturn expected.",
+      "bull_case": "Positive earnings forecast.",
+      "id": "case123",
+      "ticker": "AAPL",
+      "updated": 1696153200
+    },
+    "timestamp": "2024-10-01T10:00:00Z"
+  }
+}
+```
+
+#### Responses
+
+- **200 OK**
+  - **Description**: Success
+  - **Content Type**: `application/json`
+  - **Schema**: [BullBearWSResp](#bullbearwsresp)
+
+### BullBearWSResp
+
+| Parameter      | Type   | Description                                           |
+|----------------|--------|-------------------------------------------------------|
+| id             | string | Unique UUID for the WebSocket response                |
+| api_version    | string | WebSocket API version                                 |
+| kind           | string | WebSocket connection stream type                       |
+| data           | object | Contains the action and details of the bull/bear case |
+
+### Data Object (inside BullBearWSResp)
+
+| Parameter | Type   | Description                                               |
+|-----------|--------|-----------------------------------------------------------|
+| action    | string | WebSocket data action (e.g., created, updated, deleted) |
+| id        | string | Data ID for the bull/bear case                           |
+| content   | object | The bull/bear case details (see below)                   |
+| timestamp | string | Timestamp of the data                                     |
+
+### BullBearCase Schema (inside data content)
+
+| Parameter | Type     | Description                                               |
+|-----------|----------|-----------------------------------------------------------|
+| bear_case | string   | Description of the bear case scenario                     |
+| bull_case | string   | Description of the bull case scenario                     |
+| id        | string   | Unique identifier for the bull/bear case (UUID format)   |
+| ticker    | string   | Stock ticker symbol related to the bull/bear case        |
+| updated   | integer  | Timestamp of when the case was last updated (int64 format) |
+
+
+## Success Response
+
+- Success `101` - Websocket connection established successfully.
+
+<div style={{
+  border: '1px solid #ddd',
+  borderRadius: '8px',
+  padding: '16px',
+  fontSize: '14px',
+  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+  backgroundColor: '#f9f9f9',
+  maxWidth: '700px',
+}}>
+  <div style={{
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  }}>
+    <div style={{ color: '#000000'}}>
+      ✅ Connected to wss://api.benzinga.com/api/v1/bulls_bears_say/stream?token=bz.p***
+    </div>
+  </div>
+
+  <div style={{ color: 'grey', fontWeight: 'bold', marginBottom: '-4px' }}>
+    Handshake Details
+  </div>
+
+<div style={{ marginBottom: '4px' }}>
+  <span><strong>Request URL:</strong> </span>
+  <p style={{ color: 'blue' }}>
+    "https://api.benzinga.com/api/v1/bulls_bears_say/stream?token=bz"
+  </p>
+</div>
+  <div style={{ marginBottom: '4px' }}>
+   <span> <strong>Request Method:</strong> </span><span style={{ color: 'blue' }}>"GET"</span>
+  </div>
+  <div style={{ marginBottom: '4px' }}>
+    <span> <strong>Status Code:</strong> </span><span style={{ color: 'blue' }}>"101 Switching Protocols"</span>
+  </div>
+</div>
+
+## Error Response
+
+- Unauthorized `401` - Invalid token, check the token provided.
+
+<div style={{
+  border: '1px solid #ddd',
+  borderRadius: '8px',
+  padding: '16px',
+  fontSize: '14px',
+  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+  backgroundColor: '#f9f9f9',
+  maxWidth: '500px',
+}}>
+  <div style={{
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  }}>
+    <div style={{ color: '#000000'}}>
+      ❗ Could not connect to wss://api.benzinga.com/api/v1/bulls_bears_say/stream?token=bz.p***
+    </div>
+  </div>
+
+  <div style={{ fontWeight: 'bold', marginBottom: '8px' }}>
+    Error: Unexpected server response: 401
+  </div>
+
+  <div style={{ color: 'grey', fontWeight: 'bold', marginBottom: '-4px' }}>
+    Handshake Details
+  </div>
+
+  <div style={{ marginBottom: '4px' }}>
+   <span> <strong>Request Method:</strong> </span><span style={{ color: 'blue' }}>"GET"</span>
+  </div>
+  <div style={{ marginBottom: '4px' }}>
+    <span> <strong>Status Code:</strong> </span><span style={{ color: 'blue' }}>"401 Unauthorized"</span>
+  </div>
+</div>
+
+- Bad Gateway `502` - Either invalid route or server error.
+
+<div style={{
+  border: '1px solid #ddd',
+  borderRadius: '8px',
+  padding: '16px',
+  fontSize: '14px',
+  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+  backgroundColor: '#f9f9f9',
+  maxWidth: '500px',
+}}>
+  <div style={{
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  }}>
+    <div style={{ color: '#000000'}}>
+      ❗ Could not connect to wss://api.benzinga.com/api/v1/bulls_bears_say/stream?token=bz.p***
+    </div>
+  </div>
+
+  <div style={{ fontWeight: 'bold', marginBottom: '8px' }}>
+    Error: Unexpected server response: 502
+  </div>
+
+  <div style={{ color: 'grey', fontWeight: 'bold', marginBottom: '-4px' }}>
+    Handshake Details
+  </div>
+
+  <div style={{ marginBottom: '4px' }}>
+   <span> <strong>Request Method:</strong> </span><span style={{ color: 'blue' }}>"GET"</span>
+  </div>
+  <div style={{ marginBottom: '4px' }}>
+    <span> <strong>Status Code:</strong> </span><span style={{ color: 'blue' }}>"502 Bad Gateway"</span>
+  </div>
+</div>

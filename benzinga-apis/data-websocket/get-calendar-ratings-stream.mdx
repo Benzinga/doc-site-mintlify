@@ -1,0 +1,271 @@
+---
+title: "[Calendar] Ratings Stream"
+description: "get calendar ratings stream."
+---
+
+## WebSocket `websocket/v1`:
+
+```txt
+wss://api.benzinga.com/api/v2.1/calendar/ratings/stream
+```
+
+#### Parameters
+
+| Name                       | Location | Type      | Description                                                                                                                                                                                                                                                                                 |
+|----------------------------|----------|-----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `token`                    | query    | string    | Benzinga websocket token (bz.production***).         |
+| `fields`                   | query    | array     | Select fields to return. Default fields are: `id`, `date`, `time`, `ticker`, `exchange`, `name`, `currency`, `action_pt`, `action_company`, `rating_current`, `pt_current`, `rating_prior`, `pt_prior`, `url`, `url_calendar`, `url_news`, `analyst`, `analyst_name`, `importance`, `notes`, `updated`.|
+| `page`                     | query    | integer   | Page offset. Limited from 0 - 100000.                                                                                                                                                                                                                                                     |
+| `pagesize`                 | query    | integer   | Number of results returned. Limit is 1000.                                                                                                                                                                                                                                               |
+| `parameters[date]`         | query    | string    | Date to query for calendar data. Shorthand for `date_from` and `date_to` if they are the same. Defaults to latest.                                                                                                                                                                      |
+| `parameters[date_from]`    | query    | string    | Date to query from point in time.                                                                                                                                                                                                                                                         |
+| `parameters[date_to]`      | query    | string    | Date to query to point in time.                                                                                                                                                                                                                                                           |
+| `parameters[tickers]`      | query    | string    | One or more ticker symbols separated by a comma. Maximum 50 tickers.                                                                                                                                                                                                                     |
+| `parameters[importance]`    | query    | integer   | The importance level to filter by. Uses Greater Than or Equal To the importance indicated.                                                                                                                                                                                                 |
+| `parameters[updated]`       | query    | integer   | Records last updated Unix timestamp (UTC). Forces the sort order to be Greater Than or Equal to the timestamp indicated.                                                                                                                                                                    |
+| `parameters[action]`        | query    | string    | Filter by a specific action_company (action for rating).                                                                                                                                                                                                                                |
+| `parameters[analyst_id]`    | query    | string    | One or more analyst ids (analyst_id) separated by a comma.                                                                                                                                                                                                                               |
+| `parameters[firm_id]`       | query    | string    | One or more firm ids (firm_id) separated by a comma.                                                                                                                                                                                                                                     |
+| `analyst`                  | query    | string    | A comma separated list of analyst (person) IDs to return. Omitting will return all available analysts.                                                                                                                                                                                    |
+| `firm`                     | query    | string    | A comma separated list of analyst firm IDs to return. Omitting will return all available firms.                                                                                                                                                                                            |
+
+### Stream Response
+When you subscribe to the stream, you'll receive updates about analyst insights in the following format:
+
+```json
+{
+    "id": "e9e75b31-604e-422c-a532-362725b2d59d",
+    "api_version": "websocket/v1",
+    "kind": "data/v2.1/calendar/ratings",
+    "data": {
+        "action": "created",
+        "id": "66fffdc08f3f630001a2ea51",
+        "content": {
+            "action_company": "Maintains",
+            "action_pt": "",
+            "adjusted_pt_current": "",
+            "adjusted_pt_prior": "154.00",
+            "analyst": "RBC Capital",
+            "currency": "USD",
+            "cusip": "037833100",
+            "date": "2024-10-04",
+            "exchange": "NASDAQ",
+            "firm_id": "57f832ab6b87f600016fa383",
+            "id": "66fffdc08f3f630001a2ea51",
+            "importance": 0,
+            "isin": "US0378331005",
+            "name": "Apple",
+            "notes": "",
+            "pt_current": "",
+            "pt_prior": "154.00",
+            "rating_current": "Buy",
+            "rating_prior": "Outperform",
+            "ticker": "AAPL",
+            "time": "10:37:52",
+            "updated": 1728069650,
+            "url": "https://www.benzinga.com/quote/AAPL/analyst-ratings",
+            "url_calendar": "https://www.benzinga.com/quote/AAPL/analyst-ratings",
+            "url_news": "https://www.benzinga.com/stock-articles/AAPL/analyst-ratings"
+        },
+        "timestamp": "2024-10-04T19:21:06.880730108Z"
+    }
+}
+```
+
+#### Responses
+
+- **200 OK**
+  - **Description**: Success
+  - **Content Type**: `application/json`
+  - **Schema**: [RatingsWSResp](#ratingswsresp)
+
+## Data Structures
+
+### RatingsWSResp
+
+| Property       | Type   | Description                                                                                               |
+|----------------|--------|-----------------------------------------------------------------------------------------------------------|
+| `id`           | string | Unique UUID for the websocket response                                                                     |
+| `api_version`  | string | Websocket API version                                                                                     |
+| `kind`         | string | Websocket connection stream type                                                                           |
+| `data`         | object | Contains the ratings data. See below for properties.                                                     |
+
+### Data Properties
+
+| Property       | Type   | Description                                                                                               |
+|----------------|--------|-----------------------------------------------------------------------------------------------------------|
+| `action`       | string | Websocket data action i.e., created, updated, deleted                                                    |
+| `id`           | string | Data ID for the rating                                                                                   |
+| `content`      | object | Details about the ratings. See [ratings](#ratings) for more properties.                                   |
+| `timestamp`    | string | Timestamp of the data                                                                                     |
+
+### Ratings
+
+| Property              | Type   | Description                                                                                             |
+|-----------------------|--------|---------------------------------------------------------------------------------------------------------|
+| `id`                  | string | Unique ID of this entry                                                                                 |
+| `date`                | string | Date for rating                                                                                         |
+| `time`                | string | Time for rating                                                                                         |
+| `ticker`              | string | Ticker symbol of the company that is the subject of the rating                                          |
+| `exchange`            | string | Exchange (NYSE, NASDAQ, etc...)                                                                         |
+| `name`                | string | Name of the company that is the subject of the rating                                                   |
+| `currency`            | string | Currency the data is denominated in                                                                     |
+| `action_pt`           | string | Description of the change in price target from the firm's last price target                            |
+| `action_company`      | string | Description of the change in rating from the firm's last rating                                         |
+| `rating_current`      | string | The analyst's current rating for the company                                                             |
+| `pt_current`          | string | Analyst's current price target                                                                           |
+| `adjusted_pt_current` | string | Analyst's current price target, adjusted for stock splits and dividends                                   |
+| `rating_prior`        | string | Prior analyst rating for the company                                                                     |
+| `pt_prior`            | string | Analyst's prior price target                                                                              |
+| `adjusted_pt_prior`   | string | Analyst's prior price target, adjusted for stock splits and dividends                                     |
+| `url`                 | string | URL for the analyst ratings page for this ticker on Benzinga.com                                         |
+| `url_calendar`        | string | URL for the analyst ratings page for this ticker on Benzinga.com                                         |
+| `url_news`            | string | URL for the analyst ratings news articles for this ticker on Benzinga.com                                |
+| `analyst`             | string | Name of the analyst firm that published the rating                                                       |
+| `analyst_id`          | string | ID of the analyst                                                                                       |
+| `analyst_name`        | string | Name of the analyst (person) that published the rating                                                  |
+| `ratings_accuracy`     | object | Accuracy metrics for ratings. See [ratings_accuracy](#ratings_accuracy) for more properties.            |
+| `importance`          | string | Subjective basis of how important the event is to the market (5 = High)                                |
+| `notes`               | string | Additional notes provided by the Benzinga Newsdesk where applicable.                                    |
+| `updated`             | integer | Last updated timestamp in UTC                                                                           |
+
+### Ratings Accuracy
+
+| Property                       | Type     | Description                                                                                                           |
+|--------------------------------|----------|-----------------------------------------------------------------------------------------------------------------------|
+| `smart_score`                  | string   | A weighted average of the total_ratings_percentile, overall_avg_return_percentile, and overall_success_rate         |
+| `overall_success_rate`         | string   | The percentage of gain/loss ratings that resulted in a gain overall                                                 |
+| `overall_avg_return_percentile`| string   | The percentile of this analyst’s overall average return per rating in comparison to other analysts                  |
+| `total_ratings_percentile`     | string   | The percentile of this analyst’s total number of ratings in comparison to the total number of ratings published     |
+| `total_ratings`                | integer  | Number of recommendations made by this analyst                                                                      |
+| `overall_gain_count`           | integer  | The number of ratings that have gained value since the date of recommendation                                         |
+| `overall_loss_count`           | integer  | The number of ratings that have lost value since the date of recommendation                                           |
+| `overall_average_return`       | string   | The average percent price difference per rating since the date of recommendation                                        |
+| `overall_stdev`                | string   | The standard deviation in percent price difference in the analyst’s ratings since the date of recommendation           |
+| `1m_gain_count`                | string   | The number of ratings that have gained value over the last month                                                    |
+| `1m_loss_count`                | string   | The number of ratings that have lost value over the last month                                                      |
+| `1m_average_return`            | string   | The average percent price difference per rating over the last month                                                  |
+| `1m_stdev`                     | string   | The standard deviation in percent price difference in the analyst’s ratings over the last month                       |
+| `3m_gain_count`                | string   | The number of ratings that have gained value over the last three months                                             |
+| `3m_loss_count`                | string   | The number of ratings that have lost value over the last three months                                               |
+| `3m_average_return`            | string   | The average percent price difference per rating over the last three months                                           |
+| `3m_stdev`                     | string   | The standard deviation in percent price difference in the analyst’s ratings over the last three months                |
+| `9m_gain_count`                | string   | The number of ratings that have gained value over the last nine months                                              |
+| `9m_loss_count`                | string   | The number of ratings that have lost value over the last nine months                                                |
+
+## Success Response
+
+- Success `101` - Websocket connection established successfully.
+
+<div style={{
+  border: '1px solid #ddd',
+  borderRadius: '8px',
+  padding: '16px',
+  fontSize: '14px',
+  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+  backgroundColor: '#f9f9f9',
+  maxWidth: '700px',
+}}>
+  <div style={{
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  }}>
+    <div style={{ color: '#000000'}}>
+      ✅ Connected to wss://api.benzinga.com/api/v2.1/calendar/ratings/stream?token=bz.p***
+    </div>
+  </div>
+
+  <div style={{ color: 'grey', fontWeight: 'bold', marginBottom: '-4px' }}>
+    Handshake Details
+  </div>
+
+<div style={{ marginBottom: '4px' }}>
+  <span><strong>Request URL:</strong> </span>
+  <p style={{ color: 'blue' }}>
+    "https://api.benzinga.com/api/v2.1/calendar/ratings/stream?token=bz"
+  </p>
+</div>
+  <div style={{ marginBottom: '4px' }}>
+   <span> <strong>Request Method:</strong> </span><span style={{ color: 'blue' }}>"GET"</span>
+  </div>
+  <div style={{ marginBottom: '4px' }}>
+    <span> <strong>Status Code:</strong> </span><span style={{ color: 'blue' }}>"101 Switching Protocols"</span>
+  </div>
+</div>
+
+## Error Response
+
+- Unauthorized `401` - Invalid token, check the token provided.
+
+<div style={{
+  border: '1px solid #ddd',
+  borderRadius: '8px',
+  padding: '16px',
+  fontSize: '14px',
+  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+  backgroundColor: '#f9f9f9',
+  maxWidth: '500px',
+}}>
+  <div style={{
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  }}>
+    <div style={{ color: '#000000'}}>
+      ❗ Could not connect to wss://api.benzinga.com/api/v2.1/calendar/ratings/stream?token=bz.p***
+    </div>
+  </div>
+
+  <div style={{ fontWeight: 'bold', marginBottom: '8px' }}>
+    Error: Unexpected server response: 401
+  </div>
+
+  <div style={{ color: 'grey', fontWeight: 'bold', marginBottom: '-4px' }}>
+    Handshake Details
+  </div>
+
+  <div style={{ marginBottom: '4px' }}>
+   <span> <strong>Request Method:</strong> </span><span style={{ color: 'blue' }}>"GET"</span>
+  </div>
+  <div style={{ marginBottom: '4px' }}>
+    <span> <strong>Status Code:</strong> </span><span style={{ color: 'blue' }}>"401 Unauthorized"</span>
+  </div>
+</div>
+
+- Bad Gateway `502` - Either invalid route or server error.
+
+<div style={{
+  border: '1px solid #ddd',
+  borderRadius: '8px',
+  padding: '16px',
+  fontSize: '14px',
+  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+  backgroundColor: '#f9f9f9',
+  maxWidth: '500px',
+}}>
+  <div style={{
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  }}>
+    <div style={{ color: '#000000'}}>
+      ❗ Could not connect to wss://api.benzinga.com/api/v2.1/calendar/ratings/stream?token=bz.p***
+    </div>
+  </div>
+
+  <div style={{ fontWeight: 'bold', marginBottom: '8px' }}>
+    Error: Unexpected server response: 502
+  </div>
+
+  <div style={{ color: 'grey', fontWeight: 'bold', marginBottom: '-4px' }}>
+    Handshake Details
+  </div>
+
+  <div style={{ marginBottom: '4px' }}>
+   <span> <strong>Request Method:</strong> </span><span style={{ color: 'blue' }}>"GET"</span>
+  </div>
+  <div style={{ marginBottom: '4px' }}>
+    <span> <strong>Status Code:</strong> </span><span style={{ color: 'blue' }}>"502 Bad Gateway"</span>
+  </div>
+</div>
