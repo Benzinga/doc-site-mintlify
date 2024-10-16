@@ -1034,10 +1034,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/consensus-ratings'
+                $ref: '#/components/schemas/ratings'
             application/xml (deprecated):
               schema:
-                $ref: '#/components/schemas/consensus-ratings'
+                $ref: '#/components/schemas/ratings'
       security:
       - token: []
   /consensus-ratings:
