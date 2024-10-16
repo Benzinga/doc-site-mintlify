@@ -3,3 +3,88 @@ title: "GET Short Interest"
 description: "Returns short interest data for stocks, including data such as total short interest, days to cover, and more."
 openapi: "GET /shortinterest"
 ---
+
+<ResponseExample>
+```json Response (200 OK)
+{
+    "shortInterestData": {
+        "AAPL": {
+            "data": [
+                {
+                    "recordDate": "2022-01-11",
+                    "symbol": "AAPL",
+                    "company": "Apple Inc. Common Stock",
+                    "totalShortInterest": "95908325",
+                    "daysToCover": 1.01,
+                    "shortPercentOfFloat": 0.59,
+                    "shortPriorMo": "113277024",
+                    "percentChangeMoMo": -15.33,
+                    "sharesFloat": "16324519396",
+                    "averageDailyVolume": "95019341",
+                    "sharesOutstanding": "16334371000",
+                    "exchange": "NNM",
+                    "sector": "Technology",
+                    "industry": "Consumer Electronics",
+                    "exchangeReceiptDate": "2022-01-04",
+                    "settlementDate": "2021-12-31"
+                },
+                {
+                    "recordDate": "2022-01-26",
+                    "symbol": "AAPL",
+                    "company": "Apple Inc. Common Stock",
+                    "totalShortInterest": "90492581",
+                    "daysToCover": 1,
+                    "shortPercentOfFloat": 0.55,
+                    "shortPriorMo": "95908325",
+                    "percentChangeMoMo": -5.65,
+                    "sharesFloat": "16309589396",
+                    "averageDailyVolume": "90514428",
+                    "sharesOutstanding": "16319441000",
+                    "exchange": "NNM",
+                    "sector": "Technology",
+                    "industry": "Consumer Electronics",
+                    "exchangeReceiptDate": "2022-01-19",
+                    "settlementDate": "2022-01-14"
+                },
+                {
+                    "recordDate": "2022-02-09",
+                    "symbol": "AAPL",
+                    "company": "Apple Inc. Common Stock",
+                    "totalShortInterest": "91388112",
+                    "daysToCover": 1,
+                    "shortPercentOfFloat": 0.56,
+                    "shortPriorMo": "90492581",
+                    "percentChangeMoMo": 0.99,
+                    "sharesFloat": "16309589396",
+                    "averageDailyVolume": "120320268",
+                    "sharesOutstanding": "16319441000",
+                    "exchange": "NNM",
+                    "sector": "Technology",
+                    "industry": "Consumer Electronics",
+                    "exchangeReceiptDate": "2022-02-02",
+                    "settlementDate": "2022-01-31"
+                },
+                {
+                    "recordDate": "2022-02-25",
+                    "symbol": "AAPL",
+                    "company": "Apple Inc. Common Stock",
+                    "totalShortInterest": "108944701",
+                    "daysToCover": 1.32,
+                    "shortPercentOfFloat": 0.67,
+                    "shortPriorMo": "91388112",
+                    "percentChangeMoMo": 19.21,
+                    "sharesFloat": "16309589396",
+                    "averageDailyVolume": "82330433",
+                    "sharesOutstanding": "16319441000",
+                    "exchange": "NNM",
+                    "sector": "Technology",
+                    "industry": "Consumer Electronics",
+                    "exchangeReceiptDate": "2022-02-17",
+                    "settlementDate": "2022-02-15"
+                }
+            ]
+        }
+    }
+}
+```
+</ResponseExample>

@@ -1,0 +1,26 @@
+---
+title: "GET Consensus Ratings"
+description: "Returns consensus ratings for a ticket"
+openapi: "calendar-v2 GET /consensus-ratings"
+---
+
+<ResponseExample>
+```json Response (200 OK)
+{
+    "aggregate_ratings": {
+        "buy": 74,
+        "hold": 20,
+        "sell": 6
+    },
+    "aggregate_type": "percentage",
+    "low_price_target": 186,
+    "high_price_target": 300,
+    "consensus_price_target": 250.1784,
+    "consensus_rating_val": 3.68,
+    "consensus_rating": "BUY",
+    "updated_at": "2024-10-16T06:53:04Z",
+    "total_analyst_count": 50,
+    "unique_analyst_count": 1
+}
+```
+</ResponseExample>

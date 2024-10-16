@@ -21,6 +21,7 @@ info:
     \ of the `updated` field in rows already pulled from our API."
   version: 2.0.0
 servers:
+- url: https://api.benzinga.com/api/v1
 - url: https://api.benzinga.com/api/v2.1
 - url: http://api.benzinga.com/api/v2.1
 paths:
@@ -1033,22 +1034,79 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  ratings:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/ratings'
+                $ref: '#/components/schemas/ratings'
             application/xml (deprecated):
+              schema:
+                $ref: '#/components/schemas/ratings'
+      security:
+      - token: []
+  /consensus-ratings:
+    get:
+      summary: Returns analyst ratings data]
+      parameters:
+        - name: accept
+          in: header
+          description: Specifies return format. Query parameters work the same for both
+            formats.
+          required: true
+          schema:
+            type: string
+            default: application/json
+            enum:
+              - application/json
+        - name: pagesize
+          in: query
+          description: Number of results returned. Limit 1000
+          schema:
+            type: integer
+        - name: parameters[date_from]
+          in: query
+          description: Date to query from point in time.
+          schema:
+            type: string
+            format: YYYY-MM-DD
+        - name: parameters[date_to]
+          in: query
+          description: Date to query to point in time.
+          schema:
+            type: string
+            format: YYYY-MM-DD
+        - name: parameters[tickers]
+          in: query
+          description: One ticker symbol to query the aggregate for. All calendars
+            accept this parameter (not including the FDA endpoint; for the FDA endpoint,
+            please use  "parameters[securities]" instead). Ignored by the Economics
+            endpoint. Maximum 1 ticker.
+          schema:
+            type: string
+        - name: simplify
+          in: query
+          description: To simplify the aggregate ratings to only BUY, SELL, HOLD, default will return all ratings (STRONG_BUY, BUY, HOLD, SELL, STRONG_SELL).
+          schema:
+            type: boolean
+            default: false
+        - name: aggregate_type
+          in: query
+          description: To aggregate the ratings by either number or percentage.
+          schema:
+            default: number
+            enum:
+            - number
+            - percentage
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
               schema:
                 type: object
                 properties:
                   ratings:
                     type: array
                     items:
-                      $ref: '#/components/schemas/ratings'
+                      $ref: '#/components/schemas/consensus-ratings'
       security:
-      - token: []
+        - token: []
   /calendar/ma:
     get:
       summary: Returns the mergers and acquisitions data
@@ -2609,6 +2667,71 @@ components:
         updated:
           type: integer
           description: Last updated timestamp, UTC
+          format: int64
+    consensus-ratings:
+      type: object
+      properties:
+        aggregate_ratings:
+          type: object
+          properties:
+            strong_buy:
+              type: integer
+              description: Number of strong_buy ratings. If simplify is set to true, the value of strong-buy will be added to buy.
+              format: int64
+            buy:
+              type: integer
+              description: Number of buy ratings
+              format: int64
+            hold:
+              type: integer
+              description: Number of hold ratings
+              format: int64
+            sell:
+              type: integer
+              description: Number of sell ratings
+              format: int64
+            strong-sell:
+              type: integer
+              description: Number of strong-sell ratings. If simplify is set to true, the value of strong-sell will be added to sell.
+              format: int64
+        aggregate_type:
+          type: string
+          description: Type of aggregation
+          enum:
+            - number
+            - percentage
+          default: number
+        low_price_target:
+          type: integer
+          description: Lowest target from all analyst ratings
+          format: int64
+        high_price_target:
+          type: integer
+          description: Highest target from all analyst ratings
+          format: int64
+        consensus_price_target:
+          type: integer
+          description: Average target from all analyst ratings
+          format: int64
+        consensus_rating_val:
+          type: integer
+          description: Consensus rating value out of 5 (1[SELL]-5[BUY])
+          format: double
+        consensus_rating:
+          type: string
+          description: Consensus rating in text form (STRONG_SELL, SELL, HOLD, BUY, STRONG_BUY). If simplify is set to true, this will be the simplified to just the 3(SELL, HOLD, BUY) ratings.
+          format: double
+        updated_at:
+          type: string
+          description: Last updated timestamp, EDT
+          format: YYYY-MM-DD HH:MM:SS
+        total_analyst_count:
+          type: integer
+          description: Total analyst count
+          format: int64
+        unique_analyst_count:
+          type: integer
+          description: Unique analyst count
           format: int64
     conferenceCalls:
       type: object
