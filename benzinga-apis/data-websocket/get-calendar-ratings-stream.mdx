@@ -15,6 +15,7 @@ wss://api.benzinga.com/api/v2.1/calendar/ratings/stream
 | :--------- | :-----:  | :-----: | -------: | ----------------------------------------------------------------------: |
 | `token`    | query    | string  |      Yes | Benzinga websocket token (bz.production***).                            |
 | `tickers`  | query    | string  | Optional | List of tickers you want to subscribe for. Seperated by comma.          |
+| `isins`    | query    | string  | Optional | List of isins you want to filter by. Seperated by comma.                |
 
 ### Stream Response
 When you subscribe to the stream, you'll receive updates about analyst insights in the following format:
