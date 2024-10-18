@@ -11,18 +11,10 @@ wss://api.benzinga.com/api/v2.1/calendar/earnings/stream
 
 ### Parameters
 
-| Parameter                     | Type      | Location | Description                                                                                                                                              |
-|-------------------------------|-----------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `token`                       | string    | query    | Benzinga websocket token (bz.production***).         |
-| page                          | integer   | query    | Page offset (0 - 100000). Limit the query results by other parameters such as date.                                                                      |
-| pagesize                      | integer   | query    | Number of results returned (Limit 1000).                                                                                                                |
-| parameters[date]              | string    | query    | Date to query for calendar data (Defaults to latest).                                                                                                   |
-| parameters[date_from]         | string    | query    | Date to query from a point in time.                                                                                                                    |
-| parameters[date_to]           | string    | query    | Date to query to a point in time.                                                                                                                      |
-| parameters[date_sort]         | string    | query    | Field sort option for earnings calendar (Apply `:desc`, `:asc` for sort order).                                                                          |
-| parameters[tickers]           | string    | query    | One or more ticker symbols separated by a comma (Maximum 50 tickers).                                                                                   |
-| parameters[importance]        | integer   | query    | The importance level to filter by (0 - 5).                                                                                                              |
-| parameters[updated]           | integer   | query    | Records last updated Unix timestamp (UTC).                                                                                                             |
+| Name       | Location |  Type   | Required | Description                                                             |
+| :--------- | :-----:  | :-----: | -------: | ----------------------------------------------------------------------: |
+| `token`    | query    | string  |      Yes | Benzinga websocket token (bz.production***).                            |
+| `tickers`  | query    | string  | Optional | List of tickers you want to subscribe for. Seperated by comma.          |
 
 ### Stream Response
 When you subscribe to the stream, you'll receive updates about analyst insights in the following format:

@@ -11,14 +11,10 @@ wss://api.benzinga.com/api/v1/analyst/insights/stream
 
 ### Parameters:
 
-| Name       | Location |  Type   | Required | Description                                          |
-| :--------- | :-----:  | :-----: | -------: | ---------------------------------------------------: |
-| `token`    | query    | string  |      Yes | Benzinga websocket token (bz.production***).         |
-| `page`     | query    | integer |       No | Page number for pagination. Default is `1`.          |
-| `pageSize` | query    | integer |       No | Number of items per page. Default is `10`.           |
-| `symbols`  | query    | string  |       No | Comma-separated stock ticker symbols.                |
-| `analyst`  | query    | string  |       No | Comma-separated list of analyst IDs.                 |
-| `rating_id`| query    | string  |       No | Comma-separated list of rating IDs.                  |
+| Name       | Location |  Type   | Required | Description                                                             |
+| :--------- | :-----:  | :-----: | -------: | ----------------------------------------------------------------------: |
+| `token`    | query    | string  |      Yes | Benzinga websocket token (bz.production***).                            |
+| `tickers`  | query    | string  | Optional | List of tickers you want to subscribe for. Seperated by comma.          |
 
 ### Stream Response:
 When you subscribe to the stream, you'll receive updates about analyst insights in the following format:
