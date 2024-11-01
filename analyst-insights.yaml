@@ -46,6 +46,21 @@ paths:
           schema:
             type: string
             format: csv
+        - name: search_keys_type
+          in: query
+          required: false
+          description: If you wanna query by firm Id or firm name, use this parameter and pass the key. Currently supported are [firm_id, firm]
+          schema:
+            type: string
+            enum:
+              - firm_id
+              - firm
+        - name: search_keys
+          in: query
+          required: false
+          description: If you have selected search_keys_type, pass the appropriate identifier here.
+          schema:
+            type: string
       responses:
         '200':
           description: An array of analyst insights for the requested ticker symbol.
