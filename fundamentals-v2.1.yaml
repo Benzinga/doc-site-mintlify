@@ -26,7 +26,7 @@ paths:
       - name: symbols
         in: query
         description: One or more stock ticker symbol in comma separated list specifies
-          company data to return
+          company data to return. A max of 200 symbols per request is supported. 
         schema:
           type: string
           format: csv
