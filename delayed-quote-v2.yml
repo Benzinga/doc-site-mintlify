@@ -4,8 +4,8 @@ info:
   description: Benzinga Delayed Quote REST API
   version: "2.0"
 servers:
-- url: https://api.benzinga.com/api/v1
-- url: http://api.benzinga.com/api/v1
+- url: https://api.benzinga.com/api/v2
+- url: http://api.benzinga.com/api/v2
 security:
 - token: []
 paths:
