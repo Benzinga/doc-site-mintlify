@@ -12,7 +12,7 @@ servers:
   - url: https://api.benzinga.com
 
 paths:
-  /shortinterest:
+  /api/v1/shortinterest:
     get:
       summary: Get short interest data
       description: |
