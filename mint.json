@@ -42,7 +42,8 @@
       "method": "key"
     },
     "playground": {
-      "mode": "show"
+      "mode": "show",
+      "proxy": false
     }
   },
   "anchors": [
