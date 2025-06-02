@@ -5,51 +5,15 @@ info:
 servers:
   - url: https://api.benzinga.com/api/v1
 paths:
-  /transcripts/calls:
+  /earnings-call-transcripts:
     get:
-      summary: Get all conference call transcripts.
-      operationId: getConferenceCallTranscripts
+      summary: Get earnings call transcripts for a given ticker symbol.
+      operationId: getEarningsCallTranscripts
       parameters:
         - name: token
           in: query
           required: true
           description: Authentication token for API access.
-          schema:
-            type: string
-        - name: page
-          in: query
-          required: false
-          description: Page number for pagination.
-          schema:
-            type: string
-        - name: page_size
-          in: query
-          required: false
-          description: Number of results per page.
-          schema:
-            type: string
-        - name: symbol
-          in: query
-          required: false
-          description: Ticker symbol of the company for which the transcripts will be filtered.
-          schema:
-            type: string
-        - name: from
-          in: query
-          required: false
-          description: Start date for filtering transcripts (YYYY-MM-DDTHH:MM:SS format).
-          schema:
-            type: string
-        - name: to
-          in: query
-          required: false
-          description: End date for filtering transcripts (YYYY-MM-DDTHH:MM:SS format).
-          schema:
-            type: string
-        - name: sort_by
-          in: query
-          required: false
-          description: Field to sort the results by. Defaults to descending order of updated_at.
           schema:
             type: string
       responses:
@@ -63,321 +27,57 @@ paths:
           description: Authentication information is missing or invalid.
         '404':
           description: A transcript for the provided ticker symbol was not found.
-  /transcripts/calls/{call_id}:
-    get:
-      summary: Get conference call transcripts for a given call_id.
-      operationId: getConferenceCallTranscriptDetails
-      parameters:
-        - name: token
-          in: query
-          required: true
-          description: Authentication token for API access.
-          schema:
-            type: string
-        - name: call_id
-          in: path
-          required: true
-          description: conference call identifier.
-          schema:
-            type: string
-        - name: clean
-          in: query
-          required: false
-          description: If true, returns a cleaned version of the transcript.
-          schema:
-            type: string
-      responses:
-        '200':
-          description: A conference call transcript and its related data.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CallResponse'
-        '401':
-          description: Authentication information is missing or invalid.
-        '404':
-          description: A transcript for the provided ticker symbol was not found.
 components:
   schemas:
     TranscriptResponse:
-      type : object
+      type: object
       properties:
-        data:
-          type: array
-          items:
-              $ref: '#/components/schemas/Calls'
-        message:
+        id:
           type: string
-          description: A message indicating the status of the request.
-        pagination:
+          description: Unique identifier for the transcript.
+        security:
           type: object
           properties:
-            hits:
-              type: integer
-              description: total number of results matching the query.
-            page:
-              type: integer
-              description: current page number.
-            page_count:
-              type: integer
-              description: total number of pages available.
-            page_size:
-              type: integer
-              description: number of results per page.
-    Calls:
-      type: object
-      properties:
+            ticker:
+              type: string
+              description: Stock ticker symbol.
+            exchange:
+              type: string
+              description: Exchange where the stock is listed.
+            company_name:
+              type: string
+              description: Name of the company.
+            cik:
+              type: string
+              description: Central Index Key (CIK) of the company.
+            isin:
+              type: string
+              description: International Securities Identification Number (ISIN).
+        transcript_full:
+          type: string
+          description: Full transcript of the conference call.
+        m3u8_url:
+          type: string
+          description: URL to the audio recording of the conference call.
+        summaries:
+          type: array
+          description: Summaries of the conference call.
+          items:
+            type: string
+        summary_full:
+          type: string
+          description: Full summary of the conference call.
         call_id:
           type: string
           description: Unique identifier for the call.
-        call_title:
-          type: string
-          description: Title summarizing the earnings call topic or highlight.
-        headline:
-          type: string
-          description: Generated headline summarizing key points of the call.
-        symbol:
-          type: string
-          description: Ticker symbol of the primary company discussed.
-        exchange:
-          type: string
-          description: Exchange where the primary stock is listed.
-        figis:
-          type: array
-          description: List of FIGI share class identifiers related to the call.
-          items:
-            type: string
-        name:
-          type: string
-          description: Name of the company hosting the earnings call.
         start_time:
           type: string
-          format: date-time
-          description: ISO8601 timestamp when the call started.
-        end_time:
+          format: time
+          description: Start time of the conference call.
+        date:
           type: string
-          format: date-time
-          description: ISO8601 timestamp when the call ended.
-        duration:
-          type: integer
-          description: Duration of the call in minutes.
-        status:
-          type: string
-          enum: [SCHEDULED, LIVE, COMPLETED]
-          description: Status of the earnings call.
-        created_at:
-          type: string
-          format: date-time
-          description: Timestamp of call record creation.
-        updated_at:
-          type: string
-          format: date-time
-          description: Timestamp of the last update to the call record.
-        transcripts:
-          type: array
-          items:
-            $ref: '#/components/schemas/Transcript'
-        securities:
-          type: array
-          items:
-            $ref: '#/components/schemas/Security'
-    CallResponse:
-      type: object
-      properties:
-        call_id:
-          type: string
-          description: Unique identifier for the call.
-        call_title:
-          type: string
-          description: Title summarizing the earnings call topic or highlight.
-        headline:
-          type: string
-          description: Generated headline summarizing key points of the call.
-        symbol:
-          type: string
-          description: Ticker symbol of the primary company discussed.
-        exchange:
-          type: string
-          description: Exchange where the primary stock is listed.
-        figis:
-          type: array
-          description: List of FIGI share class identifiers related to the call.
-          items:
-            type: string
-        name:
-          type: string
-          description: Name of the company hosting the earnings call.
-        start_time:
-          type: string
-          format: date-time
-          description: ISO8601 timestamp when the call started.
-        end_time:
-          type: string
-          format: date-time
-          description: ISO8601 timestamp when the call ended.
-        duration:
-          type: integer
-          description: Duration in minutes
-        status:
-          type: string
-          enum: [SCHEDULED, LIVE, COMPLETED]
-          description: Status of the earnings call.
-        created_at:
-          type: string
-          format: date-time
-          description: Timestamp of call record creation.
-        updated_at:
-          type: string
-          format: date-time
-          description: Timestamp of the last update to the call record.
-        transcripts:
-          type: array
-          items:
-            $ref: '#/components/schemas/Transcript'
-        recording:
-          $ref: '#/components/schemas/Recording'
-        summary:
-          $ref: '#/components/schemas/Summary'
-        participants:
-          type: array
-          items:
-            $ref: '#/components/schemas/Participant'
-        securities:
-          type: array
-          items:
-            $ref: '#/components/schemas/Security'
-    Transcript:
-      type: object
-      properties:
-        transcript_id:
-          type: string
-        text:
-          type: string
-        language:
-          type: string
-        confidence_score:
-          type: number
-          format: float
-          description: Confidence score of the transcript's accuracy.
-        segments:
-          type: array
-          items:
-            $ref: '#/components/schemas/Segment'
-        type:
-          type: string
-          enum: [LIVE, NON_LIVE]
-    Segment:
-      type: object
-      properties:
-        segment_id:
-          type: integer
-        speaker:
-          type: string
-        start_time:
-          type: string
-          description: Millisecond timestamp as string
-        end_time:
-          type: string
-          description: Millisecond timestamp as string
-        confidence:
-          type: number
-          format: float
-        text:
-          type: string
-    Recording:
-      type: object
-      properties:
-        recording_id:
-          type: string
-        total_files:
-          type: integer
-        total_size:
-          type: integer
-          description: Size in bytes
-        duration:
-          type: integer
-          description: Duration in minutes
-        location:
-          type: string
-        bucket:
-          type: string
-        language:
-          type: string
-        formats:
-          type: array
-          items:
-            $ref: '#/components/schemas/RecordingFormat'
-        created_at:
-          type: string
-          format: date-time
-    RecordingFormat:
-      type: object
-      properties:
-        file_link:
-          type: string
-        size:
-          type: integer
-        content_type:
-          type: string
-        quality:
-          type: string
-    Summary:
-      type: object
-      properties:
-        summary_id:
-          type: string
-        transcript_id:
-          type: string
-        call_id:
-          type: string
-        summary:
-          type: string
-        symbol:
-          type: string
-        language:
-          type: string
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-    Participant:
-      type: object
-      properties:
-        participant_id:
-          type: string
-        call_id:
-          type: string
-        name:
-          type: string
-        role:
-          type: string
-        organization:
-          type: string
-        mentions:
-          type: integer
-        human_verified:
-          type: boolean
-    Security:
-      type: object
-      properties:
-        figi:
-          type: string
-        isin:
-          type: string
-        name:
-          type: string
-        symbol:
-          type: string
-        mic_code:
-          type: string
-        figi_composite:
-          type: string
-        figi_share_class:
-          type: string
-        refinitiv_exch_code:
-          type: string
+          format: date
+          description: Date of the conference call.
   securitySchemes:
     ApiKeyAuth:
       type: apiKey
