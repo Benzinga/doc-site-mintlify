@@ -1,0 +1,278 @@
+---
+title: "Conference Call Transcripts Stream"
+description: "This WebSocket endpoint allows you to subscribe to real-time transcript for conference call transcripts."
+icon: "globe"
+---
+
+```txt
+wss://api.benzinga.com/api/v1/transcripts/stream
+```
+
+### WebSocket Streaming Actions
+
+WebSocket streaming is supported via custom actions, which allow real-time interaction with the transcript service. Once connected to the WebSocket endpoint, send a JSON message with an `action` field as outlined below.
+
+
+### Available Actions
+
+| Action         | Description                                       | Example Request                                           |
+|----------------|---------------------------------------------------|-----------------------------------------------------------|
+| `list`         | Retrieve a list of all available transcripts.     | `{ "action": "list" }`                                    |
+| `subscribe`    | Subscribe to a specific transcript by symbol.     | `{ "action": "subscribe", "symbol": "AAPL" }`             |
+| `subscribe`    | Subscribe to all available transcripts.           | `{ "action": "subscribe", "symbol": "*" }`                |
+| `subscribed`   | Get a list of all currently active subscriptions. | `{ "action": "subscribed" }`                              |
+| `unsubscribe`  | Unsubscribe from a specific transcript.           | `{ "action": "unsubscribe", "symbol": "AAPL" }`           |
+| `unsubscribe`  | Unsubscribe from all transcripts.                 | `{ "action": "unsubscribe", "symbol": "*" }`              |
+| `echo`         | Echo a message to test the WebSocket connection.  | `{ "action": "echo", "message": "test" }`                 |
+| `ping`         | Keep the WebSocket connection alive.              | `{ "action": "ping" }`                                    |
+
+#### Notes
+- The `symbol` field refers to the stock ticker symbol (e.g., `AAPL`, `GOOG`, etc.).
+- Use `"symbol": "*"` to apply the action to all available transcripts.
+- The `ping` and `echo` actions are useful for connection testing and keep-alive mechanisms.
+- There is also a mock data stream available for testing purposes, you can use the same actions with `"mock":"true"` in the request body.
+
+### Stream Response:
+When you subscribe to the stream, you'll receive updates about analyst insights in the following format:
+
+```json
+{
+  "call_id": "67ecf164692ecb0001940d4b",
+  "transcript_id": "19a052dd-59fa-4217-bf40-68de48991499",
+  "call_title": "Q1 2025 Earnings Call",
+  "sentence": "We is targeting challenging growth despite inflationary pressures.",
+  "start_time": "2025-06-02T10:55:24Z",
+  "end_time": "2025-06-02T10:55:27Z",
+  "symbol": "AAPL",
+  "exchange": "NASDAQ",
+  "isin": "US0378331005",
+  "name": "Example Corp",
+  "cusip": "037833100",
+  "sequence": 2,
+  "status": "IN_PROGRESS",
+  "words": [
+    {
+      "confidence": 0.93,
+      "end": 306,
+      "start": 0,
+      "text": "We"
+    },
+    {
+      "confidence": 0.92,
+      "end": 687,
+      "start": 306,
+      "text": "is"
+    },
+    {
+      "confidence": 0.99,
+      "end": 1119,
+      "start": 687,
+      "text": "targeting"
+    },
+    {
+      "confidence": 0.95,
+      "end": 1490,
+      "start": 1119,
+      "text": "challenging"
+    },
+    {
+      "confidence": 0.99,
+      "end": 1709,
+      "start": 1490,
+      "text": "growth"
+    },
+    {
+      "confidence": 0.95,
+      "end": 2149,
+      "start": 1709,
+      "text": "despite"
+    },
+    {
+      "confidence": 0.97,
+      "end": 2392,
+      "start": 2149,
+      "text": "inflationary"
+    },
+    {
+      "confidence": 1,
+      "end": 2752,
+      "start": 2392,
+      "text": "pressures."
+    }
+  ],
+  "confidence": 0.95,
+  "speaker": "",
+  "type": "LIVE",
+  "message": "Call in-progress",
+  "formats": null,
+  "total_files": 0,
+  "total_size": 0,
+  "duration": 0,
+  "location": "",
+  "bucket": "",
+  "language": "",
+  "participants": null,
+  "created_time": "0001-01-01T00:00:00Z"
+}
+```
+
+#### Responses
+
+- **200 OK**
+  - **Description**: Success
+  - **Content Type**: `application/json`
+  - **Schema**: [TranscriptMessage](#transcriptmessage)
+
+### TranscriptMessage
+
+| Property        | Type             | Description                                                       |
+|----------------|------------------|-------------------------------------------------------------------|
+| `call_id`       | string           | Unique identifier for the call.                                   |
+| `transcript_id` | string           | Unique identifier for the transcript.                             |
+| `call_title`    | string           | Title of the earnings or conference call.                         |
+| `sentence`      | string           | Full sentence transcribed during the call.                        |
+| `start_time`    | string (ISO 8601)| Start time of the sentence.                                       |
+| `end_time`      | string (ISO 8601)| End time of the sentence.                                         |
+| `symbol`        | string           | Stock ticker symbol (e.g., AAPL).                                 |
+| `exchange`      | string           | Stock exchange the company is listed on.                          |
+| `isin`          | string           | ISIN (International Securities Identification Number).            |
+| `name`          | string           | Name of the company.                                              |
+| `cusip`         | string           | CUSIP identifier of the security.                                 |
+| `sequence`      | integer          | Sequence number of the sentence.                                  |
+| `status`        | string           | Status of the call (e.g., IN_PROGRESS).                           |
+| `words`         | array of objects | Word-level breakdown of the sentence.                             |
+| `words[].text`        | string    | The transcribed word.                                             |
+| `words[].start`       | integer   | Start offset (in milliseconds or chars).                          |
+| `words[].end`         | integer   | End offset (in milliseconds or chars).                            |
+| `words[].confidence`  | number    | Confidence score for the word (0–1).                              |
+| `confidence`    | number           | Overall confidence score for the sentence.                        |
+| `speaker`       | string           | Identifier of the speaker (if available).                         |
+| `type`          | string           | Type of transcript (e.g., LIVE, POST).                            |
+| `message`       | string           | Optional message or status update.                                |
+| `formats`       | any (nullable)   | Additional format-related metadata (if available).                |
+| `total_files`   | integer          | Number of associated audio/video/text files.                      |
+| `total_size`    | integer          | Total size of associated files in bytes.                          |
+| `duration`      | integer          | Duration of the segment or file in seconds.                       |
+| `location`      | string           | Storage location or path.                                         |
+| `bucket`        | string           | Storage bucket name (e.g., S3 bucket).                            |
+| `language`      | string           | Language code (e.g., "en").                                       |
+| `participants`  | any (nullable)   | Metadata about call participants (if available).                  |
+| `created_time`  | string (ISO 8601)| Timestamp of transcript creation.                                 |
+
+
+## Success Response
+
+- Success `101` - Websocket connection established successfully.
+
+<div style={{
+  border: '1px solid #ddd',
+  borderRadius: '8px',
+  padding: '16px',
+  fontSize: '14px',
+  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+  backgroundColor: '#f9f9f9',
+  maxWidth: '700px',
+}}>
+  <div style={{
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  }}>
+    <div style={{ color: '#000000'}}>
+      ✅ Connected to wss://api.benzinga.com/api/v1/transcripts/stream?token=bz.p***
+    </div>
+  </div>
+
+  <div style={{ color: 'grey', fontWeight: 'bold', marginBottom: '-4px' }}>
+    Handshake Details
+  </div>
+
+<div style={{ marginBottom: '4px' }}>
+  <span><strong>Request URL:</strong> </span>
+  <p style={{ color: 'blue' }}>
+    "https://api.benzinga.com/api/v1/transcripts/stream?token=bz"
+  </p>
+</div>
+  <div style={{ marginBottom: '4px' }}>
+   <span> <strong>Request Method:</strong> </span><span style={{ color: 'blue' }}>"GET"</span>
+  </div>
+  <div style={{ marginBottom: '4px' }}>
+    <span> <strong>Status Code:</strong> </span><span style={{ color: 'blue' }}>"101 Switching Protocols"</span>
+  </div>
+</div>
+
+## Error Response
+
+- Unauthorized `401` - Invalid token, check the token provided.
+
+<div style={{
+  border: '1px solid #ddd',
+  borderRadius: '8px',
+  padding: '16px',
+  fontSize: '14px',
+  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+  backgroundColor: '#f9f9f9',
+  maxWidth: '500px',
+}}>
+  <div style={{
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  }}>
+    <div style={{ color: '#000000'}}>
+      ❗ Could not connect to wss://api.benzinga.com/api/v1/transcripts/stream?token=bz.p***
+    </div>
+  </div>
+
+  <div style={{ fontWeight: 'bold', marginBottom: '8px' }}>
+    Error: Unexpected server response: 401
+  </div>
+
+  <div style={{ color: 'grey', fontWeight: 'bold', marginBottom: '-4px' }}>
+    Handshake Details
+  </div>
+
+  <div style={{ marginBottom: '4px' }}>
+   <span> <strong>Request Method:</strong> </span><span style={{ color: 'blue' }}>"GET"</span>
+  </div>
+  <div style={{ marginBottom: '4px' }}>
+    <span> <strong>Status Code:</strong> </span><span style={{ color: 'blue' }}>"401 Unauthorized"</span>
+  </div>
+</div>
+
+- Bad Gateway `502` - Either invalid route or server error.
+
+<div style={{
+  border: '1px solid #ddd',
+  borderRadius: '8px',
+  padding: '16px',
+  fontSize: '14px',
+  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+  backgroundColor: '#f9f9f9',
+  maxWidth: '500px',
+}}>
+  <div style={{
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  }}>
+    <div style={{ color: '#000000'}}>
+      ❗ Could not connect to wss://api.benzinga.com/api/v1/transcripts/stream?token=bz.p***
+    </div>
+  </div>
+
+  <div style={{ fontWeight: 'bold', marginBottom: '8px' }}>
+    Error: Unexpected server response: 502
+  </div>
+
+  <div style={{ color: 'grey', fontWeight: 'bold', marginBottom: '-4px' }}>
+    Handshake Details
+  </div>
+
+  <div style={{ marginBottom: '4px' }}>
+   <span> <strong>Request Method:</strong> </span><span style={{ color: 'blue' }}>"GET"</span>
+  </div>
+  <div style={{ marginBottom: '4px' }}>
+    <span> <strong>Status Code:</strong> </span><span style={{ color: 'blue' }}>"502 Bad Gateway"</span>
+  </div>
+</div>
