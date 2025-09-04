@@ -22,6 +22,27 @@ paths:
           description: Authentication token for the API access.
           schema:
             type: string
+        - name: page
+          in: query
+          description: |-
+            Page offset number.
+          schema:
+            type: integer
+            default: 0
+        - name: pagesize
+          in: query
+          description: Number of results to be returned. Limit 200
+          schema:
+            type: integer
+            default: 100
+            maximum: 200
+        - name: parameters[updated]
+          in: query
+          description: Records last Updated Unix timestamp (UTC). This will force the
+            sort order to be Greater Than or Equal to the timestamp indicated.
+          schema:
+            type: integer
+            format: int64
       responses:
         '200':
           description: An array of bull and bear cases for the requested ticker symbol.

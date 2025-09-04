@@ -378,6 +378,7 @@ paths:
         description: Number of results returned. Limit 1000
         schema:
           type: integer
+          maximum: 1000
       - name: parameters[date]
         in: query
         description: Date to query for calendar data. Shorthand for date_from and
@@ -404,12 +405,9 @@ paths:
         schema:
           type: integer
           enum:
-          - 0
           - 1
           - 2
           - 3
-          - 4
-          - 5
       - name: parameters[updated]
         in: query
         description: Records last Updated Unix timestamp (UTC). This will force the
