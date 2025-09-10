@@ -150,7 +150,9 @@
         {
           "group": "Conference Call Transcripts",
           "pages": [
-            "benzinga-apis/conference-call-transcripts/get-conference-call-transcripts"
+            "benzinga-apis/conference-call-transcripts/get-conference-call-transcripts",
+            "benzinga-apis/conference-call-transcripts/get-conference-call-transcripts-details",
+            "benzinga-apis/conference-call-transcripts/get-conference-live-streaming"
           ]
         },
         {

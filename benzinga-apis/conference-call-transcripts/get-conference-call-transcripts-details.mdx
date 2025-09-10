@@ -1,0 +1,106 @@
+---
+title: "GET Conference Call Transcript details"
+description: "Get Conference call transcript Details by Call ID"
+openapi: "conference-call-transcripts GET /api/v1/transcripts/calls/{call_id}"
+---
+
+<ResponseExample>
+```json Response (200 OK)
+{
+   "call_id":"68a45d99773a500001b3b948",
+   "call_title":"Data Vault AI posts 467% revenue growth, eyes future with strategic acquisitions",
+   "description":"Q3 2025 Datavault AI (DVLT) Earnings Conference Call",
+   "webcast_url":"https://event.choruscall.com/mediaframe/webcast.html?webcastid=Mt66OZCl",
+   "headline":"Data Vault AI reports 467% revenue growth in Q2, unveils strategic acquisitions and partnerships to enhance market position and unlock value.",
+   "symbol":"DVLT",
+   "exchange":"NASDAQ",
+   "name":"Datavault AI",
+   "start_time":"2025-08-20T12:59:03Z",
+   "end_time":"2025-08-20T13:20:37Z",
+   "duration":20,
+   "status":"COMPLETED",
+   "created_at":"2025-08-20T12:59:03.418466Z",
+   "updated_at":"2025-08-20T13:20:56.283852Z",
+   "transcripts":[
+      {
+         "transcript_id":"e685fc55-3ab8-4d59-89e9-6df20819a106",
+         "text":"Good morning, and welcome to shoe Carnival's first quarter earnings conference call. Today's conference. Call is being recorded and is also being broadcast via webcast. Any reproduction or rebroadcast of any portion of this call is expressly prohibited. Management's remarks today may contain forwardlooking statements that involve a number of risk factors. These risk factors could cause the company's actual results to be materially different from those projected in such statements. Forwardlooking statements should also be considered in conjunction with a discussion of risk factors included in the company's SEC filings and today's ear.... This concludes today's conference call. Thank you all for joining. You may now disconnect.",
+         "language":"en-US",
+         "confidence_score":0.5292113913882708,
+         "segments":[...],
+         "type":"LIVE"
+      },
+      {
+         "transcript_id":"31da4e4e-bd7a-4e72-b69c-bcd4dbea2b2c",
+         "text":"Good morning and welcome to Shoe Carnival's first quarter Earnings Conference call. Today's conference call is being recorded and is also being broadcast via webcast. Any reproduction or rebroadcast of any portion of this call is expressly prohibited. Management's remarks today may contain forward-looking statements that involve a number of risk factors. These risk factors could cause the Company's actual results to be materially different from those projected in such statements. Forward looking statements should also be considered in conjunction with a discussion of risk factors included in the Company's SEC filings and today's ear.... And we'll talk to you after Back to school. This concludes today's conference call. Thank you all for joining. You may now disconnect.",
+         "language":"en-US",
+         "confidence_score":0.9636659109615386,
+    "segments":[...],
+         "type":"NON_LIVE"
+      }
+   ],
+   "recording":{
+      "recording_id":"6aebcfe4-f696-42c2-b960-0ad9a91041b9",
+      "total_files":213,
+      "total_size":40124389,
+      "duration":20,
+      "location":"assets/68a45d99773a500001b3b948",
+      "bucket":"earnings-call-media",
+      "language":"en",
+      "formats":[
+         {
+            "file_link":"68a45d99773a500001b3b948/mp3/audio.mp3",
+            "size":30239809,
+            "content_type":"audio/mpeg",
+            "quality":"192kbps"
+         }
+      ],
+      "created_at":"2025-08-20T13:20:56.276726Z",
+      "updated_at":"2025-08-20T13:20:56.276726Z"
+   },
+   "summary":{
+      "summary_id":"d5dd6140-4f49-4d54-8bda-12dabfcfd580",
+      "transcript_id":"",
+      "call_id":"68a45d99773a500001b3b948",
+      "summary":"Data Vault AI reported significant progress in Q2, highlighting a licensing transaction with Nayax and the impact of the Genius Act on US banking opportunities.\nThe company emphasized its proprietary technology and strategic partnerships, including a platinum partnership with IBM and collaborations with Dolby and other firms.\nFuture outlook includes potential acquisitions, with API Media set as a target, and the launch of several exchanges leveraging AI and blockchain technologies.\nOperational highlights include a $12 million senior secured note financing and the successful integration of CSI following its acquisition.\nManagement expressed excitement about the company's trajectory and strategic milestones, focusing on innovation and expansion in AI and data monetization sectors.",
+      "symbol":"",
+      "sentiment":0.75,
+      "language":"",
+      "created_at":"2025-08-20T13:20:53.951602Z",
+      "updated_at":"2025-08-20T13:20:53.951602Z"
+   },
+   "participants":[
+      {
+         "participant_id":"e5ff8dc7-6bc8-41eb-95fe-e0094768d680",
+         "call_id":"68a45d99773a500001b3b948",
+         "name":"Susan Zhu",
+         "role":"Investor Relations",
+         "organization":"Alliance Advisors",
+         "mentions":2,
+         "human_verified":false
+      },
+      {
+         "participant_id":"05c28188-e4b8-492f-a1d4-4b642349cf17",
+         "call_id":"68a45d99773a500001b3b948",
+         "name":"Nate Bradsley",
+         "role":"Chief Executive Officer",
+         "organization":"Data Vault AI",
+         "mentions":5,
+         "human_verified":false
+      }
+   ],
+   "securities":[
+      {
+         "figi":"BBG000BF4DG3",
+         "isin":"US8248891090",
+         "name":"SHOE CARNIVAL INC",
+         "symbol":"SCVL",
+         "mic_code":"XNAS",
+         "figi_composite":"BBG000BF4DG3",
+         "figi_share_class":"BBG001S6V927",
+         "refinitiv_exch_code":"NSQ"
+      }
+   ]
+}
+```
+</ResponseExample>
