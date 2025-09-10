@@ -1,0 +1,317 @@
+openapi: 3.0.3
+info:
+  title: Benzinga Trending Tickers API
+  version: 1.0.0
+  description: >
+    OpenAPI specification for Benzinga Trending Tickers endpoints that return
+    aggregated trending tickers and per-ticker time-bucketed metrics.
+
+servers:
+  - url: https://api.benzinga.com
+
+security:
+  - ApiKeyAuth: []
+
+tags:
+  - name: Ticker Trends
+    description: Trending tickers aggregates and per-ticker metrics.
+
+paths:
+  /api/v1/trending-tickers/list:
+    get:
+      tags: [Ticker Trends]
+      summary: Get trending tickers (aggregated list)
+      description: >
+        Returns a list of top trending tickers for a specified timeframe with optional date and time window filters; when both date and time filters are provided together, the results are constrained to that window, and when only date or only time is provided, results are aggregated over the unspecified dimension as supported by the service.
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: query
+          name: timeframe
+          description: Aggregation window for trends.
+          required: false
+          schema:
+            type: string
+            enum: [10m, 1h, 1d]
+            default: 10m
+          example: 1h
+        - in: query
+          name: date_from
+          description: Start date (inclusive) in ISO 8601 format YYYY-MM-DD.
+          required: false
+          schema:
+            type: string
+            format: date
+          example: 2025-01-01
+        - in: query
+          name: date_to
+          description: End date (inclusive) in ISO 8601 format YYYY-MM-DD.
+          required: false
+          schema:
+            type: string
+            format: date
+          example: 2025-01-01
+        - in: query
+          name: time_from
+          description: Start time (24-hour) in HH:MM.
+          required: false
+          schema:
+            type: string
+            pattern: '^[0-2][0-9]:[0-5][0-9]$'
+          example: "09:00"
+        - in: query
+          name: time_to
+          description: End time (24-hour) in HH:MM.
+          required: false
+          schema:
+            type: string
+            pattern: '^[0-2][0-9]:[0-5][0-9]$'
+          example: "10:00"
+
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TrendingTickersListResponse"
+              examples:
+                sample:
+                  summary: Example
+                  value:
+                    ok: true
+                    data:
+                      - security:
+                          ticker: TSLA
+                          name: ""
+                          exchange: NASDAQ
+                        count: 102164
+                      - security:
+                          ticker: NVDA
+                          name: ""
+                          exchange: NASDAQ
+                        count: 99539
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                ok: false
+                errors:
+                  - id: "hbiGJjhsSpnfhM8aBePyTB"
+                    code: "bad_request"
+                    value: "Reason"
+        "500":
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                ok: false
+                errors:
+                  - id: "hbiGJjhsSpnfhM8aBePyTB"
+                    code: "500"
+                    value: "Something went wrong"
+
+  /api/v1/trending-tickers:
+    get:
+      tags: [Ticker Trends]
+      summary: Get per-ticker trend metrics (time buckets)
+      description: >
+        Returns time-bucketed trend metrics for one or more tickers over the given interval.
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: query
+          name: interval
+          description: Time-bucket interval for metrics.
+          required: false
+          schema:
+            type: string
+            enum: [10m, 1h, 1d]
+            default: 10m
+          example: 1h
+        - in: query
+          name: tickers
+          description: Comma-separated list of tickers.
+          required: true
+          schema:
+            type: string
+          example: AAPL,MSFT,NVDA
+
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TrendingTickersSeriesResponse"
+              examples:
+                sample:
+                  summary: Example
+                  value:
+                    ok: true
+                    data:
+                      - ticker: MSFT
+                        exchange: NASDAQ
+                        metrics:
+                          - time_bucket: "2025-09-10T12:00:00Z"
+                            count: 35534
+                            count_mavg: 29629.62890625
+                            scaled_count: 14.357780456542969
+                            scaled_count_mavg: 14.357780456542969
+                            market_count_average: 14.457953453063965
+                          - time_bucket: "2025-09-10T11:00:00Z"
+                            count: 41468
+                            count_mavg: 54254.25390625
+                            scaled_count: 26.290260314941406
+                            scaled_count_mavg: 26.290260314941406
+                            market_count_average: 26.957857131958008
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                ok: false
+                errors:
+                  - id: "hbiGJjhsSpnfhM8aBePyTB"
+                    code: "bad_request"
+                    value: "Reason"
+        "401":
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                ok: false
+                errors:
+                  - id: "hbiGJjhsSpnfhM8aBePyTB"
+                    code: "auth_failed"
+                    value: "authentication failed"
+        "500":
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                ok: false
+                errors:
+                  - id: "hbiGJjhsSpnfhM8aBePyTB"
+                    code: "500"
+                    value: "Something went wrong"
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: query
+      name: token
+
+  schemas:
+    Security:
+      type: object
+      properties:
+        ticker:
+          type: string
+        name:
+          type: string
+        exchange:
+          type: string
+      required: [ticker, exchange]
+
+    TrendingTickersListItem:
+      type: object
+      properties:
+        security:
+          $ref: "#/components/schemas/Security"
+        count:
+          type: integer
+          format: int64
+        pct_chg:
+          type: number
+          description: Percentage change in mentions, if available.
+      required: [security, count]
+
+    TrendingTickersListResponse:
+      type: object
+      properties:
+        ok:
+          type: boolean
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/TrendingTickersListItem"
+      required: [ok, data]
+
+    ErrorItem:
+      type: object
+      properties:
+        id:
+          type: string
+        code:
+          type: string
+        value:
+          type: string
+      required: [code, value]
+
+    ErrorResponse:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          example: false
+        errors:
+          type: array
+          items:
+            $ref: "#/components/schemas/ErrorItem"
+      required: [ok, errors]
+
+    TickerMetricsItem:
+      type: object
+      properties:
+        time_bucket:
+          type: string
+          format: date-time
+        count:
+          type: integer
+          format: int64
+        count_mavg:
+          type: number
+        scaled_count:
+          type: number
+        scaled_count_mavg:
+          type: number
+        market_count_average:
+          type: number
+      required: [time_bucket, count]
+
+    TrendingTickerSeries:
+      type: object
+      properties:
+        ticker:
+          type: string
+        exchange:
+          type: string
+        metrics:
+          type: array
+          items:
+            $ref: "#/components/schemas/TickerMetricsItem"
+      required: [ticker, metrics]
+
+    TrendingTickersSeriesResponse:
+      type: object
+      properties:
+        ok:
+          type: boolean
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/TrendingTickerSeries"
+      required: [ok, data]
