@@ -211,6 +211,13 @@
           "pages": [
             "benzinga-apis/short-interest/short-interest"
           ]
+        },
+        {
+          "group": "Ticker Trends",
+          "pages": [
+            "benzinga-apis/ticker-trends/get-trending-tickers-list",
+            "benzinga-apis/ticker-trends/get-trending-tickers"
+          ]
         }
       ]
     },

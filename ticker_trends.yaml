@@ -7,7 +7,7 @@ info:
     aggregated trending tickers and per-ticker time-bucketed metrics.
 
 servers:
-  - url: https://api.benzinga.com
+  - url: https://api.benzinga.com/api/v1
 
 security:
   - ApiKeyAuth: []
@@ -17,7 +17,7 @@ tags:
     description: Trending tickers aggregates and per-ticker metrics.
 
 paths:
-  /api/v1/trending-tickers/list:
+  /trending-tickers/list:
     get:
       tags: [Ticker Trends]
       summary: Get trending tickers (aggregated list)
@@ -116,7 +116,7 @@ paths:
                     code: "500"
                     value: "Something went wrong"
 
-  /api/v1/trending-tickers:
+  /trending-tickers:
     get:
       tags: [Ticker Trends]
       summary: Get per-ticker trend metrics (time buckets)
