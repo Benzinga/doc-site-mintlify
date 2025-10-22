@@ -6,7 +6,6 @@ info:
   version: "2.1"
 servers:
 - url: https://api.benzinga.com/api/v2.1
-- url: http://api.benzinga.com/api/v2.1
 security:
 - token: []
 paths:

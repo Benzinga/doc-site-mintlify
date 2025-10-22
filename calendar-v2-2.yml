@@ -6,7 +6,6 @@ info:
   version: 2.0.0
 servers:
 - url: https://api.benzinga.com/api/v2.2
-- url: http://api.benzinga.com/api/v2.2
 paths:
   /calendar/dividends:
     get:

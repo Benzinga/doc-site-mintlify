@@ -18,8 +18,7 @@ info:
     \ of the `updated` field in rows already pulled from our API."
   version: 1.0.0
 servers:
-- url: https://api.benzinga.com/api/v1
-- url: http://api.benzinga.com/api/v1
+- url: https://api.benzinga.com/api/v2
 paths:
   /wiims:
     get:
