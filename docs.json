@@ -202,7 +202,35 @@
       "auth": {
         "method": "key"
       }
-    }
+    },
+    "openapi": [
+      "/openapi/analyst-insights.yaml",
+      "/openapi/bars-v2.yml",
+      "/openapi/bull-bear.yml",
+      "/openapi/calendar-v2-2.yml",
+      "/openapi/calendar-v2.yml",
+      "/openapi/conference-call-transcripts.yaml",
+      "/openapi/consensus-ratings.yaml",
+      "/openapi/data-websocket.yml",
+      "/openapi/delayed-quote-v1.yml",
+      "/openapi/delayed-quote-v2.yml",
+      "/openapi/fundamentals-v2.1.yaml",
+      "/openapi/fundamentals-v2.yml",
+      "/openapi/fundamentals-v4.yml",
+      "/openapi/fxstreet-econ-calendar-new.yml",
+      "/openapi/government-trades.yml",
+      "/openapi/logos-v1.1.yaml",
+      "/openapi/logos-v2.yml",
+      "/openapi/movers-v1.yml",
+      "/openapi/newsfeed-stream-v1.yml",
+      "/openapi/newsfeed-v2.yaml",
+      "/openapi/sec-v1.yml",
+      "/openapi/short-interest.yml",
+      "/openapi/signals-v1.yml",
+      "/openapi/test-trigger-webhook-v1.yml",
+      "/openapi/ticker_trends.yaml",
+      "/openapi/wiims.yml"
+    ]
   },
   "appearance": {
     "default": "light"
