@@ -1,7 +1,7 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Benzinga",
+  "name": "Benzinga API Documentation",
   "colors": {
     "primary": "#093451",
     "light": "#5489C4",
@@ -264,5 +264,14 @@
     "koala": {
       "publicApiKey": "pk_5bb2711d5ce6175322f0674687433948226e"
     }
+  },
+  "contextual": {
+    "options": [
+      "copy",
+      "view",
+      "cursor",
+      "chatgpt",
+      "claude"
+    ]
   }
 }
