@@ -1,17 +1,18 @@
 openapi: 3.0.1
 info:
-  title: Fundamentals v2 (Deprecated)
-  description: Get financials, earnings ratios, financial ratios, and company data.
-  version: "2.0"
+  title: Fundamentals v2.1
+  description: Get financial statements, financial ratios, earning reports,  asset
+    classification, and share class profile history.
+  version: "2.1"
 servers:
-- url: https://api.benzinga.com/api/v2
-- url: http://api.benzinga.com/api/v2
+- url: https://api.benzinga.com/api/v2.1
 security:
 - token: []
 paths:
   /fundamentals:
     get:
-      summary: Get valuation ratios, earning ratios, operation ratios, balance sheet
+      summary: Get all of fundamentals data such as valuation ratios, earning ratios,
+        operation ratios, balance sheet, share class, alpha beta and asset classification.
       parameters:
       - name: accept
         in: header
@@ -24,14 +25,7 @@ paths:
       - name: symbols
         in: query
         description: One or more stock ticker symbol in comma separated list specifies
-          company data to return
-        schema:
-          type: string
-          format: csv
-      - name: cik
-        in: query
-        description: One or more cik identifier in comma separated list specifies
-          company data to return
+          company data to return. A max of 200 symbols per request is supported. 
         schema:
           type: string
           format: csv
@@ -42,10 +36,17 @@ paths:
         schema:
           type: string
           format: YYYY-MM-DD
+      - name: cik
+        in: query
+        description: One or more cik identifier in comma separated list specifies
+          company data to return
+        schema:
+          type: string
+          format: csv
       responses:
         200:
           description: An object including a response array containing an array of
-            objects containing company data
+            objects containing company data.
           content:
             application/json:
               schema:
@@ -55,7 +56,7 @@ paths:
                 $ref: '#/components/schemas/FundamentalsResponse'
   /fundamentals/valuationRatios:
     get:
-      summary: Returns the valuation ratios
+      summary: Returns the valuation ratios.
       parameters:
       - name: accept
         in: header
@@ -72,13 +73,6 @@ paths:
         schema:
           type: string
           format: csv
-      - name: cik
-        in: query
-        description: One or more cik identifier in comma separated list specifies
-          company data to return
-        schema:
-          type: string
-          format: csv
       - name: asOf
         in: query
         description: Return results for dates greater than or equal date specified
@@ -86,20 +80,27 @@ paths:
         schema:
           type: string
           format: YYYY-MM-DD
+      - name: cik
+        in: query
+        description: One or more cik identifier in comma separated list specifies
+          company data to return
+        schema:
+          type: string
+          format: csv
       responses:
         200:
           description: An object including a response that includes valuationRatio
-            data
+            data.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/FundamentalsValuationRatiosResponse'
+                $ref: '#/components/schemas/valuationRatiosResponse'
             application/xml (deprecated):
               schema:
-                $ref: '#/components/schemas/FundamentalsValuationRatiosResponse'
+                $ref: '#/components/schemas/valuationRatiosResponse'
   /fundamentals/earningRatios:
     get:
-      summary: Returns the earning ratios
+      summary: Returns the earning ratios.
       parameters:
       - name: accept
         in: header
@@ -116,13 +117,6 @@ paths:
         schema:
           type: string
           format: csv
-      - name: cik
-        in: query
-        description: One or more cik identifier in comma separated list specifies
-          company data to return
-        schema:
-          type: string
-          format: csv
       - name: asOf
         in: query
         description: Return results for dates greater than or equal date specified
@@ -130,20 +124,27 @@ paths:
         schema:
           type: string
           format: YYYY-MM-DD
+      - name: cik
+        in: query
+        description: One or more cik identifier in comma separated list specifies
+          company data to return
+        schema:
+          type: string
+          format: csv
       responses:
         200:
           description: An object including a response that includes valuationRatio
-            data
+            data.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/FundamentalsEarningRatiosResponse'
+                $ref: '#/components/schemas/earningRatiosResponse'
             application/xml (deprecated):
               schema:
-                $ref: '#/components/schemas/FundamentalsEarningRatiosResponse'
+                $ref: '#/components/schemas/earningRatiosResponse'
   /fundamentals/operationRatios:
     get:
-      summary: Returns the operation ratios
+      summary: Returns the operation ratios.
       parameters:
       - name: accept
         in: header
@@ -160,13 +161,6 @@ paths:
         schema:
           type: string
           format: csv
-      - name: cik
-        in: query
-        description: One or more cik identifier in comma separated list specifies
-          company data to return
-        schema:
-          type: string
-          format: csv
       - name: asOf
         in: query
         description: Return results for dates greater than or equal date specified
@@ -174,22 +168,27 @@ paths:
         schema:
           type: string
           format: YYYY-MM-DD
+      - name: cik
+        in: query
+        description: One or more cik identifier in comma separated list specifies
+          company data to return
+        schema:
+          type: string
+          format: csv
       responses:
         200:
           description: An object including a response that includes operationRatio
-            data
+            data.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/FundamentalsOperationRatiosResponse'
+                $ref: '#/components/schemas/operationRatiosResponse'
             application/xml (deprecated):
               schema:
-                $ref: '#/components/schemas/FundamentalsOperationRatiosResponse'
+                $ref: '#/components/schemas/operationRatiosResponse'
   /fundamentals/financials:
     get:
-      summary: Get the balance sheet and cashflow statement for a company. Although
-        symbols, and cik are technically optional, if no parameters are included with
-        the response, the result will be empty
+      summary: Get the balance sheet and cash-flow statement for a company.
       parameters:
       - name: accept
         in: header
@@ -202,13 +201,6 @@ paths:
       - name: symbols
         in: query
         description: One or more stock ticker symbol in comma separated list specifies
-          company data to return
-        schema:
-          type: string
-          format: csv
-      - name: cik
-        in: query
-        description: One or more cik identifier in comma separated list specifies
           company data to return
         schema:
           type: string
@@ -246,6 +238,314 @@ paths:
           - A
           - R
           - P
+      - name: cik
+        in: query
+        description: One or more cik identifier in comma separated list specifies
+          company data to return
+        schema:
+          type: string
+          format: csv
+      responses:
+        200:
+          description: An object including a response array containing an array of
+            objects containing company data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/financialsResponse'
+            application/xml (deprecated):
+              schema:
+                $ref: '#/components/schemas/financialsResponse'
+  /fundamentals/shareClass:
+    get:
+      summary: Get share class meta data for company.
+      parameters:
+      - name: accept
+        in: header
+        description: Specifies return format
+        schema:
+          type: string
+          enum:
+          - application/json
+          - application/xml (deprecated)
+      - name: symbols
+        in: query
+        description: One or more stock ticker symbol in comma separated list specifies
+          company data to return
+        schema:
+          type: string
+          format: csv
+      - name: asOf
+        in: query
+        description: Return results for dates greater than or equal date specified
+          in this parameter
+        schema:
+          type: string
+          format: YYYY-MM-DD
+      - name: cik
+        in: query
+        description: One or more cik identifier in comma separated list specifies
+          company data to return
+        schema:
+          type: string
+          format: csv
+      responses:
+        200:
+          description: An object including a response array containing an array of
+            objects containing company data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/shareClass'
+            application/xml (deprecated):
+              schema:
+                $ref: '#/components/schemas/shareClass'
+  /fundamentals/earningReports:
+    get:
+      summary: Get detailed earning reports for company.
+      parameters:
+      - name: accept
+        in: header
+        description: Specifies return format
+        schema:
+          type: string
+          enum:
+          - application/json
+          - application/xml (deprecated)
+      - name: symbols
+        in: query
+        description: One or more stock ticker symbol in comma separated list specifies
+          company data to return
+        schema:
+          type: string
+          format: csv
+      - name: asOf
+        in: query
+        description: Return results for dates greater than or equal date specified
+          in this parameter
+        schema:
+          type: string
+          format: YYYY-MM-DD
+      - name: cik
+        in: query
+        description: One or more cik identifier in comma separated list specifies
+          company data to return
+        schema:
+          type: string
+          format: csv
+      responses:
+        200:
+          description: An object including a response array containing an array of
+            objects containing company data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/earningReports'
+            application/xml (deprecated):
+              schema:
+                $ref: '#/components/schemas/earningReports'
+  /fundamentals/alphaBeta:
+    get:
+      summary: Get an alpha-beta result for the company.
+      parameters:
+      - name: accept
+        in: header
+        description: Specifies return format
+        schema:
+          type: string
+          enum:
+          - application/json
+          - application/xml (deprecated)
+      - name: symbols
+        in: query
+        description: One or more stock ticker symbol in comma separated list specifies
+          company data to return
+        schema:
+          type: string
+          format: csv
+      - name: asOf
+        in: query
+        description: Return results for dates greater than or equal date specified
+          in this parameter
+        schema:
+          type: string
+          format: YYYY-MM-DD
+      - name: cik
+        in: query
+        description: One or more cik identifier in comma separated list specifies
+          company data to return
+        schema:
+          type: string
+          format: csv
+      responses:
+        200:
+          description: An object including a response array containing an array of
+            objects containing company data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/alphaBeta'
+            application/xml (deprecated):
+              schema:
+                $ref: '#/components/schemas/alphaBeta'
+  /fundamentals/company:
+    get:
+      summary: Get basic company information.
+      parameters:
+      - name: accept
+        in: header
+        description: Specifies return format
+        schema:
+          type: string
+          enum:
+          - application/json
+          - application/xml (deprecated)
+      - name: symbols
+        in: query
+        description: One or more stock ticker symbol in comma separated list specifies
+          company data to return
+        schema:
+          type: string
+          format: csv
+      - name: asOf
+        in: query
+        description: Return results for dates greater than or equal date specified
+          in this parameter
+        schema:
+          type: string
+          format: YYYY-MM-DD
+      - name: cik
+        in: query
+        description: One or more cik identifier in comma separated list specifies
+          company data to return
+        schema:
+          type: string
+          format: csv
+      responses:
+        200:
+          description: An object including a response array containing an array of
+            objects containing company data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/company'
+            application/xml (deprecated):
+              schema:
+                $ref: '#/components/schemas/company'
+  /fundamentals/companyProfile:
+    get:
+      summary: Get company meta-data.
+      parameters:
+      - name: accept
+        in: header
+        description: Specifies return format
+        schema:
+          type: string
+          enum:
+          - application/json
+          - application/xml (deprecated)
+      - name: symbols
+        in: query
+        description: One or more stock ticker symbol in comma separated list specifies
+          company data to return
+        schema:
+          type: string
+          format: csv
+      - name: asOf
+        in: query
+        description: Return results for dates greater than or equal date specified
+          in this parameter
+        schema:
+          type: string
+          format: YYYY-MM-DD
+      - name: cik
+        in: query
+        description: One or more cik identifier in comma separated list specifies
+          company data to return
+        schema:
+          type: string
+          format: csv
+      responses:
+        200:
+          description: An object including a response array containing an array of
+            objects containing company data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/companyProfile'
+            application/xml (deprecated):
+              schema:
+                $ref: '#/components/schemas/companyProfile'
+  /fundamentals/shareClassProfile:
+    get:
+      summary: Get share class profile history with market cap and enterprise value.
+      parameters:
+      - name: accept
+        in: header
+        description: Specifies return format
+        schema:
+          type: string
+          enum:
+          - application/json
+          - application/xml (deprecated)
+      - name: symbols
+        in: query
+        description: One or more stock ticker symbol in comma separated list specifies
+          company data to return
+        schema:
+          type: string
+          format: csv
+      - name: asOf
+        in: query
+        description: Return results for dates greater than or equal date specified
+          in this parameter
+        schema:
+          type: string
+          format: YYYY-MM-DD
+      - name: cik
+        in: query
+        description: One or more cik identifier in comma separated list specifies
+          company data to return
+        schema:
+          type: string
+          format: csv
+      responses:
+        200:
+          description: An object including a response array containing an array of
+            objects containing company data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/shareClassProfile'
+            application/xml (deprecated):
+              schema:
+                $ref: '#/components/schemas/shareClassProfile'
+  /fundamentals/assetClassification:
+    get:
+      summary: Get share class profile history with market cap and enterprise value.
+      parameters:
+      - name: accept
+        in: header
+        description: Specifies return format
+        schema:
+          type: string
+          enum:
+          - application/json
+          - application/xml (deprecated)
+      - name: symbols
+        in: query
+        description: One or more stock ticker symbol in comma separated list specifies
+          company data to return
+        schema:
+          type: string
+          format: csv
+      - name: cik
+        in: query
+        description: One or more cik identifier in comma separated list specifies
+          company data to return
+        schema:
+          type: string
+          format: csv
       responses:
         200:
           description: An object including a response array containing an array of
@@ -253,10 +553,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/FundamentalsFinancialsResponse'
+                $ref: '#/components/schemas/assetClassification'
             application/xml (deprecated):
               schema:
-                $ref: '#/components/schemas/FundamentalsFinancialsResponse'
+                $ref: '#/components/schemas/assetClassification'
 components:
   schemas:
     FundamentalsResponse:
@@ -273,19 +573,23 @@ components:
                 $ref: '#/components/schemas/companyProfile'
               shareClass:
                 $ref: '#/components/schemas/shareClass'
-              earningsReports:
-                $ref: '#/components/schemas/earningsReports'
-              financialStatements:
-                $ref: '#/components/schemas/financialStatements'
+              earningReports:
+                $ref: '#/components/schemas/earningReports'
               valuationRatios:
-                $ref: '#/components/schemas/valuationRatios'
+                $ref: '#/components/schemas/valuationRatiosResponse'
               operationRatios:
-                $ref: '#/components/schemas/operationRatios'
+                $ref: '#/components/schemas/operationRatiosResponse'
               alphaBeta:
                 $ref: '#/components/schemas/alphaBeta'
+              earningRatios:
+                $ref: '#/components/schemas/earningRatiosResponse'
+              assetClassification:
+                $ref: '#/components/schemas/assetClassification'
+              shareClassProfileHistory:
+                $ref: '#/components/schemas/shareClassProfile'
               processingTimeMillis:
                 type: integer
-    FundamentalsEarningRatiosResponse:
+    earningRatiosResponse:
       type: object
       properties:
         result:
@@ -356,7 +660,7 @@ components:
           type: string
         id:
           type: string
-    FundamentalsValuationRatiosResponse:
+    valuationRatiosResponse:
       type: object
       properties:
         result:
@@ -544,7 +848,7 @@ components:
           description: Ratio of stock price to per share Earnings Before Interest,
             Taxes, Depreciation and Amortization.
           format: float
-    FundamentalsOperationRatiosResponse:
+    operationRatiosResponse:
       type: object
       properties:
         result:
@@ -567,7 +871,7 @@ components:
               $ref: '#/components/schemas/operationRatio'
             1Y:
               $ref: '#/components/schemas/operationRatio'
-    FundamentalsFinancialsResponse:
+    financialsResponse:
       type: object
       properties:
         result:
@@ -663,16 +967,23 @@ components:
           type: integer
         marketCap:
           type: integer
-    earningsReports:
+    shareClassProfile:
+      type: object
+      properties:
+        asOf:
+          type: string
+        marketCap:
+          type: integer
+    earningReports:
       type: object
       properties:
         6M:
-          $ref: '#/components/schemas/earningsReport'
+          $ref: '#/components/schemas/earningReportsObj'
         3M:
-          $ref: '#/components/schemas/earningsReport'
+          $ref: '#/components/schemas/earningReportsObj'
         12M:
-          $ref: '#/components/schemas/earningsReport'
-    earningsReport:
+          $ref: '#/components/schemas/earningReportsObj'
+    earningReportsObj:
       type: object
       properties:
         period:
@@ -743,151 +1054,6 @@ components:
             period. If Basic Average Shares are not presented by the firm in the Income
             Statement, this data point will be null.
           format: int64
-    financialStatements:
-      type: object
-      properties:
-        6M:
-          $ref: '#/components/schemas/financialStatement'
-        3M:
-          $ref: '#/components/schemas/financialStatement'
-        12M:
-          $ref: '#/components/schemas/financialStatement'
-    financialStatement:
-      type: object
-      properties:
-        cashFlowStatement:
-          type: object
-          properties:
-            income:
-              type: integer
-              format: int64
-            changeInReceivables:
-              type: integer
-              description: The increase or decrease between periods of the receivables.
-                Receivables are amounts due to be paid to the company from clients
-                and other.
-              format: int64
-            changesInAccountReceivables:
-              type: integer
-              description: The increase or decrease between periods of the accounts
-                receivables.
-              format: int64
-            changeInInventory:
-              type: integer
-              description: The increase or decrease between periods of the Inventories.
-                Inventories represent merchandise bought for resale and supplies and
-                raw materials purchased for use in revenue producing operations.
-              format: int64
-            changeInOtherWorkingCapital:
-              type: integer
-              description: The increase or decrease between periods of the other working
-                capital.
-              format: int64
-            capitalExpenditure:
-              type: integer
-              description: Funds used by a company to acquire or upgrade physical
-                assets such as property, industrial buildings or equipment. This type
-                of outlay is made by companies to maintain or increase the scope of
-                their operations. Capital expenditures are generally depreciated or
-                depleted over their useful life, as distinguished from repairs, which
-                are subtracted from the income of the current year.
-              format: int64
-            jcashDividendsPaid:
-              type: integer
-              description: Payments for the cash dividends declared by an entity to
-                shareholders during the period. This element includes paid and unpaid
-                dividends declared during the period for both common and preferred
-                stock.
-              format: int64
-            freeCashFlow:
-              type: integer
-              description: Cash Flow Operations plus Capital Expenditures.
-              format: int64
-            financingCashFlow:
-              type: integer
-              description: The net cash inflow (outflow) from financing activity for
-                the period, which involve changes to the long-term liabilities and
-                stockholders’ equity.
-              format: int64
-            changesInCash:
-              type: integer
-              description: The net change between the beginning and ending balance
-                of cash and cash equivalents.
-              format: int64
-        asOf:
-          type: string
-          format: YYYYMMDD
-        incomeStatement:
-          type: object
-          properties:
-            revenue:
-              type: integer
-              format: int64
-            costOfRevenue:
-              type: integer
-              description: The aggregate cost of goods produced and sold and services
-                rendered during the reporting period. It excludes all operating expenses
-                such as depreciation, depletion, amortization, and SG&A. For the must
-                have cost industry, if the number is not reported by the company,
-                it will be calculated based on accounting equation. Cost of Revenue
-                = Revenue – Operating Expenses – Operating Profit
-              format: int64
-            grossProfit:
-              type: integer
-              description: Total revenue less cost of revenue. The number is as reported
-                by the company on the income statement; however, the number will be
-                calculated if it is not reported. This field is null if the cost of
-                revenue is not given. Gross Profit = Total Revenue – Cost of Revenue.
-              format: int64
-            researchAndDevelopment:
-              type: integer
-              description: The aggregate amount of research and development expenses.
-              format: int64
-            EBITDA:
-              type: integer
-              description: Earnings minus expenses (excluding interest, tax, depreciation,
-                and amortization expenses).
-              format: int64
-            operatingIncome:
-              type: integer
-              description: Income from normal business operations after deducting
-                cost of revenue and operating expenses. It does not include income
-                from any investing activities.
-              format: int64
-            sellingGeneralAndAdministration:
-              type: integer
-              description: The aggregate total costs related to selling a firm's product
-                and services, as well as all other general and administrative expenses.
-                Selling expenses are those directly related to the company’s efforts
-                to generate sales (e.g., sales salaries, commissions, advertising,
-                delivery expenses). General and administrative expenses are expenses
-                related to general administration of the company’s operation (e.g.,
-                officers and office salaries, office supplies, telephone, accounting
-                and legal services, and business licenses and fees).
-              format: int64
-            netIncomeContinuousOperations:
-              type: integer
-              description: Revenue less expenses and taxes from the entity's ongoing
-                operations and before income (loss) from Preferred Dividends; Extraordinary
-                Gains and Losses; Income from Cumulative Effects of Accounting Change;
-                Discontinuing Operation; Income from Tax Loss Carry forward; Other
-                Gains/Losses.
-              format: int64
-            otherIncomeExpense:
-              type: integer
-              description: Income or expense that comes from miscellaneous sources.
-              format: int64
-            netIncome:
-              type: integer
-              description: The profit or loss of the entity net of income taxes for
-                the reporting period calculated and presented in the income statement
-                in accordance with GAAP.
-              format: int64
-            netIncomeCommonStockholders:
-              type: integer
-              description: Net income minus the preferred dividends paid as presented
-                in the Income Statement.
-              format: int64
     valuationRatios:
       type: object
       properties:
@@ -1195,6 +1361,33 @@ components:
         beta:
           type: number
           format: double
+    assetClassification:
+      type: object
+      properties:
+        sic:
+          type: integer
+        sicName:
+          type: string
+        naics:
+          type: integer
+        naicsName:
+          type: string
+        msSuperSectorCode:
+          type: integer
+        msSuperSectorname:
+          type: string
+        msSectorCode:
+          type: integer
+        msSectorName:
+          type: string
+        msGroupCode:
+          type: integer
+        msGroupName:
+          type: string
+        msIndustryCode:
+          type: integer
+        msIndustryName:
+          type: string
     financials:
       type: array
       items:
@@ -1364,14 +1557,6 @@ components:
       schema:
         type: string
         format: csv
-    cik:
-      name: cik
-      in: query
-      description: One or more cik identifier in comma separated list specifies company
-        data to return
-      schema:
-        type: string
-        format: csv
     asOf:
       name: asOf
       in: query
@@ -1380,6 +1565,14 @@ components:
       schema:
         type: string
         format: YYYY-MM-DD
+    cik:
+      name: cik
+      in: query
+      description: One or more cik identifier in comma separated list specifies company
+        data to return
+      schema:
+        type: string
+        format: csv
     period:
       name: period
       in: query

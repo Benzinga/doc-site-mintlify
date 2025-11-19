@@ -20,7 +20,6 @@ info:
   version: 2.0.0
 servers:
 - url: https://api.benzinga.com/api/v2
-- url: http://api.benzinga.com/api/v2
 security:
 - token: []
 - Bearer: []
@@ -160,8 +159,8 @@ paths:
         description: Specify the desired format for the api response.
         schema:
           type: string
-        enum:
-        - text
+          enum:
+          - text
       responses:
         200:
           description: success
@@ -375,3 +374,6 @@ components:
       description: apiKey to be passed as token in query parameter.
       name: token
       in: query
+    Bearer:
+      type: http
+      scheme: bearer

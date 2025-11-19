@@ -1,0 +1,540 @@
+---
+openapi: 3.0.1
+info:
+  title: Calendar
+  description: "This REST API returns structured data for consensus-ratings"
+  version: 2.0.0
+servers:
+  - url: https://api.benzinga.com/api/v1
+paths:
+  /consensus-ratings:
+    get:
+      summary: Returns analyst ratings data]
+      parameters:
+        - name: accept
+          in: header
+          description: Specifies return format. Query parameters work the same for both
+            formats.
+          required: true
+          schema:
+            type: string
+            default: application/json
+            enum:
+              - application/json
+        - name: pagesize
+          in: query
+          description: Number of results returned. Limit 1000
+          schema:
+            type: integer
+        - name: parameters[date_from]
+          in: query
+          description: Date to query from point in time.
+          schema:
+            type: string
+            format: YYYY-MM-DD
+        - name: parameters[date_to]
+          in: query
+          description: Date to query to point in time.
+          schema:
+            type: string
+            format: YYYY-MM-DD
+        - name: parameters[tickers]
+          in: query
+          description: One ticker symbol to query the aggregate for. All calendars
+            accept this parameter (not including the FDA endpoint; for the FDA endpoint,
+            please use  "parameters[securities]" instead). Ignored by the Economics
+            endpoint. Maximum 1 ticker.
+          schema:
+            type: string
+        - name: simplify
+          in: query
+          description: To simplify the aggregate ratings to only BUY, SELL, HOLD, default will return all ratings (STRONG_BUY, BUY, HOLD, SELL, STRONG_SELL).
+          schema:
+            type: boolean
+            default: false
+        - name: aggregate_type
+          in: query
+          description: To aggregate the ratings by either number or percentage.
+          schema:
+            default: number
+            enum:
+              - number
+              - percentage
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ratings:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/consensus-ratings'
+      security:
+        - token: []
+components:
+  schemas:
+    consensus-ratings:
+      type: object
+      properties:
+        aggregate_ratings:
+          type: object
+          properties:
+            strong_buy:
+              type: integer
+              description: Number of strong_buy ratings. If simplify is set to true, the value of strong-buy will be added to buy.
+              format: int64
+            buy:
+              type: integer
+              description: Number of buy ratings
+              format: int64
+            hold:
+              type: integer
+              description: Number of hold ratings
+              format: int64
+            sell:
+              type: integer
+              description: Number of sell ratings
+              format: int64
+            strong-sell:
+              type: integer
+              description: Number of strong-sell ratings. If simplify is set to true, the value of strong-sell will be added to sell.
+              format: int64
+        aggregate_type:
+          type: string
+          description: Type of aggregation
+          enum:
+            - number
+            - percentage
+          default: number
+        low_price_target:
+          type: integer
+          description: Lowest target from all analyst ratings
+          format: int64
+        high_price_target:
+          type: integer
+          description: Highest target from all analyst ratings
+          format: int64
+        consensus_price_target:
+          type: integer
+          description: Average target from all analyst ratings
+          format: int64
+        consensus_rating_val:
+          type: integer
+          description: Consensus rating value out of 5 (1[SELL]-5[BUY])
+          format: double
+        consensus_rating:
+          type: string
+          description: Consensus rating in text form (STRONG_SELL, SELL, HOLD, BUY, STRONG_BUY). If simplify is set to true, this will be the simplified to just the 3(SELL, HOLD, BUY) ratings.
+          format: double
+        updated_at:
+          type: string
+          description: Last updated timestamp, EDT
+          format: YYYY-MM-DD HH:MM:SS
+        total_analyst_count:
+          type: integer
+          description: Total analyst count
+          format: int64
+        unique_analyst_count:
+          type: integer
+          description: Unique analyst count
+          format: int64
+  parameters:
+    accept:
+      name: accept
+      in: header
+      description: Specifies return format. Query parameters work the same for both
+        formats.
+      required: true
+      schema:
+        type: string
+        default: application/json
+        enum:
+          - application/json
+    calendar-analyst-ratings-analyst-fields:
+      name: fields
+      in: query
+      description: |
+        Default fields:
+        - id
+        - name_first
+        - name_last
+        - name_full
+        - firm_id
+        - firm_name
+        - ratings_accuracy
+        - updated
+      schema:
+        type: string
+        format: csv
+    calendar-analyst-ratings-analyst-ids:
+      name: analyst
+      in: query
+      description: A comma separated list of analyst (person) ID's to bring back.  Omitting
+        will bring back all available analysts.
+      schema:
+        type: string
+        format: csv
+    calendar-analyst-ratings-firm-fields:
+      name: fields
+      in: query
+      description: |
+        Available fields:
+        - id
+        - name
+        - currency
+        - homepage
+        - updated
+
+        Default fields:
+        - id
+        - name
+      schema:
+        type: string
+        format: csv
+    calendar-analyst-ratings-firm-ids:
+      name: firm
+      in: query
+      description: A comma separated list of analyst firm ID's to bring back.  Omitting
+        will bring back all available firms.
+      schema:
+        type: string
+        format: csv
+    calendar-analyst-ratings-firm-name:
+      name: firm_name
+      in: query
+      description: A comma separated list of analyst firm names to bring back.  Omitting
+        will bring back all available firms.
+      schema:
+        type: string
+        format: csv
+    calendar-analyst-ratings-analyst-name:
+      name: analyst_name
+      in: query
+      description: A comma separated list of analyst names to bring back.  Omitting
+        will bring back all available analysts.
+      schema:
+        type: string
+        format: csv
+    fields_ratings:
+      name: fields
+      in: query
+      description: |
+        Available fields:
+        - id
+        - date
+        - time
+        - ticker
+        - exchange
+        - name
+        - currency
+        - action_pt
+        - action_company
+        - rating_current
+        - pt_current
+        - rating_prior
+        - pt_prior
+        - url
+        - url_calendar
+        - url_news
+        - analyst
+        - analyst_id
+        - analyst_name
+        - ratings_accuracy
+        - importance
+        - notes
+        - updated
+
+        Default fields:
+        - id
+        - date
+        - time
+        - ticker
+        - exchange
+        - name
+        - currency
+        - action_pt
+        - action_company
+        - rating_current
+        - pt_current
+        - rating_prior
+        - pt_prior
+        - url
+        - url_calendar
+        - url_news
+        - analyst
+        - analyst_name
+        - importance
+        - notes
+        - updated
+      schema:
+        type: string
+        format: csv
+    page:
+      name: page
+      in: query
+      description: |-
+        Page offset.
+        For optimization, performance and technical reasons, page offsets are limited from 0 - 100000.  Limit the query results by other parameters such as date.
+      schema:
+        type: integer
+        default: 0
+    pagesize:
+      name: pagesize
+      in: query
+      description: Number of results returned. Limit 1000
+      schema:
+        type: integer
+    pageSize:
+      name: pageSize
+      in: query
+      description: Number of results returned. Limit 1000. Default 50.
+      schema:
+        type: integer
+    parameters[analyst_id]:
+      name: parameters[analyst_id]
+      in: query
+      description: One or more analyst ids (analyst_id) separated by a comma.
+      schema:
+        type: string
+        format: csv
+    parameters[firm_id]:
+      name: parameters[firm_id]
+      in: query
+      description: One or more firm ids (firm_id) separated by a comma.
+      schema:
+        type: string
+        format: csv
+    parameters[date]:
+      name: parameters[date]
+      in: query
+      description: Date to query for calendar data. Shorthand for date_from and date_to
+        if they are the same. Defaults for latest.
+      schema:
+        type: string
+        format: YYYY-MM-DD
+    parameters[date_from]:
+      name: parameters[date_from]
+      in: query
+      description: Date to query from point in time.
+      schema:
+        type: string
+        format: YYYY-MM-DD
+    parameters[date_to]:
+      name: parameters[date_to]
+      in: query
+      description: Date to query to point in time.
+      schema:
+        type: string
+        format: YYYY-MM-DD
+    parameters[tickers]:
+      name: parameters[tickers]
+      in: query
+      description: One or more ticker symbols separated by a comma. All calendars
+        accept this parameter (not including the FDA endpoint; for the FDA endpoint,
+        please use  "parameters[securities]" instead). Ignored by the Economics endpoint.   Maximum
+        50 tickers. Note that for the IPOs endpoint, new tickers may not return  results
+        right away as we do not automatically link them to the underlying company's  data.
+        Thus, to obtain the most recent rows from the IPOs endpoint, send queries  without
+        this parameter specified.
+      schema:
+        type: string
+        format: csv
+    parameters[securities]:
+      name: parameters[securities]
+      in: query
+      description: One or more security identifiers separated by a comma. Maximum
+        50 securities.  Security identifiers must be in the format of ticker symbols,
+        only for US-listed equities.
+      schema:
+        type: string
+        format: csv
+    parameters[type]:
+      name: parameters[type]
+      in: query
+      description: Calendar type
+      schema:
+        type: string
+        enum:
+          - ratings
+          - earnings
+          - guidance
+          - ipos
+          - offerings
+          - economics
+          - ma
+          - splits
+          - dividends
+          - conference calls
+    parameters[ipo_type]:
+      name: parameters[ipo_type]
+      in: query
+      description: |
+        One or more IPO types separated by a comma. Example:
+
+        Ordinary Shares,SPAC
+      schema:
+        type: string
+        format: csv
+    parameters[is_primary]:
+      name: parameters[is_primary]
+      in: query
+      description: Determines if guidance returned is primary, secondary or all. Default
+        set to Y.
+      schema:
+        type: string
+        enum:
+          - Y
+          - N
+          - All
+    parameters[importance]:
+      name: parameters[importance]
+      in: query
+      description: The importance level to filter by. Uses Greater Than or Equal To
+        the importance indicated
+      schema:
+        type: integer
+        enum:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+    parameters[updated]:
+      name: parameters[updated]
+      in: query
+      description: Records last Updated Unix timestamp (UTC). This will force the
+        sort order to be Greater Than or Equal to the timestamp indicated.
+      schema:
+        type: integer
+        format: int64
+    parameters[date_sort]:
+      name: parameters[date_sort]
+      in: query
+      description: Dividend date field to sort on (newest to oldest)
+      schema:
+        type: string
+        enum:
+          - announced
+          - ex
+          - payable
+          - record
+    parameters[date_sort_earnings]:
+      name: parameters[date_sort]
+      in: query
+      description: Field sort option for earnings calendar. Apply `:desc`, `:asc`
+        for sort order.
+      schema:
+        type: string
+        enum:
+          - date
+    splits_date_search_field:
+      name: parameters[date_search_field]
+      in: query
+      description: Date to filter and sort calendar by. Default is `announced`.
+      schema:
+        type: string
+        enum:
+          - announced
+          - ex
+    parameters[date_search_field]:
+      name: parameters[date_search_field]
+      in: query
+      description: Date to filter and sort calendar by. Default is `announced`.
+      schema:
+        type: string
+        enum:
+          - announced
+          - target
+    parameters[date_search_strict]:
+      name: parameters[date_search_strict]
+      in: query
+      description: |
+        Some date fields (such as the FDA calendar target date) include fuzzy dates such as 2021-Q1.
+
+        When filtering, you may choose to allow fuzzy date matching, or strict date matching that searches for ONLY dates that have an exact match within the given date period.
+
+        Default `TRUE`.
+      schema:
+        type: boolean
+    parameters[dividend_yield_operation]:
+      name: parameters[dividend_yield_operation]
+      in: query
+      description: Specifies how to filter using dividend yield. gt = Greater Than,
+        gte = Greater Than Equal, eq = Equal, lt = Less Than, lte = Less Than Equal
+      schema:
+        type: string
+        enum:
+          - gt
+          - gte
+          - eq
+          - lte
+          - lt
+    parameters[dividend_yield]:
+      name: parameters[dividend_yield]
+      in: query
+      description: The dividend yield amount to filter by. Defaults to using Equal
+        To the amount indicated. 1 =100%eater Than or Equal To’, ‘Equal To’, ‘Less
+        Than or Equal To’, and ‘Less Than’ filters respectively.
+      schema:
+        type: number
+        format: double
+    parameters[action]:
+      name: parameters[action]
+      in: query
+      description: Filter by a specific action_company (action for rating). Note that
+        all of these terms are precisely defined.
+      schema:
+        type: string
+        enum:
+          - Downgrades
+          - Maintains
+          - Reinstates
+          - Reiterates
+          - Upgrades
+          - Assumes
+          - Initiates Coverage On
+          - Terminates Coverage On
+          - Removes
+          - Suspends
+          - Firm Dissolved
+    country:
+      name: country
+      in: query
+      description: 3-Digit Country Code
+      schema:
+        type: string
+        format: A-Z:3
+    updated:
+      name: updated
+      in: query
+      description: Records removed after Unix timestamp (UTC). This will force the
+        sort order to be Greater Than or Equal to the timestamp indicated.
+      schema:
+        type: integer
+        format: int64
+    type:
+      name: type
+      in: query
+      description: Calendar type
+      schema:
+        type: string
+        enum:
+          - ratings
+          - earnings
+          - guidance
+          - ipos
+          - offerings
+          - economics
+          - ma
+          - splits
+          - dividends
+          - conference calls
+  securitySchemes:
+    token:
+      type: apiKey
+      name: token
+      in: query

@@ -21,9 +21,8 @@ info:
     \ of the `updated` field in rows already pulled from our API."
   version: 2.0.0
 servers:
-- url: https://api.benzinga.com/api/v1
+- url: https://api.benzinga.com/api/v2
 - url: https://api.benzinga.com/api/v2.1
-- url: http://api.benzinga.com/api/v2.1
 paths:
   /calendar/conference-calls:
     get:

@@ -20,7 +20,6 @@ info:
   version: 1.0.0
 servers:
 - url: https://api.benzinga.com/api/v1
-- url: http://api.benzinga.com/api/v1
 paths:
   /signal/option_activity:
     get:
