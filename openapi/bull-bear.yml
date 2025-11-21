@@ -74,6 +74,18 @@ components:
         ticker:
           type: string
           description: Stock ticker symbol related to the bull/bear case.
+        securities:
+          type: array
+          description: Company securities
+          items:
+            type: object
+            properties:
+              exchange:
+                type: string
+                description: Exchange on which the security is listed
+              symbol:
+                type: string
+                description: Ticker symbol for the security
         updated:
           type: integer
           format: int64

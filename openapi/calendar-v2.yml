@@ -881,6 +881,7 @@ paths:
           - pt_current
           - rating_prior
           - pt_prior
+          - pt_pct_change
           - url
           - url_calendar
           - url_news
@@ -2172,6 +2173,9 @@ components:
         description:
           type: string
           description: Event Description
+        event_category:
+          type: string
+          description: Category of the economic event
     guidance:
       type: object
       properties:
@@ -2623,6 +2627,10 @@ components:
           description: Analyst's prior price target, adjusted to account for stock
             splits and stock dividends. If none are applicable, the pt_prior value
             is used.
+          format: float
+        pt_pct_change:
+          type: string
+          description: Percentage change in price target from prior to current
           format: float
         url:
           type: string
