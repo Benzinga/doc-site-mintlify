@@ -5,39 +5,35 @@ openapi: "/openapi/logos-v2.yml GET /sync"
 ---
 <ResponseExample>
 ```JSON Response (200 OK)
-[
-  {
-    "id": "string",
-    "search_key": "string",
-    "created_at": "string (RFC3339/ISO8601)",
-    "updated_at": "string (RFC3339/ISO8601)",
-    "colors": {
-      "background_light": "string (#000/#abc000)",
-      "background_dark": "string (#000/#abc000)"
-    },
-    "files": {
-      "logo_light": "string",
-      "logo_dark": "string",
-      "logo_vector_light": "string",
-      "logo_vector_dark": "string",
-      "mark_light": "string",
-      "mark_dark": "string",
-      "mark_composite_light": "string",
-      "mark_composite_dark": "string",
-      "mark_vector_light": "string",
-      "mark_vector_dark": "string"
-    },
-    "securities": [
-      {
-        "exchange": "string",
-        "symbol": "string",
-        "name": "string",
-        "cik": "string",
-        "cusip": "string",
-        "isin": "string"
-      }
-    ]
-  }
-]
+{
+  "ok": true,
+  "data": [
+    {
+      "fields": {
+        "logo_dark": "https://image-util.benzinga.com/api/v2/logos/file/image/US98740Y3027/logo_dark__3da23ba700858fe4fde4f025531f027d.png?x-bz-cred=sb~7Hti7ClrfE16Sl9ji3IivrOmGsg7O2qSGPa7iqTIc-AsY7S9GtN1aRqBicyGdtfyXNqiry21FTGvZdVnUn08a0QlJ0ROLLY4x9Sp9plKFXinyFjYHJGxHW_POWLhHMVN_9raUOn6KmKUxw%3D%3D&x-bz-exp=1765553181&x-bz-signature=c9b8e49e2821957f4e6fbc9cc09b95c0e9c13665f3933054ac59bd75ccb56484",
+        "logo_light": "https://image-util.benzinga.com/api/v2/logos/file/image/US98740Y3027/logo_light__4e8fba2090fc30f3505e480494b835d2.png?x-bz-cred=sb~7Hti7ClrfE16Sl9ji3IivrOmGsg7O2qSGPa7iqTIc-AsY7S9GtN1aRqBicyGdtfyXNqiry21FTGvZdVnUn08a0QlJ0ROLLY4x9Sp9plKFXinyFjYHJGxHW_POWLhHMVN_9raUOn6KmKUxw%3D%3D&x-bz-exp=1765553181&x-bz-signature=f55ffd05cb258a34395d639f6c301ea0667fff890c32548a3c311a400c2f2ef0",
+        "mark_vector_composite_light": "https://image-util.benzinga.com/api/v2/logos/file/image/US98740Y3027/mark_vector_composite_light__afc855676449a759dfb4f48fff634f12.svg?x-bz-cred=sb~7Hti7ClrfE16Sl9ji3IivrOmGsg7O2qSGPa7iqTIc-AsY7S9GtN1aRqBicyGdtfyXNqiry21FTGvZdVnUn08a0QlJ0ROLLY4x9Sp9plKFXinyFjYHJGxHW_POWLhHMVN_9raUOn6KmKUxw%3D%3D&x-bz-exp=1765553181&x-bz-signature=9790a02b9e0a2e3f0ce690f914df3893df915f167d334a292f27ea79628119df"
+      },
+      "updated": "2025-11-11T17:39:48.121076Z",
+      "created": "2025-11-11T17:39:48.121076Z",
+      "securities": [
+        {
+          "symbol": "VSTD",
+          "name": "VESTAND INC",
+          "cik": "1898604",
+          "exchange": "NASDAQ",
+          "mic_code": "XNAS",
+          "exchange_name": "NASDAQ Capital Market Consolidated",
+          "cusip": "98740Y302",
+          "isin": "US98740Y3027",
+          "country": "US",
+          "figi_share_class": "BBG014V0WTJ6",
+          "figi": "BBG014V0WSN3",
+          "security_type": "Common Stock"
+        }
+      ]
+    }
+  ]
+}
 ```
 </ResponseExample>

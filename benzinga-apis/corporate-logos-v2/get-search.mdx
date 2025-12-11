@@ -6,39 +6,106 @@ openapi: "/openapi/logos-v2.yml GET /search"
 
 <ResponseExample>
 ```JSON Response (200 OK)
-[
-  {
-    "id": "string",
-    "search_key": "string",
-    "created_at": "string (RFC3339/ISO8601)",
-    "updated_at": "string (RFC3339/ISO8601)",
-    "colors": {
-      "background_light": "string (#000/#abc000)",
-      "background_dark": "string (#000/#abc000)"
-    },
-    "files": {
-      "logo_light": "string",
-      "logo_dark": "string",
-      "logo_vector_light": "string",
-      "logo_vector_dark": "string",
-      "mark_light": "string",
-      "mark_dark": "string",
-      "mark_composite_light": "string",
-      "mark_composite_dark": "string",
-      "mark_vector_light": "string",
-      "mark_vector_dark": "string"
-    },
-    "securities": [
-      {
-        "exchange": "string",
-        "symbol": "string",
-        "name": "string",
-        "cik": "string",
-        "cusip": "string",
-        "isin": "string"
-      }
-    ]
-  }
-]
+{
+  "ok": true,
+  "data": [
+    {
+      "id": "86ab07d2-b40c-4026-82f1-c45d27ac5e21",
+      "search_key": "AAPL",
+      "securities": [
+        {
+          "symbol": "APC",
+          "name": "APPLE INC",
+          "cik": "320193",
+          "exchange": "BER",
+          "mic_code": "XBER",
+          "exchange_name": "Berlin Stock Exchange",
+          "cusip": "037833100",
+          "isin": "US0378331005",
+          "country": "DE",
+          "figi_share_class": "BBG001S5N8V8",
+          "figi": "BBG000DH0MN3",
+          "security_type": "Common Stock"
+        },
+        {
+          "symbol": "6689",
+          "name": "APPLE COMPUTER INC",
+          "cik": "320193",
+          "exchange": "TYO",
+          "mic_code": "XJPX",
+          "exchange_name": "Tokyo Stock Exchange",
+          "cusip": "037833100",
+          "isin": "US0378331005",
+          "country": "JP",
+          "figi_share_class": "BBG001S5N8V8",
+          "figi": "BBG002H9HF69",
+          "security_type": "Common Stock"
+        },
+        {
+          "symbol": "AAPL",
+          "name": "APPLE INC",
+          "cik": "320193",
+          "exchange": "WSE",
+          "mic_code": "XWAR",
+          "exchange_name": "Warsaw Stock Exchange",
+          "cusip": "037833100",
+          "isin": "US0378331005",
+          "country": "PL",
+          "figi_share_class": "BBG001S5N8V8",
+          "figi": "BBG01NX6JHN5",
+          "security_type": "Common Stock"
+        },
+        {
+          "symbol": "AAPL",
+          "name": "APPLE INC",
+          "cik": "320193",
+          "exchange": "VIE",
+          "mic_code": "XVIE",
+          "exchange_name": "Vienna Stock Exchange - Cash Market",
+          "cusip": "037833100",
+          "isin": "US0378331005",
+          "country": "AT",
+          "figi_share_class": "BBG001S5N8V8",
+          "figi": "BBG00GQ6RZH7",
+          "security_type": "Common Stock"
+        },
+        {
+          "symbol": "1AAPL",
+          "name": "APPLE INC",
+          "cik": "320193",
+          "exchange": "MIL",
+          "mic_code": "XMIL",
+          "exchange_name": "Milan Stock Exchange",
+          "cusip": "037833100",
+          "isin": "US0378331005",
+          "country": "IT",
+          "figi_share_class": "BBG001S5N8V8",
+          "figi": "BBG00J7BK3P0",
+          "security_type": "Common Stock"
+        },
+        {
+          "symbol": "AAPL",
+          "name": "APPLE INC",
+          "cik": "320193",
+          "exchange": "NASDAQ",
+          "mic_code": "XNAS",
+          "exchange_name": "NASDAQ Global Select Consolidated",
+          "cusip": "037833100",
+          "isin": "US0378331005",
+          "country": "US",
+          "figi_share_class": "BBG001S5N8V8",
+          "figi": "BBG000B9XRY4",
+          "security_type": "Common Stock"
+        }
+      ],
+      "files": {
+        "logo_dark": "https://image-util.benzinga.com/api/v2/logos/file/image/US0378331005/logo_dark__cdedb7a983cbadc32a8a2c63bdee791e.png?x-bz-cred=sb~rML3xL1udsHvbGDIabHbRRxuQeTeCjmTEY_eXnjbtw1-GoIBgT25l5blvpG-c36ODBBr4lOYkh2G4T0d_vz4p_KY0WKk7ahlHYHgIcmCVuEVL3h_LmF8z0xUldFXgkj6f4ABnigMqEnOBQ%3D%3D&x-bz-exp=1765553363&x-bz-security-isin=&x-bz-security-symbol=AAPL&x-bz-signature=0cdec55862886e3b4e24d14217462f835e5dfdbf4dee8dc5d32a460508e86370",
+        "logo_light": "https://image-util.benzinga.com/api/v2/logos/file/image/US0378331005/logo_light__80a6059e4f66393e9342d582f373922d.png?x-bz-cred=sb~rML3xL1udsHvbGDIabHbRRxuQeTeCjmTEY_eXnjbtw1-GoIBgT25l5blvpG-c36ODBBr4lOYkh2G4T0d_vz4p_KY0WKk7ahlHYHgIcmCVuEVL3h_LmF8z0xUldFXgkj6f4ABnigMqEnOBQ%3D%3D&x-bz-exp=1765553363&x-bz-security-isin=&x-bz-security-symbol=AAPL&x-bz-signature=2aaa4844af02a671a238347f9bfe88582bcc5a94ce37feb241fd3ec25bf1af6b"
+      },
+      "created_at": "2023-11-09T09:42:47.62573Z",
+      "updated_at": "2025-12-05T17:54:12.04995Z"
+    }
+  ]
+}
 ```
 </ResponseExample>
