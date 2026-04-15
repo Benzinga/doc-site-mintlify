@@ -24,7 +24,8 @@ paths:
         in: query
         description: One or more comma separated symbols to specify companies to get
           data for.
-        required: true  
+        required: true
+        style: form        
         schema:
           type: string
           format: csv
